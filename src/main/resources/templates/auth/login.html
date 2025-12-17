@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Payroll System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #0e58f5;
+            --primary-hover: #0a3d8f;
+            --accent-color: #38b6ff;
+            --bg-light: #f3f6f9;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-light);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .split-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* --- Left Panel (Form) --- */
+        .left-panel {
+            flex: 1; /* CHANGED: Equal width (50%) */
+            width: 50%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center content horizontally */
+            background-color: var(--surface);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Wrapper to keep the form compact and centered */
+        .form-content-wrapper {
+            width: 100%;
+            max-width: 450px;
+            flex-grow: 1; /* Pushes footer down */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .brand-section {
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .brand-text {
+            font-weight: 800;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .header-text p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        /* --- Role Switcher --- */
+        .role-wrapper {
+            background-color: var(--bg-light);
+            padding: 5px;
+            border-radius: 12px;
+            display: flex;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .role-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .role-btn:hover { color: var(--primary-color); }
+
+        .role-btn.active {
+            background-color: var(--surface);
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* --- Inputs --- */
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-floating > .form-control {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            height: 56px;
+            padding-right: 50px;
+        }
+
+        .form-floating > .form-control:focus {
+            background-color: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(15, 82, 186, 0.1);
+        }
+
+        .form-floating > label {
+            color: var(--text-muted);
+            padding-left: 15px;
+        }
+
+        .toggle-visibility {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-visibility:hover {
+            color: var(--primary-color);
+            background-color: rgba(15, 82, 186, 0.05);
+        }
+
+        .toggle-visibility i { font-size: 1.2rem; }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            margin-top: 1rem;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-login:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+        .auth-links {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .auth-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-links a:hover { text-decoration: underline; }
+
+        /* --- Footer Title Styling --- */
+        .system-footer {
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: auto;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .system-footer h6 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .system-footer p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* --- Right Panel --- */
+        .right-panel {
+            flex: 1; /* CHANGED: Equal width (50%) */
+            width: 50%;
+            background: linear-gradient(135deg, #0F52BA 0%, #38b6ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .bubble:nth-child(1) { width: 300px; height: 300px; top: -50px; right: -50px; animation-delay: 0s; }
+        .bubble:nth-child(2) { width: 200px; height: 200px; bottom: 10%; left: 10%; animation-delay: -2s; }
+        .bubble:nth-child(3) { width: 100px; height: 100px; bottom: 30%; right: 20%; animation-delay: -4s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-image {
+            width: 80%;
+            max-width: 400px;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.2));
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 991px) {
+            .right-panel { display: none; }
+            .left-panel { flex: 1; width: 100%; max-width: 100%; padding: 30px; }
+            .system-footer { margin-top: 2rem; border-top: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="split-container">
+    <!-- Left Panel: Form -->
+    <div class="left-panel">
+
+        <!-- Content Wrapper for centering -->
+        <div class="form-content-wrapper">
+            <div class="brand-section">
+                <img class="brand-logo" src="/images/num.png" alt="Logo" onerror="this.style.display='none'">
+                <span class="brand-text">NUM-PAYROLL</span>
+            </div>
+
+            <div class="header-text">
+                <h1>Welcome Back</h1>
+                <p>Please enter your details to sign in.</p>
+            </div>
+
+            <!-- Alerts -->
+            <div th:if="${param.error}" class="alert alert-danger py-2 fs-6 rounded-3" role="alert">
+                <i class="bi bi-exclamation-circle-fill me-2"></i> Invalid username or password.
+            </div>
+            <div th:if="${param.logout}" class="alert alert-info py-2 fs-6 rounded-3" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i> You have been logged out.
+            </div>
+            <div th:if="${param.registered}" class="alert alert-success py-2 fs-6 rounded-3" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i> Registration successful!
+            </div>
+
+            <form th:action="@{/login}" method="post">
+
+                <!-- Role Switcher -->
+                <p class="small fw-bold mb-2 text-muted">Select Role</p>
+                <div class="role-wrapper">
+                    <button type="button" class="role-btn" data-role="Admin">Admin</button>
+<!--                    <button type="button" class="role-btn" data-role="HR">HR</button>-->
+                    <button type="button" class="role-btn active" data-role="Employee">Employee</button>
+                </div>
+
+                <!-- Username Field -->
+                <div class="input-group-custom">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username" required autofocus>
+                        <label for="username" id="username-label">Employee Username</label>
+                    </div>
+                    <button type="button" class="toggle-visibility" id="toggleUsername" aria-label="Show username" tabindex="-1">
+                        <i class="bi bi-eye" id="usernameIcon"></i>
+                    </button>
+                </div>
+
+                <!-- Password Field -->
+                <div class="input-group-custom">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <button type="button" class="toggle-visibility" id="togglePassword" aria-label="Show password" tabindex="-1">
+                        <i class="bi bi-eye" id="passwordIcon"></i>
+                    </button>
+                </div>
+
+                <!-- Main Action -->
+                <button class="btn btn-login" type="submit">
+                    Sign In
+                </button>
+
+                <!-- Secondary Links -->
+                <div class="auth-links">
+                    <span>New here? <a th:href="@{/register}">Register</a></span>
+                    <span class="text-muted">|</span>
+                    <a th:href="@{/signup}">Sign Up</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer System Title (Added for Consistency) -->
+        <div class="system-footer">
+            <h6>National University of Management</h6>
+            <p> Welcome to the Payroll Management System — a secure platform designed to simplify employee attendance tracking, salary processing, and payroll management. Log in to access your personalized dashboard, manage records, and ensure accurate and timely payroll operations.</p>
+        </div>
+    </div>
+
+    <!-- Right Panel: Visuals -->
+    <div class="right-panel">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <img src="/images/num.png" alt="NUM Logo" class="hero-image">
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const roleButtons = document.querySelectorAll('.role-btn');
+        const usernameLabel = document.getElementById('username-label');
+
+        // Setup Toggles
+        setupVisibilityToggle('togglePassword', 'password', 'passwordIcon');
+        setupVisibilityToggle('toggleUsername', 'username', 'usernameIcon');
+
+        // Role Selection Logic
+        roleButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                roleButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const role = this.getAttribute('data-role');
+                usernameLabel.textContent = `${role} Username`;
+            });
+        });
+
+        // Helper function for toggles
+        function setupVisibilityToggle(btnId, inputId, iconId) {
+            const btn = document.getElementById(btnId);
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (!btn || !input || !icon) return;
+
+            btn.addEventListener('click', () => {
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                icon.className = isPassword ? 'bi bi-eye-slash' : 'bi bi-eye';
+                btn.setAttribute('aria-label', isPassword ? 'Hide content' : 'Show content');
+            });
+        }
+    });
+</script>
+</body>
+</html>

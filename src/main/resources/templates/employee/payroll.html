@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Payroll - Payroll System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --secondary-color: #3f37c9;
+            --dark-bg: #1a4c99;
+            --dark-bg-light: #1a4c99;
+            --text-light: #f8f9fa;
+            --text-muted: #adb5bd;
+            --border-color: #343a40;
+            --hover-color: #1a4c99;
+            --active-color: #1a4c99;
+            --shadow: 0 4px 6px rgb(26, 76, 153);
+            --transition: all 0.3s ease;
+            --success-color: #4cc9f0;
+            --danger-color: #f50b1c;
+            --warning-color: #f8961e;
+            --info-color: #43aa8b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: rgba(10, 161, 6, 0.98);
+            width: fit-content;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-light) 100%);
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            list-style: none;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: var(--hover-color);
+            border-left-color: var(--primary-light);
+        }
+
+        .nav-link.active {
+            background-color: var(--active-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .user-profile:hover {
+            background-color: var(--hover-color);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid var(--primary-light);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .dropdown-menu {
+            background-color: var(--dark-bg-light);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .dropdown-item {
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--hover-color);
+            color: var(--text-light);
+        }
+
+        .dropdown-divider {
+            border-color: var(--border-color);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            transition: var(--transition);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .page-title {
+            font-weight: 700;
+            color: var(--dark-bg);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Card Styles */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: var(--transition);
+            width: 1200px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgb(14, 88, 245);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #eaeaea;
+            padding: 1.25rem 1.5rem;
+            font-weight: 600;
+            color: var(--dark-bg);
+            display: flex;
+            align-items: center;
+        }
+
+        .card-header i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Current Payroll Card */
+        .current-payroll-card {
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .payroll-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payroll-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+
+        .payroll-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .payroll-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-bg);
+        }
+
+        .payroll-value.net-pay {
+            color: var(--success-color);
+            font-size: 2rem;
+        }
+
+        .payroll-breakdown {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--success-color);
+        }
+
+        /* Tax Hint Table Styles */
+        .tax-accordion-button {
+            background-color: #f1f5f9;
+            color: var(--dark-bg);
+            font-weight: 500;
+        }
+        .tax-accordion-button:not(.collapsed) {
+            background-color: #e2e6ea;
+            color: var(--primary-color);
+            box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+        }
+        .tax-table th {
+            background-color: #e9ecef;
+            color: #495057;
+            font-size: 0.8rem;
+        }
+        .tax-table td {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Table Styles */
+        .table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            border-bottom: 2px solid #dee2e6;
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--dark-bg);
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid #eaeaea;
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgb(26, 76, 153);
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgb(26, 76, 153);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            background-color: white;
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-paid {
+            background-color: white;
+            color: var(--success-color);
+        }
+
+        .status-pending {
+            background-color: white;
+            color: #ffc107;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+
+            .brand-text, .nav-text, .user-info, .nav-section-title {
+                display: none;
+            }
+
+            .brand-icon {
+                margin-right: 0;
+            }
+
+            .nav-link {
+                padding: 0.75rem;
+                justify-content: center;
+            }
+
+            .nav-link i {
+                margin-right: 0;
+                font-size: 1.25rem;
+            }
+
+            .user-profile {
+                padding: 0.5rem;
+                justify-content: center;
+            }
+
+            .user-avatar {
+                margin-right: 0;
+            }
+
+            .main-content {
+                margin-left: 70px;
+            }
+
+            .sidebar:hover {
+                width: 280px;
+            }
+
+            .sidebar:hover .brand-text,
+            .sidebar:hover .nav-text,
+            .sidebar:hover .user-info,
+            .sidebar:hover .nav-section-title {
+                display: block;
+            }
+
+            .sidebar:hover .nav-link {
+                justify-content: flex-start;
+                padding: 0.75rem 1.5rem;
+            }
+
+            .sidebar:hover .nav-link i {
+                margin-right: 12px;
+            }
+
+            .sidebar:hover .user-profile {
+                justify-content: flex-start;
+                padding: 0.75rem;
+            }
+
+            .sidebar:hover .user-avatar {
+                margin-right: 12px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 0;
+            }
+
+            .main-content {
+                margin-left: 280px;
+                padding: 30px;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding: 0.5rem;
+            }
+
+            .nav-section {
+                margin-bottom: 0;
+                margin-right: 1rem;
+            }
+
+            .nav-section-title {
+                display: none;
+            }
+
+            .nav-list {
+                display: flex;
+            }
+
+            .nav-item {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                border-left: none;
+            }
+
+            .nav-link.active {
+                background-color: var(--active-color);
+                border-left: none;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+
+            .payroll-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <a href="/" class="brand">
+                <div class="brand-icon">
+                    <i class="bi bi-cash-coin"></i>
+                </div>
+                <span class="brand-text">Payroll System</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <ul class="nav-list">
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'HR')">
+                        <a th:href="@{/employees}" class="nav-link">
+                            <i class="bi bi-people"></i>
+                            <span class="nav-text">Employees</span>
+                            <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Employee</div>
+                <ul class="nav-list">
+                    <li class="nav-item" sec:authorize="hasRole('EMPLOYEE')">
+                        <a th:href="@{/employee/attendance}" class="nav-link">
+                            <i class="bi bi-calendar-check"></i>
+                            <span class="nav-text">Attendance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('EMPLOYEE')">
+                        <a th:href="@{/employee/payroll}" class="nav-link active">
+                            <i class="bi bi-cash"></i>
+                            <span class="nav-text">My Payroll</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/employee/profile}" class="nav-link">
+                            <i class="bi bi-person"></i>
+                            <span class="nav-text">Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="dropdown">
+                <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/images/num.png" alt="User Avatar" class="user-avatar">
+                    <div class="user-info">
+                        <div style="color: white" class="user-name" sec:authentication="name">John Doe</div>
+                        <div style="color: white" class="user-role" sec:authorize="hasRole('EMPLOYEE')">Employee</div>
+                    </div>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" th:href="@{/employee/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">My Payroll Summary</h1>
+            <p class="page-subtitle">View your salary details and payment history</p>
+        </div>
+
+        <div class="card current-payroll-card">
+            <div class="card-header">
+                <i class="bi bi-calendar-month"></i>
+                Payroll for <span th:text="${currentMonth}"></span>  <span th:text="${currentYear}"> </span>
+            </div>
+            <div class="card-body">
+                <div th:if="${payrollSummary}">
+                    <div class="payroll-summary">
+                        <div class="payroll-item">
+                            <div class="payroll-label">Days Worked</div>
+                            <div class="payroll-value" th:text="${payrollSummary.totalDaysWorked}">0</div>
+                        </div>
+
+                        <div class="payroll-item">
+                            <div class="payroll-label">Basic Salary</div>
+                            <div class="payroll-value"
+                                 th:text="'$' + ${#numbers.formatDecimal(payrollSummary.basicSalary, 1, 2)}">$0.00</div>
+                        </div>
+
+                        <div class="payroll-item">
+                            <div class="payroll-label">Tax Deducted</div>
+                            <div class="payroll-value"
+                                 th:text="'$' + ${#numbers.formatDecimal(payrollSummary.tax, 1, 2)}">$0.00</div>
+                        </div>
+
+                        <div class="payroll-item">
+                            <div class="payroll-label">Net Pay</div>
+                            <div class="payroll-value net-pay"
+                                 th:text="'$' + ${#numbers.formatDecimal(payrollSummary.netPay, 1, 2)}">$0.00</div>
+                        </div>
+
+                    </div>
+
+                    <div class="payroll-breakdown">
+                        <h6 class="mb-3">Salary Breakdown</h6>
+
+                        <div class="breakdown-item">
+                            <span>Basic Monthly Salary</span>
+                            <span th:text="'$' + ${#numbers.formatDecimal(payrollSummary.basicSalary, 1, 2)}">$0.00</span>
+                        </div>
+
+                        <div class="breakdown-item">
+                            <span>
+                                Tax Deduction (
+                                <span th:text="${#numbers.formatDecimal((payrollSummary.tax / payrollSummary.basicSalary) * 100, 1, 2)}">10</span>%
+                                )
+                            </span>
+                            <span class="text-danger"
+                                  th:text="'$' + ${#numbers.formatDecimal(payrollSummary.tax, 1, 2)}">-$0.00</span>
+                        </div>
+
+                        <!--
+                             ==========================================
+                             NEW FEATURE: TAX BRACKET HINT ACCORDION
+                             ==========================================
+                        -->
+                        <div class="accordion mt-3" id="taxBracketAccordion">
+                            <div class="accordion-item border-0">
+                                <h2 class="accordion-header" id="headingTax">
+                                    <button class="accordion-button collapsed tax-accordion-button rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTax" aria-expanded="false" aria-controls="collapseTax">
+                                        <i class="bi bi-info-circle me-2"></i> View Federal Income Tax Brackets (2025 Standard)
+                                    </button>
+                                </h2>
+                                <div id="collapseTax" class="accordion-collapse collapse" aria-labelledby="headingTax" data-bs-parent="#taxBracketAccordion">
+                                    <div class="accordion-body bg-light rounded-bottom">
+                                        <p class="small text-muted mb-2">The federal income tax uses seven marginal tax rates based on taxable income. Data for 2025 Tax Year:</p>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm tax-table mb-0 bg-white text-center">
+                                                <thead class="table-light">
+                                                <tr>
+                                                    <th>Tax Rate</th>
+                                                    <th>Single Filers</th>
+                                                    <th>Married Filing Jointly</th>
+                                                    <th>Head of Household</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr><td>10%</td><td>$0 to $11,925</td><td>$0 to $23,850</td><td>$0 to $17,000</td></tr>
+                                                <tr><td>12%</td><td>$11,926 to $48,475</td><td>$23,851 to $96,950</td><td>$17,001 to $64,850</td></tr>
+                                                <tr><td>22%</td><td>$48,476 to $103,350</td><td>$96,951 to $206,700</td><td>$64,851 to $103,350</td></tr>
+                                                <tr><td>24%</td><td>$103,351 to $197,300</td><td>$206,701 to $394,600</td><td>$103,351 to $197,300</td></tr>
+                                                <tr><td>32%</td><td>$197,301 to $250,525</td><td>$394,601 to $501,050</td><td>$197,301 to $250,500</td></tr>
+                                                <tr><td>35%</td><td>$250,526 to $626,350</td><td>$501,051 to $751,600</td><td>$250,501 to $626,350</td></tr>
+                                                <tr><td>37%</td><td>Over $626,350</td><td>Over $751,600</td><td>Over $626,350</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END TAX BRACKET HINT -->
+
+                        <div class="breakdown-item mt-3 border-top pt-3">
+                            <span>Net Payable Amount</span>
+                            <span class="text-success"
+                                  th:text="'$' + ${#numbers.formatDecimal(payrollSummary.netPay, 1, 2)}">$0.00</span>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4">
+                        <span class="status-badge status-paid">
+                            <i class="bi bi-check-circle me-1"></i>Payment Processed
+                        </span>
+                    </div>
+                </div>
+                <div th:unless="${payrollSummary}">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="bi bi-cash-coin"></i>
+                        </div>
+                        <h5>No Payroll Data Available</h5>
+                        <p class="text-muted">Payroll for <span th:text="${currentMonth}"></span> <span th:text="${currentYear}"></span> has not been processed yet.</p>
+                        <p class="text-muted small">Payroll is usually calculated by the Admin/HR after the end of the month.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-clock-history"></i>
+                Payroll History
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Period</th>
+                            <th>Days Worked</th>
+                            <th>Basic Salary</th>
+                            <th>Tax</th>
+                            <th>Net Pay</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="payroll : ${payrollHistory}">
+                            <td>
+                                <!--
+                                     UPDATED: Added 'text-danger' class to make Period text RED
+                                -->
+                                <strong class="text-danger" th:text="${#temporals.monthName(T(java.time.YearMonth).of(payroll.year, payroll.month))} + ' ' + ${payroll.year}"></strong>
+                            </td>
+                            <td th:text="${payroll.totalDaysWorked}">0</td>
+                            <td th:text="'$' + ${#numbers.formatDecimal(payroll.basicSalary, 1, 2)}">$0.00</td>
+                            <td th:text="'$' + ${#numbers.formatDecimal(payroll.tax, 1, 2)}">$0.00</td>
+                            <td>
+                                <!--
+                                     UPDATED: Added 'text-success' class to make Net Pay text GREEN
+                                -->
+                                <strong class="text-success" th:text="'$' + ${#numbers.formatDecimal(payroll.netPay, 1, 2)}">$0.00</strong>
+                            </td>
+
+                            <td>
+                                <span class="status-badge status-paid">
+                                    <i class="bi bi-check-circle me-1"></i>Paid
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(payrollHistory)}">
+                            <td colspan="6" class="text-center py-4">
+                                <div class="empty-state-icon">
+                                    <i class="bi bi-receipt"></i>
+                                </div>
+                                <h5>No Payroll History</h5>
+                                <p class="text-muted">Your payroll history will appear here once available.</p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Add active class to current page
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+
+        // Mobile sidebar toggle (if needed)
+        const sidebar = document.querySelector('.sidebar');
+        if (window.innerWidth <= 991.98) {
+            sidebar.addEventListener('mouseenter', function() {
+                this.style.width = '280px';
+            });
+
+            sidebar.addEventListener('mouseleave', function() {
+                this.style.width = '70px';
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

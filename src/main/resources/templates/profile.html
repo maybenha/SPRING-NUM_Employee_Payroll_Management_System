@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Payroll System</title>
+    code
+    Code
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #4895ef;
+            --secondary-color: #1a4c99;
+            --dark-bg: #1a1d29;
+            --dark-bg-light: #1a4c99;
+            --text-light: #f8f9fa;
+            --text-muted: #adb5bd;
+            --border-color: #dee2e6;
+            --hover-color: rgba(255, 255, 255, 0.1);
+            --active-color: #3a3f51;
+            --shadow: 0 4px 6px rgba(26, 76, 153, 0.1);
+            --transition: all 0.3s ease;
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --gradient-primary: linear-gradient(135deg, rgb(14, 88, 245), #1a4c99);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f5f7fb 0%, #eef2ff 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR STYLES --- */
+        .sidebar {
+            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-light) 100%);
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 20px rgb(26, 76, 153);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid rgb(14, 88, 245);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-icon {
+            background: var(--gradient-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            box-shadow: 0 4px 12px rgb(14, 88, 245);
+        }
+
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .nav-section { margin-bottom: 1.5rem; }
+        .nav-section-title {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.5); padding: 0 1.5rem; margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .nav-item { list-style: none; margin-bottom: 0.25rem; }
+
+        .nav-link {
+            display: flex; align-items: center; padding: 0.85rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: var(--transition);
+            border-left: 3px solid transparent;
+            margin: 0 0.5rem;
+            border-radius: 8px;
+        }
+        .nav-link:hover {
+            background-color: rgb(14, 88, 245);
+            border-left-color: var(--primary-light);
+            color: white;
+            transform: translateX(5px);
+        }
+        .nav-link.active {
+            background: rgb(14, 88, 245);
+            border-left-color: var(--primary-color);
+            color: white;
+            box-shadow: inset 4px 0 8px rgb(14, 88, 245);
+        }
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 24px;
+            color: white;
+            text-align: center;
+        }
+        .nav-badge {
+            margin-left: auto;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .user-profile:hover {
+            background-color: rgb(26, 76, 153);
+            transform: translateY(-2px);
+        }
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 3px solid var(--primary-light);
+            box-shadow: 0 4px 8px rgba(6, 56, 133, 0.9);
+        }
+        .user-info { flex: 1; }
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+        .user-role {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+        .dropdown-menu {
+            background-color: #1a4c99;
+            border: 1px solid #1a4c99;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .dropdown-item {
+            color: #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin: 2px 8px;
+            width: auto;
+        }
+        .dropdown-item:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .dropdown-divider { border-color: #4a5568; }
+
+        /* --- MAIN CONTENT STYLES --- */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            width: calc(100% - 280px);
+            min-height: 100vh;
+        }
+
+        .content-container {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            color: #1a202c;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .page-subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            border: none;
+            border-radius: 16px;
+            background: white;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-header {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1.75rem 2rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header i {
+            margin-right: 12px;
+            font-size: 1.5rem;
+        }
+
+        .card-body {
+            padding: 2.5rem;
+        }
+
+        /* Info Sections */
+        .info-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Form Labels */
+        .form-label {
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* Form Inputs */
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #2d3748;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            background-color: white;
+            outline: 0;
+        }
+
+        .form-control[readonly] {
+            background-color: #f8fafc;
+            color: #4a5568;
+            border-color: #e2e8f0;
+            cursor: not-allowed;
+        }
+
+        /* Salary Display */
+        .salary-display {
+            background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .salary-label {
+            color: #718096;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .salary-amount {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .salary-currency {
+            font-size: 1.5rem;
+            color: #718096;
+            vertical-align: top;
+        }
+
+        /* Buttons */
+        .btn-update {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.85rem 2rem;
+            border: none;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-update:hover {
+            background: linear-gradient(135deg, rgba(6, 56, 133, 0.9), #1a4c99);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.4);
+        }
+
+        .btn-cancel {
+            background: #f8fafc;
+            color: #718096;
+            font-weight: 600;
+            padding: 0.85rem 2rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-left: 1rem;
+        }
+
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: #4a5568;
+            border-color: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+        }
+
+        .status-badge i {
+            margin-right: 6px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            color: #cbd5e0;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state-title {
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-text {
+            color: #a0aec0;
+            margin-bottom: 2rem;
+        }
+
+        /* --- IMPROVED PROFILE IMAGE SECTION STYLES --- */
+        .profile-image-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+            background: linear-gradient(180deg, rgba(248, 250, 252, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .profile-image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            display: inline-block;
+            border-radius: 50%;
+            padding: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #0e58f5 100%);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.25);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            border-color: var(--primary-light);
+        }
+
+        .image-upload-overlay {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--gradient-primary);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+            z-index: 2;
+        }
+
+        .image-upload-overlay:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.6);
+            background: linear-gradient(135deg, rgba(6, 56, 133, 0.9), #0e58f5);
+        }
+
+        .image-upload-overlay i {
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .profile-status-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .profile-status-indicator i {
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .upload-progress {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-light), var(--primary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .profile-info {
+            margin-top: 1.5rem;
+        }
+
+        .profile-name {
+            color: #1a202c;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, rgba(6, 56, 133, 0.9), #0e58f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-position {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-department,
+        .profile-id {
+            color: #718096;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .profile-department i,
+        .profile-id i {
+            color: var(--primary-light);
+        }
+
+        /* Image Upload Form Styles */
+        .image-upload-form.card {
+            border: none;
+            border-radius: 16px;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .image-upload-form.card.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .file-input-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-input-area:hover {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .file-input-icon {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .file-input-icon i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .file-input-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .file-input-title {
+            display: block;
+            color: #1a202c;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .file-input-subtitle {
+            display: block;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .file-input-button {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        /* Upload Preview */
+        .upload-preview {
+            min-height: 200px;
+            border-radius: 12px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            color: #cbd5e0;
+            padding: 2rem;
+        }
+
+        .preview-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-placeholder p {
+            color: #a0aec0;
+        }
+
+        /* Requirements Alert */
+        .requirements-alert {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .requirements-alert h6 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .requirements-alert ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0;
+        }
+
+        .requirements-alert li {
+            color: #718096;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .btn-upload {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(67, 97, 238, 0.3);
+        }
+
+        .btn-upload:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-cancel-upload {
+            background: #f8fafc;
+            color: #718096;
+            border: 2px solid #e2e8f0;
+            padding: 0.85rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-cancel-upload:hover {
+            background: #f1f5f9;
+            color: #4a5568;
+            border-color: #cbd5e0;
+        }
+
+        /* Responsive */
+        @media (max-width: 1199.98px) {
+            .sidebar { width: 250px; }
+            .main-content {
+                margin-left: 250px;
+                width: calc(100% - 250px);
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                width: 70px;
+                transform: translateX(0);
+            }
+            .sidebar:hover { width: 250px; }
+            .brand-text, .nav-text, .user-info, .nav-section-title { display: none; }
+            .brand-icon { margin-right: 0; }
+            .sidebar:hover .brand-text,
+            .sidebar:hover .nav-text,
+            .sidebar:hover .user-info,
+            .sidebar:hover .nav-section-title { display: block; }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+            }
+
+            .salary-amount {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .btn-update,
+            .btn-cancel {
+                width: 100%;
+                justify-content: center;
+                margin: 5px 0;
+            }
+
+            .btn-cancel {
+                margin-left: 0;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .profile-name {
+                font-size: 1.75rem;
+            }
+
+            .file-input-label {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .file-input-content {
+                text-align: center;
+            }
+
+            .image-upload-actions {
+                flex-direction: column;
+            }
+
+            .image-upload-actions button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .sidebar {
+                width: 0;
+                overflow: hidden;
+            }
+
+            .sidebar.active {
+                width: 100%;
+                z-index: 1050;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 1040;
+                background: var(--gradient-primary);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 0.75rem;
+                font-size: 1.25rem;
+            }
+
+            .profile-image {
+                width: 140px;
+                height: 140px;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .profile-position {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="d-flex">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="/static" class="brand">
+                <div class="brand-icon"><i class="bi bi-cash-coin"></i></div>
+                <span class="brand-text">Payroll System</span>
+            </a>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="nav-section">
+                <ul class="nav-list">
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'HR')">
+                        <a th:href="@{/hr/employees}" class="nav-link">
+                            <i class="bi bi-people"></i><span class="nav-text">Employees</span>
+                            <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Employee</div>
+                <ul class="nav-list">
+                    <li class="nav-item" sec:authorize="hasRole('EMPLOYEE')">
+                        <a th:href="@{/employee/attendance}" class="nav-link">
+                            <i class="bi bi-calendar-check"></i><span class="nav-text">Attendance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('EMPLOYEE')">
+                        <a th:href="@{/employee/payroll}" class="nav-link">
+                            <i class="bi bi-cash"></i><span class="nav-text">My Payroll</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/employee/profile}" class="nav-link active">
+                            <i class="bi bi-person"></i><span class="nav-text">Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="dropdown">
+                <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="/images/num.png" alt="User Avatar" class="user-avatar">
+                    <div class="user-info">
+                        <div class="user-name" sec:authentication="name">John Doe</div>
+                        <div class="user-role" sec:authorize="hasRole('EMPLOYEE')">Employee</div>
+                    </div>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" th:href="@{/employee/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" style="display: none;">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <div class="content-container">
+
+            <div th:if="${employee}">
+                <!-- Status Badge -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div></div>
+                    <div class="status-badge">
+                        <i class="bi bi-check-circle-fill"></i> Active Employee
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="card-header">
+                        <div>
+                            <i class="bi bi-person-fill"></i> Employee Details
+                        </div>
+                        <div class="employee-id">
+                            ID: <strong th:text="${employee.id}">EMP001</strong>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- IMPROVED Profile Image Section -->
+                        <div class="profile-image-section">
+                            <div class="profile-image-container">
+                                <div class="profile-image-wrapper">
+                                    <img th:src="${avatarUrl}"
+                                         alt="Profile Image"
+                                         class="profile-image"
+                                         id="profileImageDisplay"
+                                         onerror="this.src='/images/num.png'">
+
+                                    <!-- Image upload overlay with improved design -->
+                                    <div class="image-upload-overlay" onclick="toggleImageUpload()" title="Change profile picture">
+                                        <i class="bi bi-camera-fill"></i>
+                                    </div>
+
+                                    <!-- Status indicator -->
+                                    <div class="profile-status-indicator active">
+                                        <i class="bi bi-check-circle"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Upload progress indicator -->
+                                <div class="upload-progress" id="uploadProgress" style="display: none;">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                    <div class="progress-text">Uploading...</div>
+                                </div>
+                            </div>
+
+                            <!-- User info with better typography -->
+                            <div class="profile-info">
+                                <h3 class="profile-name" th:text="${employee.fullName}">John Doe</h3>
+                                <p class="profile-position" th:text="${employee.position}">Software Developer</p>
+                                <p class="profile-department">
+                                    <i class="bi bi-building"></i>
+                                    <span th:text="${employee.department ?: 'Not assigned'}">Engineering</span>
+                                </p>
+                                <p class="profile-id">
+                                    <i class="bi bi-person-badge"></i>
+                                    ID: <span th:text="${employee.id}">EMP001</span>
+                                </p>
+                            </div>
+
+                            <!-- Image Upload Form with improved design -->
+                            <div class="image-upload-form card" id="imageUploadForm">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h5 class="card-title mb-0">
+                                            <i class="bi bi-camera me-2"></i>Update Profile Picture
+                                        </h5>
+                                        <button type="button" class="btn-close" onclick="toggleImageUpload()" aria-label="Close"></button>
+                                    </div>
+
+                                    <form th:action="@{/employee/profile/upload-image}"
+                                          method="post"
+                                          enctype="multipart/form-data"
+                                          id="uploadForm"
+                                          onsubmit="handleImageUpload(event)">
+
+                                        <!-- Image preview -->
+                                        <div class="upload-preview mb-3" id="uploadPreview">
+                                            <div class="preview-placeholder">
+                                                <i class="bi bi-image"></i>
+                                                <p class="mb-0 mt-2">Image preview will appear here</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- File selection -->
+                                        <div class="file-input-area mb-3">
+                                            <label for="profileImage" class="file-input-label">
+                                                <div class="file-input-icon">
+                                                    <i class="bi bi-cloud-arrow-up-fill"></i>
+                                                </div>
+                                                <div class="file-input-content">
+                                                    <span class="file-input-title">Choose a new profile image</span>
+                                                    <span class="file-input-subtitle">PNG, JPG up to 5MB</span>
+                                                </div>
+                                                <div class="file-input-button">
+                                                    <i class="bi bi-folder2-open"></i> Browse Files
+                                                </div>
+                                            </label>
+                                            <input type="file"
+                                                   class="custom-file-input"
+                                                   id="profileImage"
+                                                   name="profileImage"
+                                                   accept="image/*"
+                                                   onchange="previewSelectedImage(this)"
+                                                   required>
+                                        </div>
+
+                                        <!-- Image requirements -->
+                                        <div class="requirements-alert alert alert-light mb-3">
+                                            <h6 class="alert-heading">
+                                                <i class="bi bi-info-circle me-2"></i>Requirements
+                                            </h6>
+                                            <ul class="mb-0">
+                                                <li>Square images work best</li>
+                                                <li>Minimum size: 200x200 pixels</li>
+                                                <li>Max file size: 5MB</li>
+                                                <li>Supported formats: JPG, PNG</li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Action buttons -->
+                                        <div class="image-upload-actions d-flex gap-2">
+                                            <button type="submit" class="btn-upload" id="uploadButton" disabled>
+                                                <i class="bi bi-upload me-2"></i> Upload & Save
+                                            </button>
+                                            <button type="button" class="btn-cancel-upload" onclick="toggleImageUpload()">
+                                                <i class="bi bi-x-circle me-2"></i> Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information Section -->
+                        <div class="info-section">
+                            <h4 class="section-title">
+                                <i class="bi bi-person-circle"></i> Personal Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control"
+                                           th:value="${employee.firstName}" readonly>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Last Name</label>
+                                    <input type="text" class="form-control"
+                                           th:value="${employee.lastName}" readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Email Address</label>
+                                    <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="bi bi-envelope text-muted"></i>
+                                    </span>
+                                        <input type="email" class="form-control ps-0"
+                                               th:value="${employee.email}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="bi bi-telephone text-muted"></i>
+                                    </span>
+                                        <input type="text" class="form-control ps-0"
+                                               th:value="${employee.phoneNumber ?: 'Not provided'}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Employment Information Section -->
+                        <div class="info-section">
+                            <h4 class="section-title">
+                                <i class="bi bi-briefcase"></i> Employment Information
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Department</label>
+                                    <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="bi bi-building text-muted"></i>
+                                    </span>
+                                        <input type="text" class="form-control ps-0"
+                                               th:value="${employee.department ?: 'Not assigned'}" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Position</label>
+                                    <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-end-0">
+                                        <i class="bi bi-person-badge text-muted"></i>
+                                    </span>
+                                        <input type="text" class="form-control ps-0"
+                                               th:value="${employee.position ?: 'Not specified'}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Salary Information -->
+                        <div class="salary-display">
+                            <div class="salary-label">Monthly Basic Salary</div>
+                            <div class="salary-amount">
+                                <span class="salary-currency">$</span>
+                                <span th:text="${#numbers.formatDecimal(employee.basicSalary, 1, 2)}">0.00</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="mt-5 pt-3 text-center">
+                        <span sec:authorize="hasAnyRole('ADMIN', 'HR')">
+                            <a th:href="@{/hr/employees/{id}/edit(id=${employee.id})}"
+                               class="btn btn-update">
+                                <i class="bi bi-pencil-square me-2"></i> Edit Employee Details
+                            </a>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div th:unless="${employee}" class="profile-card">
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="bi bi-person-x"></i>
+                    </div>
+                    <h5 class="empty-state-title">Profile Not Found</h5>
+                    <p class="empty-state-text">Unable to load employee profile information.</p>
+                    <a th:href="@{/dashboard}" class="btn btn-update">
+                        <i class="bi bi-arrow-left me-2"></i> Return to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+
+        // Check if mobile
+        function checkMobile() {
+            if (window.innerWidth <= 575.98) {
+                if(mobileMenuToggle) mobileMenuToggle.style.display = 'block';
+                if(sidebar) sidebar.style.width = '0';
+            } else {
+                if(mobileMenuToggle) mobileMenuToggle.style.display = 'none';
+                if(sidebar) {
+                    if (window.innerWidth <= 991.98) {
+                        sidebar.style.width = '70px';
+                    } else {
+                        sidebar.style.width = '280px';
+                    }
+                }
+            }
+        }
+
+        // Initial check
+        checkMobile();
+
+        // Mobile menu toggle
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+        }
+
+        // Window resize listener
+        window.addEventListener('resize', checkMobile);
+
+        // Desktop hover effect for sidebar
+        if (window.innerWidth <= 991.98 && window.innerWidth > 575.98) {
+            sidebar.addEventListener('mouseenter', function() {
+                this.style.width = '280px';
+            });
+            sidebar.addEventListener('mouseleave', function() {
+                this.style.width = '70px';
+            });
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 575.98 &&
+                sidebar.classList.contains('active') &&
+                !sidebar.contains(event.target) &&
+                event.target !== mobileMenuToggle) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Initialize profile image error handling
+        const profileImage = document.getElementById('profileImageDisplay');
+        if (profileImage) {
+            profileImage.onerror = function() {
+                this.src = '/images/num.png';
+            };
+        }
+    });
+
+    // Enhanced JavaScript functions for profile image upload
+    function toggleImageUpload() {
+        const form = document.getElementById('imageUploadForm');
+        if (form) {
+            form.classList.toggle('active');
+            if (form.classList.contains('active')) {
+                // Reset form when opening
+                resetUploadForm();
+            }
+        }
+    }
+
+    function previewSelectedImage(input) {
+        const preview = document.getElementById('uploadPreview');
+        const uploadButton = document.getElementById('uploadButton');
+
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+
+            // Validate file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB limit. Please choose a smaller image.');
+                input.value = '';
+                resetUploadForm();
+                return;
+            }
+
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPG or PNG).');
+                input.value = '';
+                resetUploadForm();
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                // Update preview
+                preview.innerHTML = `
+                    <img src="${e.target.result}"
+                         alt="Selected Image"
+                         style="max-width: 100%; max-height: 200px; border-radius: 8px; object-fit: contain;">
+                `;
+
+                // Preview in main profile image
+                const profileImage = document.getElementById('profileImageDisplay');
+                if (profileImage) {
+                    profileImage.src = e.target.result;
+                }
+
+                // Enable upload button
+                if (uploadButton) {
+                    uploadButton.disabled = false;
+                }
+            }
+
+            reader.readAsDataURL(file);
+        } else {
+            resetUploadForm();
+        }
+    }
+
+    function resetUploadForm() {
+        const preview = document.getElementById('uploadPreview');
+        const uploadButton = document.getElementById('uploadButton');
+        const fileInput = document.getElementById('profileImage');
+
+        preview.innerHTML = `
+            <div class="preview-placeholder">
+                <i class="bi bi-image"></i>
+                <p class="mb-0 mt-2">Image preview will appear here</p>
+            </div>
+        `;
+
+        if (uploadButton) uploadButton.disabled = true;
+        if (fileInput) fileInput.value = '';
+    }
+
+    async function handleImageUpload(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const fileInput = document.getElementById('profileImage');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressFill = uploadProgress?.querySelector('.progress-fill');
+        const uploadButton = document.getElementById('uploadButton');
+
+        if (!fileInput.files[0]) {
+            alert('Please select an image to upload.');
+            return;
+        }
+
+        // Disable upload button
+        if (uploadButton) {
+            uploadButton.disabled = true;
+            uploadButton.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Uploading...';
+        }
+
+        // Show progress bar
+        if (uploadProgress) {
+            uploadProgress.style.display = 'block';
+        }
+
+        // Simulate upload progress
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            if (progressFill) {
+                progressFill.style.width = `${progress}%`;
+            }
+
+            if (progress >= 90) {
+                clearInterval(interval);
+            }
+        }, 100);
+
+        try {
+            // Submit the form
+            const formData = new FormData(form);
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            clearInterval(interval);
+
+            if (progressFill) {
+                progressFill.style.width = '100%';
+            }
+
+            if (response.ok) {
+                // Success
+                setTimeout(() => {
+                    if (uploadProgress) {
+                        uploadProgress.style.display = 'none';
+                    }
+                    toggleImageUpload();
+
+                    // Show success message
+                    showNotification('Profile image updated successfully!', 'success');
+
+                    // Reset progress
+                    if (progressFill) {
+                        progressFill.style.width = '0%';
+                    }
+
+                    // Reload the page after a short delay to show the new image
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+
+                }, 500);
+            } else {
+                throw new Error('Upload failed');
+            }
+        } catch (error) {
+            clearInterval(interval);
+            if (uploadProgress) {
+                uploadProgress.style.display = 'none';
+            }
+
+            // Reset upload button
+            if (uploadButton) {
+                uploadButton.disabled = false;
+                uploadButton.innerHTML = '<i class="bi bi-upload me-2"></i> Upload & Save';
+            }
+
+            // Reset progress
+            if (progressFill) {
+                progressFill.style.width = '0%';
+            }
+
+            showNotification('Failed to upload image. Please try again.', 'error');
+            console.error('Upload error:', error);
+        }
+    }
+
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        `;
+
+        notification.innerHTML = `
+            ${type === 'success' ? '<i class="bi bi-check-circle-fill me-2"></i>' : '<i class="bi bi-exclamation-triangle-fill me-2"></i>'}
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
+    }
+</script>
+</body>
+</html>
