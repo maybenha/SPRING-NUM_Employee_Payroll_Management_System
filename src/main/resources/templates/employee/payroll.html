@@ -39,7 +39,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #ffffff;
-            color: rgba(10, 161, 6, 0.98);
+            color: rgb(255, 255, 255);
             width: fit-content;
             min-height: 100vh;
             overflow-x: hidden;
@@ -587,10 +587,13 @@
         <div class="sidebar-footer">
             <div class="dropdown">
                 <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/images/num.png" alt="User Avatar" class="user-avatar">
+                    <img th:src="${employee?.profileImageUrl ?: '/images/num.png'}"
+                         alt="User Avatar"
+                         class="user-avatar"
+                         onerror="this.src='/images/num.png'">
                     <div class="user-info">
-                        <div style="color: white" class="user-name" sec:authentication="name">John Doe</div>
-                        <div style="color: white" class="user-role" sec:authorize="hasRole('EMPLOYEE')">Employee</div>
+                        <div class="user-name" sec:authentication="name">Employee User</div>
+                        <div class="user-role" sec:authorize="hasRole('EMPLOYEE')">Employee</div>
                     </div>
                     <i class="bi bi-chevron-down"></i>
                 </div>
@@ -605,6 +608,7 @@
                 </ul>
             </div>
         </div>
+
     </div>
 
     <div class="main-content">
@@ -616,7 +620,7 @@
         <div class="card current-payroll-card">
             <div class="card-header">
                 <i class="bi bi-calendar-month"></i>
-                Payroll for <span th:text="${currentMonth}"></span>  <span th:text="${currentYear}"> </span>
+                Payroll for <span th:text="${currentMonth}"> </span>  <span th:text="${currentYear}"> </span>
             </div>
             <div class="card-body">
                 <div th:if="${payrollSummary}">
@@ -657,7 +661,7 @@
                         <div class="breakdown-item">
                             <span>
                                 Tax Deduction (
-                                <span th:text="${#numbers.formatDecimal((payrollSummary.tax / payrollSummary.basicSalary) * 100, 1, 2)}">10</span>%
+                                <span th:text="${#numbers.formatDecimal((payrollSummary.tax / payrollSummary.basicSalary) * 100, 1,2)}">10.00</span>%
                                 )
                             </span>
                             <span class="text-danger"

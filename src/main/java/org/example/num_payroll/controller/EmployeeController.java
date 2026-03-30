@@ -46,6 +46,7 @@ public class EmployeeController {
                 .orElseThrow(() -> new RuntimeException("Employee profile not found for authenticated user."));
     }
 
+    //view profile page
     @GetMapping("/profile")
     public String viewProfile(@AuthenticationPrincipal UserDetails currentUser, Model model) {
         EmployeeProfile employeeProfile = getAuthenticatedEmployeeProfile(currentUser);
@@ -60,7 +61,7 @@ public class EmployeeController {
 
         return "profile";
     }
-
+    //upload image path
     @PostMapping("/profile/upload-image")
     public String uploadProfileImage(@AuthenticationPrincipal UserDetails currentUser,
                                      @RequestParam("profileImage") MultipartFile imageFile,
@@ -96,7 +97,7 @@ public class EmployeeController {
 
         return "redirect:/employee/profile";
     }
-
+    //attendance page
     @GetMapping("/attendance")
     public String viewAttendance(@AuthenticationPrincipal UserDetails currentUser, Model model) {
         EmployeeProfile employeeProfile = getAuthenticatedEmployeeProfile(currentUser);
@@ -119,7 +120,7 @@ public class EmployeeController {
         model.addAttribute("attendanceHistory", attendanceHistory);
         return "employee/attendance";
     }
-
+    //employee attendance checkin path
     @PostMapping("/attendance/checkin")
     public String checkIn(@AuthenticationPrincipal UserDetails currentUser, RedirectAttributes redirectAttributes) {
         try {
@@ -134,6 +135,7 @@ public class EmployeeController {
         return "redirect:/employee/attendance";
     }
 
+    //employee checkout path
     @PostMapping("/attendance/checkout")
     public String checkOut(@AuthenticationPrincipal UserDetails currentUser, RedirectAttributes redirectAttributes) {
         try {
@@ -147,7 +149,7 @@ public class EmployeeController {
         }
         return "redirect:/employee/attendance";
     }
-
+// employee payroll page
     @GetMapping("/payroll")
     public String viewPayroll(@AuthenticationPrincipal UserDetails currentUser, Model model,
                               @RequestParam(value = "month", required = false) Integer month,

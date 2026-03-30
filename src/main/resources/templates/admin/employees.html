@@ -1,3 +1,1542 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Manage Employees - Payroll System</title>-->
+
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: rgb(14, 88, 245);-->
+<!--            &#45;&#45;primary-light: #4895ef;-->
+<!--            &#45;&#45;secondary-color: #0e58f5;-->
+<!--            &#45;&#45;dark-bg: #1a4c99;-->
+<!--            &#45;&#45;dark-bg-light: #1a4c99;-->
+<!--            &#45;&#45;text-light: #ffffff;-->
+<!--            &#45;&#45;text-muted: #adb5bd;-->
+<!--            &#45;&#45;border-color: #1a4c99;-->
+<!--            &#45;&#45;hover-color: #1a4c99;-->
+<!--            &#45;&#45;active-color: #1a4c99;-->
+<!--            &#45;&#45;shadow: 0 4px 6px rgb(26, 76, 153);-->
+<!--            &#45;&#45;transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: #f5f7fb;-->
+<!--            color: rgba(10, 161, 6, 0.98);-->
+<!--            min-height: 100vh;-->
+<!--            overflow-x: hidden;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Sidebar Styles -&#45;&#45; */-->
+<!--        .sidebar {-->
+<!--            background: linear-gradient(180deg, var(&#45;&#45;dark-bg) 0%, var(&#45;&#45;dark-bg-light) 100%);-->
+<!--            width: 280px;-->
+<!--            height: 100vh;-->
+<!--            position: fixed;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--            z-index: 1000;-->
+<!--            overflow-y: auto;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .sidebar-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(&#45;&#45;border-color); }-->
+<!--        .brand { display: flex; align-items: center; color: var(&#45;&#45;text-light); text-decoration: none; font-weight: 600; font-size: 1.25rem; }-->
+<!--        .brand-icon { background: linear-gradient(135deg, var(&#45;&#45;primary-color), var(&#45;&#45;primary-light)); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; }-->
+<!--        .sidebar-nav { flex: 1; padding: 1rem 0; }-->
+<!--        .nav-section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(&#45;&#45;text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }-->
+<!--        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(&#45;&#45;text-light); text-decoration: none; transition: var(&#45;&#45;transition); border-left: 3px solid transparent; }-->
+<!--        .nav-link:hover { background-color: var(&#45;&#45;hover-color); border-left-color: var(&#45;&#45;primary-light); }-->
+<!--        .nav-link.active { background-color: var(&#45;&#45;active-color); border-left-color: var(&#45;&#45;primary-color); }-->
+<!--        .nav-link i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }-->
+<!--        .nav-badge { margin-left: auto; background-color: var(&#45;&#45;primary-color); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; }-->
+<!--        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(&#45;&#45;border-color); }-->
+<!--        .user-profile { display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; transition: var(&#45;&#45;transition); cursor: pointer; }-->
+<!--        .user-profile:hover { background-color: var(&#45;&#45;hover-color); }-->
+<!--        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 2px solid var(&#45;&#45;primary-light); }-->
+<!--        .user-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; color: var(&#45;&#45;text-light); }-->
+<!--        .user-role { font-size: 0.75rem; color: var(&#45;&#45;text-muted); }-->
+
+<!--        /* -&#45;&#45; Main Content Styles -&#45;&#45; */-->
+<!--        .main-content {-->
+<!--            margin-left: 280px;-->
+<!--            padding: 30px;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            flex-grow: 1;-->
+<!--        }-->
+
+<!--        .page-header {-->
+<!--            margin-bottom: 2rem;-->
+<!--            padding-bottom: 1rem;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .page-title {-->
+<!--            font-weight: 700;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .page-subtitle {-->
+<!--            color: #6c757d;-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Button Style -&#45;&#45; */-->
+<!--        .btn-add-new {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color) 0%, var(&#45;&#45;secondary-color) 100%);-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 0.7rem 1.5rem;-->
+<!--            border-radius: 50px;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 0.95rem;-->
+<!--            box-shadow: 0 4px 15px rgba(6, 56, 133, 0.25);-->
+<!--            display: inline-flex;-->
+<!--            align-items: center;-->
+<!--            gap: 8px;-->
+<!--            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);-->
+<!--            text-decoration: none;-->
+<!--        }-->
+
+<!--        .btn-add-new:hover {-->
+<!--            transform: translateY(-3px);-->
+<!--            box-shadow: 0 8px 20px rgba(6, 56, 133, 0.35);-->
+<!--            color: white;-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;secondary-color) 0%, var(&#45;&#45;primary-color) 100%);-->
+<!--        }-->
+
+<!--        .btn-add-new:active {-->
+<!--            transform: translateY(-1px);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Card and Table Styles -&#45;&#45; */-->
+<!--        .card {-->
+<!--            border: none;-->
+<!--            border-radius: 12px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.05);-->
+<!--            margin-bottom: 1.5rem;-->
+<!--            background: white;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .card-header {-->
+<!--            background-color: white;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            padding: 1.25rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Search Bar Styles -&#45;&#45; */-->
+<!--        .search-wrapper {-->
+<!--            position: relative;-->
+<!--            width: 100%;-->
+<!--            max-width: 400px;-->
+<!--        }-->
+
+<!--        .search-input {-->
+<!--            width: 100%;-->
+<!--            padding: 0.6rem 1rem 0.6rem 2.8rem;-->
+<!--            border-radius: 50px;-->
+<!--            border: 1px solid #e2e8f0;-->
+<!--            background-color: #f8f9fa;-->
+<!--            color: #333;-->
+<!--            transition: all 0.3s ease;-->
+<!--            font-size: 0.95rem;-->
+<!--        }-->
+
+<!--        .search-input:focus {-->
+<!--            background-color: #fff;-->
+<!--            border-color: var(&#45;&#45;primary-light);-->
+<!--            box-shadow: 0 0 0 4px rgba(72, 149, 239, 0.15);-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .search-icon-overlay {-->
+<!--            position: absolute;-->
+<!--            left: 15px;-->
+<!--            top: 50%;-->
+<!--            transform: translateY(-50%);-->
+<!--            color: #adb5bd;-->
+<!--            pointer-events: none;-->
+<!--            transition: color 0.3s ease;-->
+<!--        }-->
+
+<!--        .search-input:focus + .search-icon-overlay,-->
+<!--        .search-input:not(:placeholder-shown) + .search-icon-overlay {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Table Styles -&#45;&#45; */-->
+<!--        .table thead th {-->
+<!--            background-color: #f8f9fa;-->
+<!--            border-top: 1px solid #dee2e6;-->
+<!--            border-bottom: 2px solid #dee2e6;-->
+<!--            padding: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--            white-space: nowrap;-->
+<!--        }-->
+
+<!--        .table tbody td {-->
+<!--            padding: 0.75rem 1rem;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            vertical-align: middle; /* Ensures image and text center vertically */-->
+<!--            font-size: 0.9rem;-->
+<!--            white-space: nowrap;-->
+<!--        }-->
+
+<!--        .table-hover tbody tr:hover {-->
+<!--            background-color: rgba(67, 97, 238, 0.05);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; NEW: Employee Avatar in Table -&#45;&#45; */-->
+<!--        .avatar-table {-->
+<!--            width: 40px;-->
+<!--            height: 40px;-->
+<!--            border-radius: 50%;-->
+<!--            object-fit: cover;-->
+<!--            border: 2px solid #e2e8f0;-->
+<!--            background-color: #fff;-->
+<!--        }-->
+
+<!--        /* Action Buttons */-->
+<!--        .btn-action {-->
+<!--            padding: 0.3rem 0.6rem;-->
+<!--            border-radius: 6px;-->
+<!--            font-size: 0.8rem;-->
+<!--            margin-right: 5px;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .btn-info { background-color: #e3f2fd; border-color: #bbdefb; color: #1565c0; }-->
+<!--        .btn-info:hover { background-color: #1565c0; color: white; transform: translateY(-2px); }-->
+
+<!--        .btn-danger { background-color: #ffebee; border-color: #ffcdd2; color: #d32f2f; }-->
+<!--        .btn-danger:hover { background-color: #d32f2f; color: white; transform: translateY(-2px); }-->
+
+<!--        .btn-success-custom { background-color: #e8f5e9; border-color: #c8e6c9; color: #2e7d32; }-->
+<!--        .btn-success-custom:hover { background-color: #2e7d32; color: white; transform: translateY(-2px); }-->
+
+<!--        /* Custom Modal Styles */-->
+<!--        .custom-modal {-->
+<!--            display: none;-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background-color: rgba(0, 0, 0, 0.5);-->
+<!--            z-index: 9999;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            animation: fadeIn 0.3s ease;-->
+<!--        }-->
+
+<!--        .custom-modal-content {-->
+<!--            background-color: white;-->
+<!--            border-radius: 12px;-->
+<!--            width: 90%;-->
+<!--            max-width: 500px;-->
+<!--            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);-->
+<!--            animation: slideIn 0.3s ease;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .custom-modal-header {-->
+<!--            padding: 1.5rem;-->
+<!--            background-color: #f8f9fa;-->
+<!--            border-bottom: 1px solid #dee2e6;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .custom-modal-icon {-->
+<!--            width: 50px;-->
+<!--            height: 50px;-->
+<!--            border-radius: 50%;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            margin-right: 15px;-->
+<!--            font-size: 1.5rem;-->
+<!--        }-->
+
+<!--        .modal-icon-danger { background-color: #fff; color: var(&#45;&#45;primary-color); }-->
+<!--        .custom-modal-title { font-weight: 600; color: #d32f2f; margin: 0; }-->
+<!--        .custom-modal-body { padding: 1.5rem; color: #666; line-height: 1.6; }-->
+
+<!--        .employee-details { background-color: #f8f9fa; border-radius: 8px; padding: 1rem; margin: 1rem 0; }-->
+<!--        .employee-detail-item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }-->
+<!--        .employee-detail-label { font-weight: 600; color: #555; }-->
+<!--        .employee-detail-value { color: #333; }-->
+
+<!--        .warning-text {-->
+<!--            color: #d32f2f;-->
+<!--            font-weight: 600;-->
+<!--            background-color: #ffebee;-->
+<!--            padding: 0.75rem;-->
+<!--            border-radius: 6px;-->
+<!--            margin: 1rem 0;-->
+<!--            border-left: 4px solid #d32f2f;-->
+<!--        }-->
+
+<!--        .custom-modal-footer {-->
+<!--            padding: 1rem 1.5rem;-->
+<!--            background-color: #f8f9fa;-->
+<!--            border-top: 1px solid #dee2e6;-->
+<!--            display: flex;-->
+<!--            justify-content: flex-end;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .modal-btn { padding: 0.5rem 1.5rem; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; transition: var(&#45;&#45;transition); }-->
+<!--        .modal-btn-cancel { background-color: #6c757d; color: white; }-->
+<!--        .modal-btn-cancel:hover { background-color: #5a6268; transform: translateY(-2px); }-->
+<!--        .modal-btn-delete { background-color: #d32f2f; color: white; }-->
+<!--        .modal-btn-delete:hover { background-color: #c62828; transform: translateY(-2px); }-->
+
+<!--        /* Animations */-->
+<!--        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }-->
+<!--        @keyframes slideIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }-->
+
+<!--        /* Responsive adjustments */-->
+<!--        @media (max-width: 991.98px) {-->
+<!--            .sidebar { width: 70px; }-->
+<!--            .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge { display: none; }-->
+<!--            .main-content { margin-left: 70px; padding: 15px; }-->
+<!--            .sidebar:hover { width: 280px; }-->
+<!--            .sidebar:hover .brand-text, .sidebar:hover .nav-text, .sidebar:hover .user-info, .sidebar:hover .nav-section-title, .sidebar:hover .nav-badge { display: block; }-->
+<!--        }-->
+<!--        @media (max-width: 767.98px) {-->
+<!--            .sidebar { width: 100%; height: auto; position: relative; margin-bottom: 10px; }-->
+<!--            .main-content { margin-left: 0; padding: 10px; }-->
+<!--            .page-header { flex-direction: column; align-items: flex-start; }-->
+<!--            .page-header .btn-add-new { margin-top: 1rem; width: 100%; justify-content: center; }-->
+<!--            .table-responsive { overflow-x: auto; }-->
+<!--            .custom-modal-content { width: 95%; margin: 10px; }-->
+<!--            .card-header { flex-direction: column; align-items: flex-start; }-->
+<!--            .search-wrapper { max-width: 100%; }-->
+<!--        }-->
+<!--        /* -&#45;&#45; Pagination Styles -&#45;&#45; */-->
+<!--        .pagination-container {-->
+<!--            padding: 1rem 1.5rem;-->
+<!--            border-top: 1px solid #eaeaea;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .pagination .page-link {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            border: 1px solid #dee2e6;-->
+<!--            margin: 0 3px;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        .pagination .page-link:hover {-->
+<!--            background-color: #e3f2fd;-->
+<!--            border-color: #dee2e6;-->
+<!--        }-->
+
+<!--        .pagination .page-item.active .page-link {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--            color: white;-->
+<!--        }-->
+
+<!--        .pagination .page-item.disabled .page-link {-->
+<!--            color: #6c757d;-->
+<!--            pointer-events: none;-->
+<!--            background-color: #fff;-->
+<!--        }-->
+
+<!--        .page-info {-->
+<!--            color: #6c757d;-->
+<!--            font-size: 0.9rem;-->
+<!--        }-->
+
+<!--        @media (max-width: 767.98px) {-->
+<!--            .pagination-container {-->
+<!--                flex-direction: column;-->
+<!--                gap: 15px;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Custom Delete Confirmation Modal &ndash;&gt;-->
+<!--<div id="deleteConfirmModal" class="custom-modal">-->
+<!--    <div class="custom-modal-content">-->
+<!--        <div class="custom-modal-header">-->
+<!--            <div class="custom-modal-icon modal-icon-danger">-->
+<!--                <i class="bi bi-exclamation-triangle"></i>-->
+<!--            </div>-->
+<!--            <h5 class="custom-modal-title">Confirm Delete</h5>-->
+<!--        </div>-->
+<!--        <div class="custom-modal-body">-->
+<!--            <p>Are you sure you want to delete this employee? </p>-->
+
+<!--            <div class="employee-details" id="employeeDetails">-->
+<!--                &lt;!&ndash; Employee details will be populated here by JS &ndash;&gt;-->
+<!--            </div>-->
+
+<!--            <div class="warning-text">-->
+<!--                <i class="bi bi-exclamation-circle-fill me-2"></i>-->
+<!--                Warning: This will permanently delete all employee data including payroll records.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="custom-modal-footer">-->
+<!--            <button type="button" class="modal-btn modal-btn-cancel" id="cancelDeleteBtn">-->
+<!--                <i class="bi bi-x-circle me-1"></i> Cancel-->
+<!--            </button>-->
+<!--            <button type="button" class="modal-btn modal-btn-delete" id="confirmDeleteBtn">-->
+<!--                <i class="bi bi-trash me-1"></i> Delete Permanently-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="d-flex">-->
+<!--    <div class="sidebar">-->
+<!--        <div class="sidebar-header">-->
+<!--            <a href="/" class="brand">-->
+<!--                <div class="brand-icon"><i class="bi bi-cash-coin"></i></div>-->
+<!--                <span class="brand-text">Payroll System</span>-->
+<!--            </a>-->
+<!--        </div>-->
+<!--        <div class="sidebar-nav">-->
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">Main</div>-->
+<!--                <ul class="nav-list">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{/dashboard}" class="nav-link">-->
+<!--                            <i class="bi bi-house"></i><span class="nav-text">Dashboard</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">Management</div>-->
+<!--                <ul class="nav-list">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{employees}" class="nav-link active">-->
+<!--                            <i class="bi bi-people"></i><span class="nav-text">Employees</span>-->
+<!--                            <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="sidebar-footer">-->
+<!--            <div class="dropdown">-->
+<!--                <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                    <img src="/images/num.png" alt="User Avatar" class="user-avatar">-->
+<!--                    <div class="user-info">-->
+<!--                        <div class="user-name" sec:authentication="name">HR/Admin User</div>-->
+<!--                        <div class="user-role" sec:authentication="principal.authorities">Role</div>-->
+<!--                    </div>-->
+<!--                    <i class="bi bi-chevron-down text-light"></i>-->
+<!--                </div>-->
+<!--                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                    &lt;!&ndash; <li><a class="dropdown-item" th:href="@{/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>&ndash;&gt;-->
+<!--                    <li><hr class="dropdown-divider"></li>-->
+<!--                    <li>-->
+<!--                        <form th:action="@{/logout}" method="post">-->
+<!--                            <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>-->
+<!--                        </form>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="main-content flex-grow-1">-->
+
+<!--        &lt;!&ndash; PAGE HEADER &ndash;&gt;-->
+<!--        <div class="page-header">-->
+<!--            <div>-->
+<!--                <h1 class="page-title">Employee Directory</h1>-->
+<!--                <p class="page-subtitle">Manage all employee profiles, salary, and payroll.</p>-->
+<!--            </div>-->
+<!--            <a th:href="@{/register}" class="btn-add-new">-->
+<!--                <i class="bi bi-plus-lg"></i>-->
+<!--                <span>Add New Employee</span>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="card">-->
+<!--            &lt;!&ndash; CARD HEADER &ndash;&gt;-->
+<!--            <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">-->
+<!--                <div class="d-flex align-items-center">-->
+<!--                    <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-2 text-primary" style="&#45;&#45;bs-bg-opacity: .1; background-color: rgba(13, 110, 253, 0.1) !important;">-->
+<!--                        <i class="bi bi-people-fill" style="color: var(&#45;&#45;primary-color);"></i>-->
+<!--                    </div>-->
+<!--                    <span style="font-weight: 700; color: var(&#45;&#45;dark-bg); font-size: 1.05rem;">-->
+<!--                        Employee List <span class="badge rounded-pill ms-2" style="background-color: var(&#45;&#45;primary-color);" th:text="${#lists.size(employees)}">0</span>-->
+<!--                    </span>-->
+<!--                </div>-->
+
+<!--                <div class="search-wrapper">-->
+<!--                    &lt;!&ndash; Search Input &ndash;&gt;-->
+<!--                    <input type="text" id="employeeSearchInput" class="search-input" placeholder="Search by name, email, or position...">-->
+<!--                    <i class="bi bi-search search-icon-overlay"></i>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="card-body">-->
+<!--                <div class="table-responsive">-->
+<!--                    <table class="table table-striped table-hover" id="employeeTable">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>#ID</th>-->
+<!--                            <th>Name</th>-->
+<!--                            <th>Email</th>-->
+<!--                            <th>Department</th>-->
+<!--                            <th>Position</th>-->
+<!--                            <th>Basic Salary</th>-->
+<!--                            <th>Actions</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody id="tableBody">-->
+<!--                        &lt;!&ndash; Thymeleaf Loop &ndash;&gt;-->
+<!--                        <tr th:each="employee : ${employees}" class="employee-row">-->
+<!--                            <td th:text="${employee.id}">1</td>-->
+<!--                            <td>-->
+<!--                                <div class="d-flex align-items-center">-->
+<!--                                    <img th:src="${employee.profileImageUrl != null && !employee.profileImageUrl.isEmpty() ? employee.profileImageUrl : '/images/default-avatar.png'}"-->
+<!--                                         alt="Profile"-->
+<!--                                         class="avatar-table me-3"-->
+<!--                                         onerror="this.onerror=null;this.src='/images/default-avatar.png';">-->
+<!--                                    <div>-->
+<!--                                        <span class="fw-bold text-dark" th:text="${employee.firstName + ' ' + employee.lastName}">John Doe</span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                            <td th:text="${employee.email}">email@example.com</td>-->
+<!--                            <td th:text="${employee.department}">Dept</td>-->
+<!--                            <td th:text="${employee.position}">Pos</td>-->
+<!--                            <td th:text="'$' + ${#numbers.formatDecimal(employee.basicSalary, 0, 'COMMA', 2, 'POINT')}">$0.00</td>-->
+<!--                            <td>-->
+<!--                                <a th:href="@{/hr/employees/{id}/edit(id=${employee.id})}" class="btn btn-action btn-info"><i class="bi bi-pencil-square"></i> Edit</a>-->
+
+<!--                                <a th:href="@{/hr/employees/{id}/delete(id=${employee.id})}"-->
+<!--                                   class="btn btn-action btn-danger delete-btn"-->
+<!--                                   th:data-employee-id="${employee.id}"-->
+<!--                                   th:data-employee-image="${employee.profileImageUrl}"-->
+<!--                                   th:data-employee-name="${employee.firstName + ' ' + employee.lastName}"-->
+<!--                                   th:data-employee-email="${employee.email}"-->
+<!--                                   th:data-employee-dept="${employee.department}"-->
+<!--                                   th:data-employee-position="${employee.position}"-->
+<!--                                   th:data-employee-salary="${employee.basicSalary}">-->
+<!--                                    <i class="bi bi-trash"></i> Delete-->
+<!--                                </a>-->
+
+<!--                                <form th:action="@{/hr/payroll/calculate/{employeeProfileId}(employeeProfileId=${employee.id})}" method="post" style="display:inline-block; margin-left: 5px;">-->
+<!--                                    <input type="hidden" name="month" th:value="${T(java.time.LocalDate).now().monthValue}">-->
+<!--                                    <input type="hidden" name="year" th:value="${T(java.time.LocalDate).now().year}">-->
+<!--                                    <button type="submit" class="btn btn-action btn-success-custom"><i class="bi bi-cash"></i> Payroll</button>-->
+<!--                                </form>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        <tr th:if="${#lists.isEmpty(employees)}">-->
+<!--                            <td colspan="7" class="text-center py-4 text-muted">-->
+<!--                                <i class="bi bi-person-x display-4 d-block mb-2"></i>-->
+<!--                                No employee records found.-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; PAGINATION CONTROLS &ndash;&gt;-->
+<!--                <div class="pagination-container" id="paginationControls">-->
+<!--                    <div class="page-info">-->
+<!--                        Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> Employees-->
+<!--                    </div>-->
+<!--                    <nav aria-label="Page navigation">-->
+<!--                        <ul class="pagination mb-0" id="paginationList">-->
+<!--                            &lt;!&ndash; Pagination generated by JS &ndash;&gt;-->
+<!--                        </ul>-->
+<!--                    </nav>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        // -&#45;&#45; 1. SET ACTIVE NAV LINK -&#45;&#45;-->
+<!--        const currentPath = window.location.pathname;-->
+<!--        const navLinks = document.querySelectorAll('.nav-link');-->
+<!--        navLinks.forEach(link => {-->
+<!--            if (link.getAttribute('href') === currentPath) link.classList.add('active');-->
+<!--            else link.classList.remove('active');-->
+<!--        });-->
+
+<!--        // -&#45;&#45; 2. PAGINATION & SEARCH VARIABLES -&#45;&#45;-->
+<!--        const tableBody = document.getElementById('tableBody');-->
+<!--        const rows = Array.from(tableBody.querySelectorAll('tr.employee-row')); // Only select actual data rows-->
+<!--        const searchInput = document.getElementById('employeeSearchInput');-->
+<!--        const paginationControls = document.getElementById('paginationControls');-->
+<!--        const paginationList = document.getElementById('paginationList');-->
+<!--        const startEntrySpan = document.getElementById('startEntry');-->
+<!--        const endEntrySpan = document.getElementById('endEntry');-->
+<!--        const totalEntriesSpan = document.getElementById('totalEntries');-->
+
+<!--        const rowsPerPage = 10;-->
+<!--        let currentPage = 1;-->
+
+<!--        // -&#45;&#45; 3. PAGINATION FUNCTIONS -&#45;&#45;-->
+
+<!--        function displayRows(page, rowsToDisplay) {-->
+<!--            const start = (page - 1) * rowsPerPage;-->
+<!--            const end = start + rowsPerPage;-->
+
+<!--            // Hide all rows first-->
+<!--            rowsToDisplay.forEach(row => row.style.display = 'none');-->
+
+<!--            // Show only rows for current page-->
+<!--            const paginatedItems = rowsToDisplay.slice(start, end);-->
+<!--            paginatedItems.forEach(row => row.style.display = '');-->
+
+<!--            // Update Info Text-->
+<!--            const total = rowsToDisplay.length;-->
+<!--            if (total === 0) {-->
+<!--                startEntrySpan.innerText = 0;-->
+<!--                endEntrySpan.innerText = 0;-->
+<!--            } else {-->
+<!--                startEntrySpan.innerText = start + 1;-->
+<!--                endEntrySpan.innerText = Math.min(end, total);-->
+<!--            }-->
+<!--            totalEntriesSpan.innerText = total;-->
+<!--        }-->
+
+<!--        function setupPagination(rowsToDisplay) {-->
+<!--            paginationList.innerHTML = "";-->
+<!--            const pageCount = Math.ceil(rowsToDisplay.length / rowsPerPage);-->
+
+<!--            if (pageCount <= 1) return; // Don't show controls if only 1 page-->
+
+<!--            // Prev Button-->
+<!--            const prevLi = document.createElement('li');-->
+<!--            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;-->
+<!--            prevLi.innerHTML = `<a class="page-link" href="#">Previous</a>`;-->
+<!--            prevLi.addEventListener('click', function(e) {-->
+<!--                e.preventDefault();-->
+<!--                if (currentPage > 1) {-->
+<!--                    currentPage&#45;&#45;;-->
+<!--                    updatePaginationState(rowsToDisplay);-->
+<!--                }-->
+<!--            });-->
+<!--            paginationList.appendChild(prevLi);-->
+
+<!--            // Numbered Buttons-->
+<!--            for (let i = 1; i <= pageCount; i++) {-->
+<!--                const li = document.createElement('li');-->
+<!--                li.className = `page-item ${i === currentPage ? 'active' : ''}`;-->
+<!--                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;-->
+
+<!--                li.addEventListener('click', function(e) {-->
+<!--                    e.preventDefault();-->
+<!--                    currentPage = i;-->
+<!--                    updatePaginationState(rowsToDisplay);-->
+<!--                });-->
+
+<!--                paginationList.appendChild(li);-->
+<!--            }-->
+
+<!--            // Next Button-->
+<!--            const nextLi = document.createElement('li');-->
+<!--            nextLi.className = `page-item ${currentPage === pageCount ? 'disabled' : ''}`;-->
+<!--            nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;-->
+<!--            nextLi.addEventListener('click', function(e) {-->
+<!--                e.preventDefault();-->
+<!--                if (currentPage < pageCount) {-->
+<!--                    currentPage++;-->
+<!--                    updatePaginationState(rowsToDisplay);-->
+<!--                }-->
+<!--            });-->
+<!--            paginationList.appendChild(nextLi);-->
+<!--        }-->
+
+<!--        function updatePaginationState(rowsSource) {-->
+<!--            displayRows(currentPage, rowsSource);-->
+<!--            setupPagination(rowsSource);-->
+<!--        }-->
+
+<!--        // -&#45;&#45; INITIALIZATION -&#45;&#45;-->
+<!--        // Check if we have employees to paginate-->
+<!--        if (rows.length > 0) {-->
+<!--            updatePaginationState(rows);-->
+<!--        } else {-->
+<!--            // Empty table (0 employees)-->
+<!--            paginationControls.style.display = 'none';-->
+<!--        }-->
+
+<!--        // -&#45;&#45; 4. SEARCH FUNCTIONALITY -&#45;&#45;-->
+<!--        if(searchInput) {-->
+<!--            searchInput.addEventListener('keyup', function() {-->
+<!--                const searchTerm = this.value.toLowerCase().trim();-->
+
+<!--                // Remove existing "No match" row-->
+<!--                const noMatchRow = document.getElementById('no-match-row');-->
+<!--                if (noMatchRow) noMatchRow.remove();-->
+
+<!--                if (searchTerm === "") {-->
+<!--                    // Search cleared: Restore Pagination-->
+<!--                    currentPage = 1;-->
+<!--                    paginationControls.style.display = 'flex';-->
+<!--                    updatePaginationState(rows);-->
+<!--                    return;-->
+<!--                }-->
+
+<!--                // Search Active: Hide Pagination Controls & Filter-->
+<!--                paginationControls.style.display = 'none';-->
+
+<!--                let hasVisibleRows = false;-->
+
+<!--                rows.forEach(row => {-->
+<!--                    // Get text content from columns: Name(1), Email(2), Dept(3), Position(4)-->
+<!--                    const name = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';-->
+<!--                    const email = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';-->
+<!--                    const dept = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';-->
+<!--                    const position = row.cells[4] ? row.cells[4].textContent.toLowerCase() : '';-->
+
+<!--                    const combinedText = name + ' ' + email + ' ' + dept + ' ' + position;-->
+
+<!--                    if (combinedText.includes(searchTerm)) {-->
+<!--                        row.style.display = ''; // Show-->
+<!--                        hasVisibleRows = true;-->
+<!--                    } else {-->
+<!--                        row.style.display = 'none'; // Hide-->
+<!--                    }-->
+<!--                });-->
+
+<!--                if (!hasVisibleRows) {-->
+<!--                    const newRow = document.createElement('tr');-->
+<!--                    newRow.id = 'no-match-row';-->
+<!--                    newRow.innerHTML = `-->
+<!--                        <td colspan="7" class="text-center py-4 text-muted">-->
+<!--                            <i class="bi bi-search d-block mb-2" style="font-size: 1.5rem;"></i>-->
+<!--                            No employees found matching "${this.value}"-->
+<!--                        </td>-->
+<!--                    `;-->
+<!--                    tableBody.appendChild(newRow);-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        // -&#45;&#45; 5. DELETE MODAL LOGIC (Unchanged) -&#45;&#45;-->
+<!--        const deleteModal = document.getElementById('deleteConfirmModal');-->
+<!--        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');-->
+<!--        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');-->
+<!--        const employeeDetailsDiv = document.getElementById('employeeDetails');-->
+<!--        let deleteUrl = '';-->
+
+<!--        document.querySelectorAll('.delete-btn').forEach(btn => {-->
+<!--            btn.addEventListener('click', function(e) {-->
+<!--                e.preventDefault();-->
+<!--                const data = {-->
+<!--                    id: this.getAttribute('data-employee-id'),-->
+<!--                    image: this.getAttribute('data-employee-image'),-->
+<!--                    name: this.getAttribute('data-employee-name'),-->
+<!--                    email: this.getAttribute('data-employee-email'),-->
+<!--                    department: this.getAttribute('data-employee-dept'),-->
+<!--                    position: this.getAttribute('data-employee-position'),-->
+<!--                    salary: this.getAttribute('data-employee-salary')-->
+<!--                };-->
+<!--                deleteUrl = this.getAttribute('href');-->
+<!--                const imgSrc = (data.image && data.image !== '') ? data.image : '/images/default-avatar.png';-->
+
+<!--                employeeDetailsDiv.innerHTML = `-->
+<!--                    <div class="text-center mb-3">-->
+<!--                        <img src="${imgSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #dee2e6;" onerror="this.src='/images/default-avatar.png'">-->
+<!--                    </div>-->
+<!--                    <div class="employee-detail-item"><span class="employee-detail-label">ID:</span><span>${data.id}</span></div>-->
+<!--                    <div class="employee-detail-item"><span class="employee-detail-label">Name:</span><span class="fw-bold">${data.name}</span></div>-->
+<!--                    <div class="employee-detail-item"><span class="employee-detail-label">Email:</span><span>${data.email}</span></div>-->
+<!--                `;-->
+<!--                deleteModal.style.display = 'flex';-->
+<!--            });-->
+<!--        });-->
+
+<!--        if(cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', () => deleteModal.style.display = 'none');-->
+<!--        if(confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', () => window.location.href = deleteUrl);-->
+
+<!--        window.onclick = function(event) {-->
+<!--            if (event.target == deleteModal) deleteModal.style.display = "none";-->
+<!--        }-->
+
+<!--        // -&#45;&#45; 6. PAYROLL ALERT -&#45;&#45;-->
+<!--        document.querySelectorAll('form[action*="payroll/calculate"] button').forEach(btn => {-->
+<!--            btn.addEventListener('click', function(e) {-->
+<!--                if (!confirm(`Calculate payroll for this employee?`)) e.preventDefault();-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Manage Employees - Payroll System</title>-->
+
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: rgb(14, 88, 245);-->
+<!--            &#45;&#45;primary-light: #4895ef;-->
+<!--            &#45;&#45;secondary-color: #0e58f5;-->
+<!--            &#45;&#45;dark-bg: #1a4c99;-->
+<!--            &#45;&#45;dark-bg-light: #1a4c99;-->
+<!--            &#45;&#45;text-light: #ffffff;-->
+<!--            &#45;&#45;text-muted: #adb5bd;-->
+<!--            &#45;&#45;border-color: #1a4c99;-->
+<!--            &#45;&#45;hover-color: #1a4c99;-->
+<!--            &#45;&#45;active-color: #1a4c99;-->
+<!--            &#45;&#45;shadow: 0 4px 6px rgb(26, 76, 153);-->
+<!--            &#45;&#45;transition: all 0.3s ease;-->
+<!--        }-->
+
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: #f5f7fb;-->
+<!--            color: rgba(10, 161, 6, 0.98);-->
+<!--            min-height: 100vh;-->
+<!--            overflow-x: hidden;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Sidebar Styles -&#45;&#45; */-->
+<!--        .sidebar {-->
+<!--            background: linear-gradient(180deg, var(&#45;&#45;dark-bg) 0%, var(&#45;&#45;dark-bg-light) 100%);-->
+<!--            width: 280px;-->
+<!--            height: 100vh;-->
+<!--            position: fixed;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--            z-index: 1000;-->
+<!--            overflow-y: auto;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .sidebar-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(&#45;&#45;border-color); }-->
+<!--        .brand { display: flex; align-items: center; color: var(&#45;&#45;text-light); text-decoration: none; font-weight: 600; font-size: 1.25rem; }-->
+<!--        .brand-icon { background: linear-gradient(135deg, var(&#45;&#45;primary-color), var(&#45;&#45;primary-light)); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; }-->
+<!--        .sidebar-nav { flex: 1; padding: 1rem 0; }-->
+<!--        .nav-section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(&#45;&#45;text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }-->
+<!--        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(&#45;&#45;text-light); text-decoration: none; transition: var(&#45;&#45;transition); border-left: 3px solid transparent; }-->
+<!--        .nav-link:hover { background-color: var(&#45;&#45;hover-color); border-left-color: var(&#45;&#45;primary-light); }-->
+<!--        .nav-link.active { background-color: var(&#45;&#45;active-color); border-left-color: var(&#45;&#45;primary-color); }-->
+<!--        .nav-link i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }-->
+<!--        .nav-badge { margin-left: auto; background-color: var(&#45;&#45;primary-color); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; }-->
+<!--        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(&#45;&#45;border-color); }-->
+<!--        .user-profile { display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; transition: var(&#45;&#45;transition); cursor: pointer; }-->
+<!--        .user-profile:hover { background-color: var(&#45;&#45;hover-color); }-->
+<!--        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 2px solid var(&#45;&#45;primary-light); }-->
+<!--        .user-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; color: var(&#45;&#45;text-light); }-->
+<!--        .user-role { font-size: 0.75rem; color: var(&#45;&#45;text-muted); }-->
+
+<!--        /* -&#45;&#45; Main Content Styles -&#45;&#45; */-->
+<!--        .main-content {-->
+<!--            margin-left: 280px;-->
+<!--            padding: 30px;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            flex-grow: 1;-->
+<!--        }-->
+
+<!--        .page-header {-->
+<!--            margin-bottom: 2rem;-->
+<!--            padding-bottom: 1rem;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .page-title {-->
+<!--            font-weight: 700;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .page-subtitle {-->
+<!--            color: #6c757d;-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Button Style -&#45;&#45; */-->
+<!--        .btn-add-new {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color) 0%, var(&#45;&#45;secondary-color) 100%);-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 0.7rem 1.5rem;-->
+<!--            border-radius: 50px;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 0.95rem;-->
+<!--            box-shadow: 0 4px 15px rgba(6, 56, 133, 0.25);-->
+<!--            display: inline-flex;-->
+<!--            align-items: center;-->
+<!--            gap: 8px;-->
+<!--            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);-->
+<!--            text-decoration: none;-->
+<!--        }-->
+
+<!--        .btn-add-new:hover {-->
+<!--            transform: translateY(-3px);-->
+<!--            box-shadow: 0 8px 20px rgba(6, 56, 133, 0.35);-->
+<!--            color: white;-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;secondary-color) 0%, var(&#45;&#45;primary-color) 100%);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Card and Table Styles -&#45;&#45; */-->
+<!--        .card {-->
+<!--            border: none;-->
+<!--            border-radius: 12px;-->
+<!--            box-shadow: 0 4px 6px rgba(0,0,0,0.05);-->
+<!--            margin-bottom: 1.5rem;-->
+<!--            background: white;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .card-header {-->
+<!--            background-color: white;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            padding: 1.25rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Search Bar Styles -&#45;&#45; */-->
+<!--        .search-wrapper {-->
+<!--            position: relative;-->
+<!--            width: 100%;-->
+<!--            max-width: 400px;-->
+<!--        }-->
+
+<!--        .search-input {-->
+<!--            width: 100%;-->
+<!--            padding: 0.6rem 1rem 0.6rem 2.8rem;-->
+<!--            border-radius: 50px;-->
+<!--            border: 1px solid #e2e8f0;-->
+<!--            background-color: #f8f9fa;-->
+<!--            color: #333;-->
+<!--            transition: all 0.3s ease;-->
+<!--            font-size: 0.95rem;-->
+<!--        }-->
+
+<!--        .search-input:focus {-->
+<!--            background-color: #fff;-->
+<!--            border-color: var(&#45;&#45;primary-light);-->
+<!--            box-shadow: 0 0 0 4px rgba(72, 149, 239, 0.15);-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .search-icon-overlay {-->
+<!--            position: absolute;-->
+<!--            left: 15px;-->
+<!--            top: 50%;-->
+<!--            transform: translateY(-50%);-->
+<!--            color: #adb5bd;-->
+<!--            pointer-events: none;-->
+<!--            transition: color 0.3s ease;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Table Loading Overlay Styles -&#45;&#45; */-->
+<!--        .table-container {-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        .search-overlay {-->
+<!--            position: absolute;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background: rgba(255, 255, 255, 0.7);-->
+<!--            display: none; /* Hidden by default */-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            z-index: 10;-->
+<!--        }-->
+
+<!--        .spinner-custom {-->
+<!--            width: 3rem;-->
+<!--            height: 3rem;-->
+<!--            border: 0.3em solid rgba(14, 88, 245, 0.2);-->
+<!--            border-right-color: var(&#45;&#45;primary-color);-->
+<!--            border-radius: 50%;-->
+<!--            animation: spinner-border .75s linear infinite;-->
+<!--        }-->
+
+<!--        @keyframes spinner-border {-->
+<!--            to { transform: rotate(360deg); }-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Table Styles -&#45;&#45; */-->
+<!--        .table thead th {-->
+<!--            background-color: #f8f9fa;-->
+<!--            border-top: 1px solid #dee2e6;-->
+<!--            border-bottom: 2px solid #dee2e6;-->
+<!--            padding: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--            white-space: nowrap;-->
+<!--        }-->
+
+<!--        .table tbody td {-->
+<!--            padding: 0.75rem 1rem;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            vertical-align: middle;-->
+<!--            font-size: 0.9rem;-->
+<!--            white-space: nowrap;-->
+<!--        }-->
+
+<!--        .table-hover tbody tr:hover {-->
+<!--            background-color: rgba(67, 97, 238, 0.05);-->
+<!--        }-->
+
+<!--        .avatar-table {-->
+<!--            width: 50px;-->
+<!--            height: 50px;-->
+<!--            border-radius: 50%;-->
+<!--            object-fit: cover;-->
+<!--            border: 2px solid #e2e8f0;-->
+<!--            background-color: #fff;-->
+<!--        }-->
+
+<!--        /* Action Buttons */-->
+<!--        .btn-action {-->
+<!--            padding: 0.3rem 0.6rem;-->
+<!--            border-radius: 6px;-->
+<!--            font-size: 0.8rem;-->
+<!--            margin-right: 5px;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .btn-info { background-color: #e3f2fd; border-color: #bbdefb; color: #1565c0; }-->
+<!--        .btn-info:hover { background-color: #1565c0; color: white; transform: translateY(-2px); }-->
+
+<!--        .btn-danger { background-color: #ffebee; border-color: #ffcdd2; color: #d32f2f; }-->
+<!--        .btn-danger:hover { background-color: #d32f2f; color: white; transform: translateY(-2px); }-->
+
+<!--        .btn-success-custom { background-color: #e8f5e9; border-color: #c8e6c9; color: #2e7d32; }-->
+<!--        .btn-success-custom:hover { background-color: #2e7d32; color: white; transform: translateY(-2px); }-->
+
+<!--        /* Custom Modal Styles */-->
+<!--        .custom-modal {-->
+<!--            display: none;-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            width: 100%;-->
+<!--            height: 100%;-->
+<!--            background-color: rgba(0, 0, 0, 0.5);-->
+<!--            z-index: 9999;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            animation: fadeIn 0.3s ease;-->
+<!--        }-->
+
+<!--        .custom-modal-content {-->
+<!--            background-color: white;-->
+<!--            border-radius: 12px;-->
+<!--            width: 90%;-->
+<!--            max-width: 500px;-->
+<!--            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);-->
+<!--            animation: slideIn 0.3s ease;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .custom-modal-header {-->
+<!--            padding: 1.5rem;-->
+<!--            background-color: #f8f9fa;-->
+<!--            border-bottom: 1px solid #dee2e6;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .custom-modal-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 1.5rem; }-->
+<!--        .modal-icon-danger { background-color: #fff; color: var(&#45;&#45;primary-color); }-->
+<!--        .custom-modal-title { font-weight: 600; color: #d32f2f; margin: 0; }-->
+<!--        .custom-modal-body { padding: 1.5rem; color: #666; line-height: 1.6; }-->
+
+<!--        .employee-details { background-color: #f8f9fa; border-radius: 8px; padding: 1rem; margin: 1rem 0; }-->
+<!--        .employee-detail-item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }-->
+<!--        .employee-detail-label { font-weight: 600; color: #555; }-->
+<!--        .warning-text { color: #d32f2f; font-weight: 600; background-color: #ffebee; padding: 0.75rem; border-radius: 6px; margin: 1rem 0; border-left: 4px solid #d32f2f; }-->
+
+<!--        .custom-modal-footer { padding: 1rem 1.5rem; background-color: #f8f9fa; border-top: 1px solid #dee2e6; display: flex; justify-content: flex-end; gap: 10px; }-->
+<!--        .modal-btn { padding: 0.5rem 1.5rem; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; transition: var(&#45;&#45;transition); }-->
+<!--        .modal-btn-cancel { background-color: #6c757d; color: white; }-->
+<!--        .modal-btn-delete { background-color: #d32f2f; color: white; }-->
+
+<!--        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }-->
+<!--        @keyframes slideIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }-->
+
+<!--        /* Responsive adjustments */-->
+<!--        @media (max-width: 991.98px) {-->
+<!--            .sidebar { width: 70px; }-->
+<!--            .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge { display: none; }-->
+<!--            .main-content { margin-left: 70px; padding: 15px; }-->
+<!--            .sidebar:hover { width: 280px; }-->
+<!--            .sidebar:hover .brand-text, .sidebar:hover .nav-text, .sidebar:hover .user-info, .sidebar:hover .nav-section-title, .sidebar:hover .nav-badge { display: block; }-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Pagination Styles -&#45;&#45; */-->
+<!--        .pagination-container {-->
+<!--            padding: 1rem 1.5rem;-->
+<!--            border-top: 1px solid #eaeaea;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .pagination .page-link { color: var(&#45;&#45;primary-color); border: 1px solid #dee2e6; margin: 0 3px; border-radius: 5px; cursor: pointer; }-->
+<!--        .pagination .page-item.active .page-link { background-color: var(&#45;&#45;primary-color); border-color: var(&#45;&#45;primary-color); color: white; }-->
+<!--        .page-info { color: #6c757d; font-size: 0.9rem; }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Custom Delete Confirmation Modal &ndash;&gt;-->
+<!--<div id="deleteConfirmModal" class="custom-modal">-->
+<!--    <div class="custom-modal-content">-->
+<!--        <div class="custom-modal-header">-->
+<!--            <div class="custom-modal-icon modal-icon-danger">-->
+<!--                <i class="bi bi-exclamation-triangle"></i>-->
+<!--            </div>-->
+<!--            <h5 class="custom-modal-title">Confirm Delete</h5>-->
+<!--        </div>-->
+<!--        <div class="custom-modal-body">-->
+<!--            <p>Are you sure you want to delete this employee? </p>-->
+<!--            <div class="employee-details" id="employeeDetails"></div>-->
+<!--            <div class="warning-text">-->
+<!--                <i class="bi bi-exclamation-circle-fill me-2"></i>-->
+<!--                Warning: This will permanently delete all employee data including payroll records.-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="custom-modal-footer">-->
+<!--            <button type="button" class="modal-btn modal-btn-cancel" id="cancelDeleteBtn">-->
+<!--                <i class="bi bi-x-circle me-1"></i> Cancel-->
+<!--            </button>-->
+<!--            <button type="button" class="modal-btn modal-btn-delete" id="confirmDeleteBtn">-->
+<!--                <i class="bi bi-trash me-1"></i> Delete Permanently-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="d-flex">-->
+<!--    <div class="sidebar">-->
+<!--        <div class="sidebar-header">-->
+<!--            <a href="/" class="brand">-->
+<!--                <div class="brand-icon"><i class="bi bi-cash-coin"></i></div>-->
+<!--                <span class="brand-text">Payroll System</span>-->
+<!--            </a>-->
+<!--        </div>-->
+<!--        <div class="sidebar-nav">-->
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">Main</div>-->
+<!--                <ul class="nav-list">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{/dashboard}" class="nav-link">-->
+<!--                            <i class="bi bi-house"></i><span class="nav-text">Dashboard</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--            <div class="nav-section">-->
+<!--                <div class="nav-section-title">Management</div>-->
+<!--                <ul class="nav-list">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a th:href="@{employees}" class="nav-link active">-->
+<!--                            <i class="bi bi-people"></i><span class="nav-text">Employees</span>-->
+<!--                            <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="sidebar-footer">-->
+<!--            <div class="dropdown">-->
+<!--                <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                    <img src="/images/num.png" alt="User Avatar" class="user-avatar">-->
+<!--                    <div class="user-info">-->
+<!--                        <div class="user-name" sec:authentication="name">HR/Admin User</div>-->
+<!--                        <div class="user-role" sec:authentication="principal.authorities">Role</div>-->
+<!--                    </div>-->
+<!--                    <i class="bi bi-chevron-down text-light"></i>-->
+<!--                </div>-->
+<!--                <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                    <li><hr class="dropdown-divider"></li>-->
+<!--                    <li>-->
+<!--                        <form th:action="@{/logout}" method="post">-->
+<!--                            <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>-->
+<!--                        </form>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="main-content flex-grow-1">-->
+
+<!--        <div class="page-header">-->
+<!--            <div>-->
+<!--                <h1 class="page-title">Employee Directory</h1>-->
+<!--                <p class="page-subtitle">Manage all employee profiles, salary, and payroll.</p>-->
+<!--            </div>-->
+<!--            <a th:href="@{/register}" class="btn-add-new">-->
+<!--                <i class="bi bi-plus-lg"></i>-->
+<!--                <span>Add New Employee</span>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="card">-->
+<!--            <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">-->
+<!--                <div class="d-flex align-items-center">-->
+<!--                    <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-2 text-primary" style="background-color: rgba(13, 110, 253, 0.1) !important;">-->
+<!--                        <i class="bi bi-people-fill" style="color: var(&#45;&#45;primary-color);"></i>-->
+<!--                    </div>-->
+<!--                    <span style="font-weight: 700; color: var(&#45;&#45;dark-bg); font-size: 1.05rem;">-->
+<!--                        Employee List <span class="badge rounded-pill ms-2" style="background-color: var(&#45;&#45;primary-color);" th:text="${#lists.size(employees)}">0</span>-->
+<!--                    </span>-->
+<!--                </div>-->
+
+<!--                <div class="search-wrapper">-->
+<!--                    <input type="text" id="employeeSearchInput" class="search-input" placeholder="Search by fname or lname, email, or position...">-->
+<!--                    <i class="bi bi-search search-icon-overlay"></i>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="card-body p-0">-->
+<!--                <div class="table-container">-->
+<!--                    &lt;!&ndash; SEARCH LOADING OVERLAY &ndash;&gt;-->
+<!--                    <div id="searchOverlay" class="search-overlay">-->
+<!--                        <div class="text-center">-->
+<!--                            <div class="spinner-custom mb-2"></div>-->
+<!--                            <div class="fw-bold" style="color: var(&#45;&#45;dark-bg)">Searching...</div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="table-responsive">-->
+<!--                        <table class="table table-striped table-hover mb-0" id="employeeTable">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>#ID</th>-->
+<!--                                <th>Name</th>-->
+<!--                                <th>Email</th>-->
+<!--                                <th>Department</th>-->
+<!--                                <th>Position</th>-->
+<!--                                <th>Basic Salary</th>-->
+<!--                                <th>Actions</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody id="tableBody">-->
+<!--                            <tr th:each="employee : ${employees}" class="employee-row">-->
+<!--                                <td th:text="${employee.id}">1</td>-->
+<!--                                <td>-->
+<!--                                    <div class="d-flex align-items-center">-->
+<!--                                        <img th:src="${employee.profileImageUrl != null && !employee.profileImageUrl.isEmpty() ? employee.profileImageUrl : '/images/num.png'}"-->
+<!--                                             alt="Profile"-->
+<!--                                             class="avatar-table me-3"-->
+<!--                                             onerror="this.onerror=null;this.src='/images/num.png';">-->
+<!--                                        <div><span class="fw-bold text-dark" th:text="${employee.firstName + ' ' + employee.lastName}">John Doe</span></div>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                <td th:text="${employee.email}">email@example.com</td>-->
+<!--                                <td th:text="${employee.department}">Dept</td>-->
+<!--                                <td th:text="${employee.position}">Pos</td>-->
+<!--                                <td th:text="'$' + ${#numbers.formatDecimal(employee.basicSalary, 0, 'COMMA', 2, 'POINT')}">$0.00</td>-->
+<!--                                <td>-->
+<!--                                    <a th:href="@{/hr/employees/{id}/edit(id=${employee.id})}" class="btn btn-action btn-info"><i class="bi bi-pencil-square"></i> Edit</a>-->
+<!--                                    <a th:href="@{/hr/employees/{id}/delete(id=${employee.id})}"-->
+<!--                                       class="btn btn-action btn-danger delete-btn"-->
+<!--                                       th:data-employee-id="${employee.id}"-->
+<!--                                       th:data-employee-image="${employee.profileImageUrl}"-->
+<!--                                       th:data-employee-name="${employee.firstName + ' ' + employee.lastName}"-->
+<!--                                       th:data-employee-email="${employee.email}">-->
+<!--                                        <i class="bi bi-trash"></i> Delete-->
+<!--                                    </a>-->
+<!--                                    <form th:action="@{/hr/payroll/calculate/{employeeProfileId}(employeeProfileId=${employee.id})}" method="post" style="display:inline-block; margin-left: 5px;">-->
+<!--                                        <input type="hidden" name="month" th:value="${T(java.time.LocalDate).now().monthValue}">-->
+<!--                                        <input type="hidden" name="year" th:value="${T(java.time.LocalDate).now().year}">-->
+<!--                                        <button type="submit" class="btn btn-action btn-success-custom"><i class="bi bi-cash"></i> Payroll</button>-->
+<!--                                    </form>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr th:if="${#lists.isEmpty(employees)}">-->
+<!--                                <td colspan="7" class="text-center py-4 text-muted">-->
+<!--                                    <i class="bi bi-person-x display-4 d-block mb-2"></i>-->
+<!--                                    No employee records found.-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; PAGINATION CONTROLS &ndash;&gt;-->
+<!--                <div class="pagination-container" id="paginationControls">-->
+<!--                    <div class="page-info">-->
+<!--                        Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> Employees-->
+<!--                    </div>-->
+<!--                    <nav aria-label="Page navigation">-->
+<!--                        <ul class="pagination mb-0" id="paginationList"></ul>-->
+<!--                    </nav>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        // -&#45;&#45; 1. SET ACTIVE NAV LINK -&#45;&#45;-->
+<!--        const currentPath = window.location.pathname;-->
+<!--        const navLinks = document.querySelectorAll('.nav-link');-->
+<!--        navLinks.forEach(link => {-->
+<!--            if (link.getAttribute('href') === currentPath) link.classList.add('active');-->
+<!--            else link.classList.remove('active');-->
+<!--        });-->
+
+<!--        // -&#45;&#45; 2. PAGINATION & SEARCH VARIABLES -&#45;&#45;-->
+<!--        const tableBody = document.getElementById('tableBody');-->
+<!--        const rows = Array.from(tableBody.querySelectorAll('tr.employee-row'));-->
+<!--        const searchInput = document.getElementById('employeeSearchInput');-->
+<!--        const searchOverlay = document.getElementById('searchOverlay');-->
+<!--        const paginationControls = document.getElementById('paginationControls');-->
+<!--        const paginationList = document.getElementById('paginationList');-->
+<!--        const startEntrySpan = document.getElementById('startEntry');-->
+<!--        const endEntrySpan = document.getElementById('endEntry');-->
+<!--        const totalEntriesSpan = document.getElementById('totalEntries');-->
+
+<!--        const rowsPerPage = 8;-->
+<!--        let currentPage = 1;-->
+<!--        let searchTimeout = null; // Used for delay-->
+
+<!--        // -&#45;&#45; 3. PAGINATION FUNCTIONS -&#45;&#45;-->
+<!--        function displayRows(page, rowsToDisplay) {-->
+<!--            const start = (page - 1) * rowsPerPage;-->
+<!--            const end = start + rowsPerPage;-->
+<!--            rowsToDisplay.forEach(row => row.style.display = 'none');-->
+<!--            const paginatedItems = rowsToDisplay.slice(start, end);-->
+<!--            paginatedItems.forEach(row => row.style.display = '');-->
+
+<!--            const total = rowsToDisplay.length;-->
+<!--            if (total === 0) {-->
+<!--                startEntrySpan.innerText = 0;-->
+<!--                endEntrySpan.innerText = 0;-->
+<!--            } else {-->
+<!--                startEntrySpan.innerText = start + 1;-->
+<!--                endEntrySpan.innerText = Math.min(end, total);-->
+<!--            }-->
+<!--            totalEntriesSpan.innerText = total;-->
+<!--        }-->
+
+<!--        function setupPagination(rowsToDisplay) {-->
+<!--            paginationList.innerHTML = "";-->
+<!--            const pageCount = Math.ceil(rowsToDisplay.length / rowsPerPage);-->
+<!--            if (pageCount <= 1) return;-->
+
+<!--            const prevLi = document.createElement('li');-->
+<!--            prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;-->
+<!--            prevLi.innerHTML = `<a class="page-link" href="#">Previous</a>`;-->
+<!--            prevLi.addEventListener('click', (e) => {-->
+<!--                e.preventDefault();-->
+<!--                if (currentPage > 1) { currentPage&#45;&#45;; updatePaginationState(rowsToDisplay); }-->
+<!--            });-->
+<!--            paginationList.appendChild(prevLi);-->
+
+<!--            for (let i = 1; i <= pageCount; i++) {-->
+<!--                const li = document.createElement('li');-->
+<!--                li.className = `page-item ${i === currentPage ? 'active' : ''}`;-->
+<!--                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;-->
+<!--                li.addEventListener('click', (e) => {-->
+<!--                    e.preventDefault();-->
+<!--                    currentPage = i;-->
+<!--                    updatePaginationState(rowsToDisplay);-->
+<!--                });-->
+<!--                paginationList.appendChild(li);-->
+<!--            }-->
+
+<!--            const nextLi = document.createElement('li');-->
+<!--            nextLi.className = `page-item ${currentPage === pageCount ? 'disabled' : ''}`;-->
+<!--            nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;-->
+<!--            nextLi.addEventListener('click', (e) => {-->
+<!--                e.preventDefault();-->
+<!--                if (currentPage < pageCount) { currentPage++; updatePaginationState(rowsToDisplay); }-->
+<!--            });-->
+<!--            paginationList.appendChild(nextLi);-->
+<!--        }-->
+
+<!--        function updatePaginationState(rowsSource) {-->
+<!--            displayRows(currentPage, rowsSource);-->
+<!--            setupPagination(rowsSource);-->
+<!--        }-->
+
+<!--        if (rows.length > 0) updatePaginationState(rows);-->
+<!--        else paginationControls.style.display = 'none';-->
+
+<!--        // -&#45;&#45; 4. SEARCH FUNCTIONALITY WITH DELAY -&#45;&#45;-->
+<!--        if(searchInput) {-->
+<!--            searchInput.addEventListener('input', function() {-->
+<!--                const searchTerm = this.value.toLowerCase().trim();-->
+
+<!--                // Clear previous delay timer-->
+<!--                clearTimeout(searchTimeout);-->
+
+<!--                // Show Loading Spinner-->
+<!--                searchOverlay.style.display = 'flex';-->
+
+<!--                // Start new delay (600ms)-->
+<!--                searchTimeout = setTimeout(() => {-->
+
+<!--                    const noMatchRow = document.getElementById('no-match-row');-->
+<!--                    if (noMatchRow) noMatchRow.remove();-->
+
+<!--                    if (searchTerm === "") {-->
+<!--                        currentPage = 1;-->
+<!--                        paginationControls.style.display = 'flex';-->
+<!--                        updatePaginationState(rows);-->
+<!--                        searchOverlay.style.display = 'none'; // Hide loader-->
+<!--                        return;-->
+<!--                    }-->
+
+<!--                    paginationControls.style.display = 'none';-->
+<!--                    let hasVisibleRows = false;-->
+
+<!--                    rows.forEach(row => {-->
+<!--                        const name = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';-->
+<!--                        const email = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';-->
+<!--                        const dept = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';-->
+<!--                        const position = row.cells[4] ? row.cells[4].textContent.toLowerCase() : '';-->
+<!--                        const combinedText = name + ' ' + email + ' ' + dept + ' ' + position;-->
+
+<!--                        if (combinedText.includes(searchTerm)) {-->
+<!--                            row.style.display = '';-->
+<!--                            hasVisibleRows = true;-->
+<!--                        } else {-->
+<!--                            row.style.display = 'none';-->
+<!--                        }-->
+<!--                    });-->
+
+<!--                    if (!hasVisibleRows) {-->
+<!--                        const newRow = document.createElement('tr');-->
+<!--                        newRow.id = 'no-match-row';-->
+<!--                        newRow.innerHTML = `-->
+<!--                            <td colspan="7" class="text-center py-4 text-muted">-->
+<!--                                <i class="bi bi-search d-block mb-2" style="font-size: 1.5rem;"></i>-->
+<!--                                No employees found matching "${this.value}"-->
+<!--                            </td>-->
+<!--                        `;-->
+<!--                        tableBody.appendChild(newRow);-->
+<!--                    }-->
+
+<!--                    // Hide Loading Spinner after search is done-->
+<!--                    searchOverlay.style.display = 'none';-->
+
+<!--                }, 1000); // The 600ms delay-->
+<!--            });-->
+<!--        }-->
+
+<!--        // -&#45;&#45; 5. DELETE MODAL LOGIC -&#45;&#45;-->
+<!--        const deleteModal = document.getElementById('deleteConfirmModal');-->
+<!--        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');-->
+<!--        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');-->
+<!--        const employeeDetailsDiv = document.getElementById('employeeDetails');-->
+<!--        let deleteUrl = '';-->
+
+<!--        document.querySelectorAll('.delete-btn').forEach(btn => {-->
+<!--            btn.addEventListener('click', function(e) {-->
+<!--                e.preventDefault();-->
+<!--                const data = {-->
+<!--                    id: this.getAttribute('data-employee-id'),-->
+<!--                    image: this.getAttribute('data-employee-image'),-->
+<!--                    name: this.getAttribute('data-employee-name'),-->
+<!--                    email: this.getAttribute('data-employee-email')-->
+<!--                };-->
+<!--                deleteUrl = this.getAttribute('href');-->
+<!--                const imgSrc = (data.image && data.image !== '') ? data.image : '/images/num.png';-->
+
+<!--                employeeDetailsDiv.innerHTML = `-->
+<!--                    <div class="text-center mb-3">-->
+<!--                        <img src="${imgSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #dee2e6;" onerror="this.src='/images/default-avatar.png'">-->
+<!--                    </div>-->
+<!--                    <div class="employee-detail-item"><span class="employee-detail-label">ID:</span><span>${data.id}</span></div>-->
+<!--                    <div class="employee-detail-item"><span class="employee-detail-label">Name:</span><span class="fw-bold">${data.name}</span></div>-->
+<!--                    <div class="employee-detail-item"><span class="employee-detail-label">Email:</span><span>${data.email}</span></div>-->
+<!--                `;-->
+<!--                deleteModal.style.display = 'flex';-->
+<!--            });-->
+<!--        });-->
+
+<!--        if(cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', () => deleteModal.style.display = 'none');-->
+<!--        if(confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', () => window.location.href = deleteUrl);-->
+<!--        window.onclick = (e) => { if (e.target == deleteModal) deleteModal.style.display = "none"; };-->
+
+<!--        // -&#45;&#45; 6. PAYROLL ALERT -&#45;&#45;-->
+<!--        document.querySelectorAll('form[action*="payroll/calculate"] button').forEach(btn => {-->
+<!--            btn.addEventListener('click', function(e) {-->
+<!--                if (!confirm(`Calculate payroll for this employee?`)) e.preventDefault();-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
@@ -11,10 +1550,10 @@
 
     <style>
         :root {
-            --primary-color: rgb(14, 88, 245);
+            --primary-color: rgb(26, 76, 153);
             --primary-light: #4895ef;
             --secondary-color: #0e58f5;
-            --dark-bg: #1a4c99;
+            --dark-bg: rgba(6, 56, 133, 0.9);
             --dark-bg-light: #1a4c99;
             --text-light: #ffffff;
             --text-muted: #adb5bd;
@@ -34,12 +1573,12 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f7fb;
-            color: rgba(10, 161, 6, 0.98);
+            color: #0aa106;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* --- Sidebar Styles --- */
+        /* --- Sidebar Styles (Updated to match dashboard) --- */
         .sidebar {
             background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-light) 100%);
             width: 280px;
@@ -55,29 +1594,158 @@
             transition: var(--transition);
         }
 
-        .sidebar-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(--border-color); }
-        .brand { display: flex; align-items: center; color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 1.25rem; }
-        .brand-icon { background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; }
-        .sidebar-nav { flex: 1; padding: 1rem 0; }
-        .nav-section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }
-        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-light); text-decoration: none; transition: var(--transition); border-left: 3px solid transparent; }
-        .nav-link:hover { background-color: var(--hover-color); border-left-color: var(--primary-light); }
-        .nav-link.active { background-color: var(--active-color); border-left-color: var(--primary-color); }
-        .nav-link i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
-        .nav-badge { margin-left: auto; background-color: var(--primary-color); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; }
-        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }
-        .user-profile { display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; transition: var(--transition); cursor: pointer; }
-        .user-profile:hover { background-color: var(--hover-color); }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 2px solid var(--primary-light); }
-        .user-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; color: var(--text-light); }
-        .user-role { font-size: 0.75rem; color: var(--text-muted); }
+        .sidebar-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            list-style: none;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: var(--hover-color);
+            border-left-color: var(--primary-light);
+        }
+
+        .nav-link.active {
+            background-color: var(--active-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .user-profile:hover {
+            background-color: var(--hover-color);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid var(--primary-light);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+            color: var(--text-light);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .dropdown-menu {
+            background-color: var(--dark-bg-light);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .dropdown-item {
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--hover-color);
+            color: var(--text-light);
+        }
+
+        .dropdown-divider {
+            border-color: var(--border-color);
+        }
 
         /* --- Main Content Styles --- */
         .main-content {
             margin-left: 280px;
             padding: 30px;
             transition: var(--transition);
-            flex-grow: 1;
         }
 
         .page-header {
@@ -122,10 +1790,6 @@
             box-shadow: 0 8px 20px rgba(6, 56, 133, 0.35);
             color: white;
             background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
-        }
-
-        .btn-add-new:active {
-            transform: translateY(-1px);
         }
 
         /* --- Card and Table Styles --- */
@@ -181,9 +1845,35 @@
             transition: color 0.3s ease;
         }
 
-        .search-input:focus + .search-icon-overlay,
-        .search-input:not(:placeholder-shown) + .search-icon-overlay {
-            color: var(--primary-color);
+        /* --- Table Loading Overlay Styles --- */
+        .table-container {
+            position: relative;
+        }
+
+        .search-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .spinner-custom {
+            width: 3rem;
+            height: 3rem;
+            border: 0.3em solid rgba(14, 88, 245, 0.2);
+            border-right-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
         }
 
         /* --- Table Styles --- */
@@ -200,7 +1890,7 @@
         .table tbody td {
             padding: 0.75rem 1rem;
             border-bottom: 1px solid #eaeaea;
-            vertical-align: middle; /* Ensures image and text center vertically */
+            vertical-align: middle;
             font-size: 0.9rem;
             white-space: nowrap;
         }
@@ -209,10 +1899,9 @@
             background-color: rgba(67, 97, 238, 0.05);
         }
 
-        /* --- NEW: Employee Avatar in Table --- */
         .avatar-table {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #e2e8f0;
@@ -226,16 +1915,47 @@
             font-size: 0.8rem;
             margin-right: 5px;
             transition: var(--transition);
+            border: 1px solid transparent;
         }
 
-        .btn-info { background-color: #e3f2fd; border-color: #bbdefb; color: #1565c0; }
-        .btn-info:hover { background-color: #1565c0; color: white; transform: translateY(-2px); }
+        .btn-info {
+            background-color: #e3f2fd;
+            border-color: #bbdefb;
+            color: #1565c0;
+        }
+        .btn-info:hover {
+            background-color: #1565c0;
+            border-color: #1565c0;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(21, 101, 192, 0.3);
+        }
 
-        .btn-danger { background-color: #ffebee; border-color: #ffcdd2; color: #d32f2f; }
-        .btn-danger:hover { background-color: #d32f2f; color: white; transform: translateY(-2px); }
+        .btn-danger {
+            background-color: #ffebee;
+            border-color: #ffcdd2;
+            color: #d32f2f;
+        }
+        .btn-danger:hover {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+        }
 
-        .btn-success-custom { background-color: #e8f5e9; border-color: #c8e6c9; color: #2e7d32; }
-        .btn-success-custom:hover { background-color: #2e7d32; color: white; transform: translateY(-2px); }
+        .btn-success-custom {
+            background-color: #e8f5e9;
+            border-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        .btn-success-custom:hover {
+            background-color: #2e7d32;
+            border-color: #2e7d32;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+        }
 
         /* Custom Modal Styles */
         .custom-modal {
@@ -264,8 +1984,9 @@
 
         .custom-modal-header {
             padding: 1.5rem;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
         }
@@ -279,17 +2000,38 @@
             justify-content: center;
             margin-right: 15px;
             font-size: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .modal-icon-danger {
+            color: white;
+        }
+        .custom-modal-title {
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+        .custom-modal-body {
+            padding: 1.5rem;
+            color: #666;
+            line-height: 1.6;
         }
 
-        .modal-icon-danger { background-color: #fff; color: var(--primary-color); }
-        .custom-modal-title { font-weight: 600; color: #d32f2f; margin: 0; }
-        .custom-modal-body { padding: 1.5rem; color: #666; line-height: 1.6; }
-
-        .employee-details { background-color: #f8f9fa; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
-        .employee-detail-item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-        .employee-detail-label { font-weight: 600; color: #555; }
-        .employee-detail-value { color: #333; }
-
+        .employee-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        .employee-detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .employee-detail-label {
+            font-weight: 600;
+            color: #555;
+        }
         .warning-text {
             color: #d32f2f;
             font-weight: 600;
@@ -308,35 +2050,42 @@
             justify-content: flex-end;
             gap: 10px;
         }
-
-        .modal-btn { padding: 0.5rem 1.5rem; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; transition: var(--transition); }
-        .modal-btn-cancel { background-color: #6c757d; color: white; }
-        .modal-btn-cancel:hover { background-color: #5a6268; transform: translateY(-2px); }
-        .modal-btn-delete { background-color: #d32f2f; color: white; }
-        .modal-btn-delete:hover { background-color: #c62828; transform: translateY(-2px); }
-
-        /* Animations */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Responsive adjustments */
-        @media (max-width: 991.98px) {
-            .sidebar { width: 70px; }
-            .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge { display: none; }
-            .main-content { margin-left: 70px; padding: 15px; }
-            .sidebar:hover { width: 280px; }
-            .sidebar:hover .brand-text, .sidebar:hover .nav-text, .sidebar:hover .user-info, .sidebar:hover .nav-section-title, .sidebar:hover .nav-badge { display: block; }
+        .modal-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        @media (max-width: 767.98px) {
-            .sidebar { width: 100%; height: auto; position: relative; margin-bottom: 10px; }
-            .main-content { margin-left: 0; padding: 10px; }
-            .page-header { flex-direction: column; align-items: flex-start; }
-            .page-header .btn-add-new { margin-top: 1rem; width: 100%; justify-content: center; }
-            .table-responsive { overflow-x: auto; }
-            .custom-modal-content { width: 95%; margin: 10px; }
-            .card-header { flex-direction: column; align-items: flex-start; }
-            .search-wrapper { max-width: 100%; }
+        .modal-btn-cancel {
+            background-color: #6c757d;
+            color: white;
         }
+        .modal-btn-cancel:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+        .modal-btn-delete {
+            background-color: #d32f2f;
+            color: white;
+        }
+        .modal-btn-delete:hover {
+            background-color: #c62828;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(211, 47, 47, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* --- Pagination Styles --- */
         .pagination-container {
             padding: 1rem 1.5rem;
@@ -353,33 +2102,169 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
         .pagination .page-link:hover {
-            background-color: #e3f2fd;
-            border-color: #dee2e6;
+            background-color: #f8f9fa;
         }
-
         .pagination .page-item.active .page-link {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: white;
         }
-
-        .pagination .page-item.disabled .page-link {
-            color: #6c757d;
-            pointer-events: none;
-            background-color: #fff;
-        }
-
         .page-info {
             color: #6c757d;
             font-size: 0.9rem;
         }
 
+        /* Responsive adjustments */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                width: 70px;
+                overflow: visible;
+            }
+
+            .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge {
+                display: none;
+            }
+
+            .brand-icon {
+                margin-right: 0;
+            }
+
+            .nav-link {
+                padding: 0.75rem;
+                justify-content: center;
+            }
+
+            .nav-link i {
+                margin-right: 0;
+                font-size: 1.25rem;
+            }
+
+            .user-profile {
+                padding: 0.5rem;
+                justify-content: center;
+            }
+
+            .user-avatar {
+                margin-right: 0;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                padding: 15px;
+            }
+
+            .sidebar:hover {
+                width: 280px;
+            }
+
+            .sidebar:hover .brand-text,
+            .sidebar:hover .nav-text,
+            .sidebar:hover .user-info,
+            .sidebar:hover .nav-section-title,
+            .sidebar:hover .nav-badge {
+                display: block;
+            }
+
+            .sidebar:hover .nav-link {
+                justify-content: flex-start;
+                padding: 0.75rem 1.5rem;
+            }
+
+            .sidebar:hover .nav-link i {
+                margin-right: 12px;
+            }
+
+            .sidebar:hover .user-profile {
+                justify-content: flex-start;
+                padding: 0.75rem;
+            }
+
+            .sidebar:hover .user-avatar {
+                margin-right: 12px;
+            }
+        }
+
         @media (max-width: 767.98px) {
-            .pagination-container {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                overflow-x: auto;
+                padding: 0.5rem;
+            }
+
+            .nav-section {
+                margin-bottom: 0;
+                margin-right: 1rem;
+            }
+
+            .nav-section-title {
+                display: none;
+            }
+
+            .nav-list {
+                display: flex;
+            }
+
+            .nav-item {
+                margin-bottom: 0;
+                margin-right: 0.5rem;
+            }
+
+            .nav-link {
+                padding: 0.5rem 1rem;
+                border-radius: 8px;
+                border-left: none;
+            }
+
+            .nav-link.active {
+                background-color: var(--active-color);
+                border-left: none;
+            }
+
+            .sidebar-footer {
+                display: none;
+            }
+
+            .page-header {
                 flex-direction: column;
-                gap: 15px;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .btn-add-new {
+                align-self: stretch;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .search-wrapper {
+                max-width: 100%;
+            }
+        }
+
+        /* Sidebar hover effect for desktop */
+        @media (min-width: 992px) {
+            .sidebar:hover .nav-text,
+            .sidebar:hover .nav-section-title {
+                opacity: 1;
+                visibility: visible;
             }
         }
     </style>
@@ -397,11 +2282,7 @@
         </div>
         <div class="custom-modal-body">
             <p>Are you sure you want to delete this employee? </p>
-
-            <div class="employee-details" id="employeeDetails">
-                <!-- Employee details will be populated here by JS -->
-            </div>
-
+            <div class="employee-details" id="employeeDetails"></div>
             <div class="warning-text">
                 <i class="bi bi-exclamation-circle-fill me-2"></i>
                 Warning: This will permanently delete all employee data including payroll records.
@@ -419,48 +2300,76 @@
 </div>
 
 <div class="d-flex">
+    <!-- Sidebar (Updated to match dashboard) -->
     <div class="sidebar">
+        <!-- Header -->
         <div class="sidebar-header">
             <a href="/" class="brand">
-                <div class="brand-icon"><i class="bi bi-cash-coin"></i></div>
+                <div class="brand-icon">
+                    <i class="bi bi-cash-coin"></i>
+                </div>
                 <span class="brand-text">Payroll System</span>
             </a>
         </div>
+
+        <!-- Navigation -->
         <div class="sidebar-nav">
             <div class="nav-section">
                 <div class="nav-section-title">Main</div>
                 <ul class="nav-list">
                     <li class="nav-item">
                         <a th:href="@{/dashboard}" class="nav-link">
-                            <i class="bi bi-house"></i><span class="nav-text">Dashboard</span>
+                            <i class="bi bi-house"></i>
+                            <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
                 </ul>
             </div>
+
             <div class="nav-section">
                 <div class="nav-section-title">Management</div>
                 <ul class="nav-list">
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'HR')">
                         <a th:href="@{employees}" class="nav-link active">
-                            <i class="bi bi-people"></i><span class="nav-text">Employees</span>
+                            <i class="bi bi-people"></i>
+                            <span class="nav-text">Employees</span>
                             <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>
                         </a>
                     </li>
                 </ul>
             </div>
+
+            <div class="nav-section">
+<!--                <div class="nav-section-title">Employee</div>-->
+                <ul class="nav-list">
+                    <li class="nav-item" sec:authorize="hasRole('EMPLOYEE')">
+                        <a th:href="@{/employee/attendance}" class="nav-link">
+                            <i class="bi bi-calendar-check"></i>
+                            <span class="nav-text">Attendance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasRole('EMPLOYEE')">
+                        <a th:href="@{/employee/payroll}" class="nav-link">
+                            <i class="bi bi-cash"></i>
+                            <span class="nav-text">My Payroll</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
+        <!-- Footer with User Profile -->
         <div class="sidebar-footer">
             <div class="dropdown">
                 <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="/images/num.png" alt="User Avatar" class="user-avatar">
                     <div class="user-info">
-                        <div class="user-name" sec:authentication="name">HR/Admin User</div>
-                        <div class="user-role" sec:authentication="principal.authorities">Role</div>
+                        <div class="user-name" sec:authentication="name">Admin User</div>
+                        <div class="user-role" sec:authorize="hasRole('ADMIN')">Administrator</div>
                     </div>
-                    <i class="bi bi-chevron-down text-light"></i>
+                    <i class="bi bi-chevron-down"></i>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                    <!-- <li><a class="dropdown-item" th:href="@{/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>-->
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form th:action="@{/logout}" method="post">
@@ -472,12 +2381,11 @@
         </div>
     </div>
 
+    <!-- Main Content -->
     <div class="main-content flex-grow-1">
-
-        <!-- PAGE HEADER -->
         <div class="page-header">
             <div>
-                <h1 class="page-title">Employee Directory</h1>
+                <h1 class="page-title">Employee Management</h1>
                 <p class="page-subtitle">Manage all employee profiles, salary, and payroll.</p>
             </div>
             <a th:href="@{/register}" class="btn-add-new">
@@ -487,10 +2395,9 @@
         </div>
 
         <div class="card">
-            <!-- CARD HEADER -->
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-3">
                 <div class="d-flex align-items-center">
-                    <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-2 text-primary" style="--bs-bg-opacity: .1; background-color: rgba(13, 110, 253, 0.1) !important;">
+                    <div class="bg-primary bg-opacity-10 p-2 rounded-circle me-2" style="background-color: rgba(14, 88, 245, 0.1) !important;">
                         <i class="bi bi-people-fill" style="color: var(--primary-color);"></i>
                     </div>
                     <span style="font-weight: 700; color: var(--dark-bg); font-size: 1.05rem;">
@@ -499,86 +2406,85 @@
                 </div>
 
                 <div class="search-wrapper">
-                    <!-- Search Input -->
                     <input type="text" id="employeeSearchInput" class="search-input" placeholder="Search by name, email, or position...">
                     <i class="bi bi-search search-icon-overlay"></i>
                 </div>
             </div>
 
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover" id="employeeTable">
-                        <thead>
-                        <tr>
-                            <th>#ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Department</th>
-                            <th>Position</th>
-                            <th>Basic Salary</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                        <!-- Thymeleaf Loop -->
-                        <tr th:each="employee : ${employees}" class="employee-row">
-                            <td th:text="${employee.id}">1</td>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img th:src="${employee.profileImageUrl != null && !employee.profileImageUrl.isEmpty() ? employee.profileImageUrl : '/images/default-avatar.png'}"
-                                         alt="Profile"
-                                         class="avatar-table me-3"
-                                         onerror="this.onerror=null;this.src='/images/default-avatar.png';">
-                                    <div>
-                                        <span class="fw-bold text-dark" th:text="${employee.firstName + ' ' + employee.lastName}">John Doe</span>
+            <div class="card-body p-0">
+                <div class="table-container">
+                    <!-- SEARCH LOADING OVERLAY -->
+                    <div id="searchOverlay" class="search-overlay">
+                        <div class="text-center">
+                            <div class="spinner-custom mb-2"></div>
+                            <div class="fw-bold" style="color: var(--dark-bg)">Searching...</div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0" id="employeeTable">
+                            <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Position</th>
+                                <th>Basic Salary</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            <tr th:each="employee : ${employees}" class="employee-row">
+                                <td th:text="${employee.id}">1</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img th:src="${employee.profileImageUrl != null && !employee.profileImageUrl.isEmpty() ? employee.profileImageUrl : '/images/num.png'}"
+                                             alt="Profile"
+                                             class="avatar-table me-3"
+                                             onerror="this.onerror=null;this.src='/images/num.png';">
+                                        <div><span class="fw-bold text-dark" th:text="${employee.firstName + ' ' + employee.lastName}">John Doe</span></div>
                                     </div>
-                                </div>
-                            </td>
-                            <td th:text="${employee.email}">email@example.com</td>
-                            <td th:text="${employee.department}">Dept</td>
-                            <td th:text="${employee.position}">Pos</td>
-                            <td th:text="'$' + ${#numbers.formatDecimal(employee.basicSalary, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
-                            <td>
-                                <a th:href="@{/hr/employees/{id}/edit(id=${employee.id})}" class="btn btn-action btn-info"><i class="bi bi-pencil-square"></i> Edit</a>
-
-                                <a th:href="@{/hr/employees/{id}/delete(id=${employee.id})}"
-                                   class="btn btn-action btn-danger delete-btn"
-                                   th:data-employee-id="${employee.id}"
-                                   th:data-employee-image="${employee.profileImageUrl}"
-                                   th:data-employee-name="${employee.firstName + ' ' + employee.lastName}"
-                                   th:data-employee-email="${employee.email}"
-                                   th:data-employee-dept="${employee.department}"
-                                   th:data-employee-position="${employee.position}"
-                                   th:data-employee-salary="${employee.basicSalary}">
-                                    <i class="bi bi-trash"></i> Delete
-                                </a>
-
-                                <form th:action="@{/hr/payroll/calculate/{employeeProfileId}(employeeProfileId=${employee.id})}" method="post" style="display:inline-block; margin-left: 5px;">
-                                    <input type="hidden" name="month" th:value="${T(java.time.LocalDate).now().monthValue}">
-                                    <input type="hidden" name="year" th:value="${T(java.time.LocalDate).now().year}">
-                                    <button type="submit" class="btn btn-action btn-success-custom"><i class="bi bi-cash"></i> Payroll</button>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr th:if="${#lists.isEmpty(employees)}">
-                            <td colspan="7" class="text-center py-4 text-muted">
-                                <i class="bi bi-person-x display-4 d-block mb-2"></i>
-                                No employee records found.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                </td>
+                                <td th:text="${employee.email}">email@example.com</td>
+                                <td th:text="${employee.department}">Dept</td>
+                                <td th:text="${employee.position}">Pos</td>
+                                <td th:text="'$' + ${#numbers.formatDecimal(employee.basicSalary, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
+                                <td>
+                                    <a th:href="@{/hr/employees/{id}/edit(id=${employee.id})}" class="btn btn-action btn-info"><i class="bi bi-pencil-square"></i> Edit</a>
+                                    <a th:href="@{/hr/employees/{id}/delete(id=${employee.id})}"
+                                       class="btn btn-action btn-danger delete-btn"
+                                       th:data-employee-id="${employee.id}"
+                                       th:data-employee-image="${employee.profileImageUrl}"
+                                       th:data-employee-name="${employee.firstName + ' ' + employee.lastName}"
+                                       th:data-employee-email="${employee.email}">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                    <form th:action="@{/hr/payroll/calculate/{employeeProfileId}(employeeProfileId=${employee.id})}" method="post" style="display:inline-block; margin-left: 5px;">
+                                        <input type="hidden" name="month" th:value="${T(java.time.LocalDate).now().monthValue}">
+                                        <input type="hidden" name="year" th:value="${T(java.time.LocalDate).now().year}">
+                                        <button type="submit" class="btn btn-action btn-success-custom"><i class="bi bi-cash"></i> Payroll</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(employees)}">
+                                <td colspan="7" class="text-center py-4 text-muted">
+                                    <i class="bi bi-person-x display-4 d-block mb-2"></i>
+                                    No employee records found.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- PAGINATION CONTROLS -->
                 <div class="pagination-container" id="paginationControls">
                     <div class="page-info">
-                        Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> entries
+                        Showing <span id="startEntry">0</span> to <span id="endEntry">0</span> of <span id="totalEntries">0</span> Employees
                     </div>
                     <nav aria-label="Page navigation">
-                        <ul class="pagination mb-0" id="paginationList">
-                            <!-- Pagination generated by JS -->
-                        </ul>
+                        <ul class="pagination mb-0" id="paginationList"></ul>
                     </nav>
                 </div>
             </div>
@@ -588,187 +2494,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!--<script>-->
-<!--    document.addEventListener('DOMContentLoaded', function() {-->
-<!--        // -&#45;&#45; 1. SET ACTIVE NAV LINK -&#45;&#45;-->
-<!--        const currentPath = window.location.pathname;-->
-<!--        const navLinks = document.querySelectorAll('.nav-link');-->
-
-<!--        navLinks.forEach(link => {-->
-<!--            if (link.getAttribute('href') === currentPath) {-->
-<!--                link.classList.add('active');-->
-<!--            } else {-->
-<!--                link.classList.remove('active');-->
-<!--            }-->
-<!--        });-->
-
-<!--        // -&#45;&#45; 2. SEARCH FUNCTIONALITY (Client-side) -&#45;&#45;-->
-<!--        const searchInput = document.getElementById('employeeSearchInput');-->
-<!--        const tableBody = document.querySelector('.table tbody');-->
-
-<!--        if(searchInput && tableBody) {-->
-<!--            searchInput.addEventListener('keyup', function() {-->
-<!--                const searchTerm = this.value.toLowerCase().trim();-->
-<!--                const rows = tableBody.getElementsByTagName('tr');-->
-<!--                let hasVisibleRows = false;-->
-
-<!--                // Remove existing "No match" row if it exists-->
-<!--                const noMatchRow = document.getElementById('no-match-row');-->
-<!--                if (noMatchRow) {-->
-<!--                    noMatchRow.remove();-->
-<!--                }-->
-
-<!--                // Loop through all table rows-->
-<!--                for (let i = 0; i < rows.length; i++) {-->
-<!--                    const row = rows[i];-->
-
-<!--                    // Skip the Thymeleaf "No employee records found" row if database is empty-->
-<!--                    if (row.cells.length === 1 && row.textContent.includes('No employee records found')) {-->
-<!--                        continue;-->
-<!--                    }-->
-
-<!--                    // Get text content from columns: Name(1), Email(2), Dept(3), Position(4)-->
-<!--                    const name = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';-->
-<!--                    const email = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';-->
-<!--                    const dept = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';-->
-<!--                    const position = row.cells[4] ? row.cells[4].textContent.toLowerCase() : '';-->
-
-<!--                    const combinedText = name + ' ' + email + ' ' + dept + ' ' + position;-->
-
-<!--                    if (combinedText.includes(searchTerm)) {-->
-<!--                        row.style.display = ''; // Show-->
-<!--                        hasVisibleRows = true;-->
-<!--                    } else {-->
-<!--                        row.style.display = 'none'; // Hide-->
-<!--                    }-->
-<!--                }-->
-
-<!--                // If no rows match the search, show a temporary message-->
-<!--                if (!hasVisibleRows && rows.length > 0) {-->
-<!--                    const newRow = document.createElement('tr');-->
-<!--                    newRow.id = 'no-match-row';-->
-<!--                    newRow.innerHTML = `-->
-<!--                        <td colspan="7" class="text-center py-4 text-muted">-->
-<!--                            <i class="bi bi-search d-block mb-2" style="font-size: 1.5rem;"></i>-->
-<!--                            No employees found matching "${this.value}"-->
-<!--                        </td>-->
-<!--                    `;-->
-<!--                    tableBody.appendChild(newRow);-->
-<!--                }-->
-<!--            });-->
-<!--        }-->
-
-<!--        // -&#45;&#45; 3. DELETE CONFIRMATION MODAL -&#45;&#45;-->
-<!--        const deleteModal = document.getElementById('deleteConfirmModal');-->
-<!--        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');-->
-<!--        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');-->
-<!--        const employeeDetailsDiv = document.getElementById('employeeDetails');-->
-
-<!--        let deleteUrl = '';-->
-<!--        let employeeData = {};-->
-
-<!--        // Add event listeners to all delete buttons-->
-<!--        document.querySelectorAll('.delete-btn').forEach(btn => {-->
-<!--            btn.addEventListener('click', function(e) {-->
-<!--                e.preventDefault();-->
-
-<!--                // Get employee data from data attributes-->
-<!--                employeeData = {-->
-<!--                    id: this.getAttribute('data-employee-id'),-->
-<!--                    image: this.getAttribute('data-employee-image'), // Get Image URL-->
-<!--                    name: this.getAttribute('data-employee-name'),-->
-<!--                    email: this.getAttribute('data-employee-email'),-->
-<!--                    department: this.getAttribute('data-employee-dept'),-->
-<!--                    position: this.getAttribute('data-employee-position'),-->
-<!--                    salary: this.getAttribute('data-employee-salary')-->
-<!--                };-->
-
-<!--                // Store the delete URL-->
-<!--                deleteUrl = this.getAttribute('href');-->
-
-<!--                // Determine image source for modal (fallback if empty)-->
-<!--                const imgSrc = (employeeData.image && employeeData.image !== '')-->
-<!--                    ? employeeData.image-->
-<!--                    : '/images/default-avatar.png';-->
-
-<!--                // Populate employee details in modal (Updated to show Image)-->
-<!--                employeeDetailsDiv.innerHTML = `-->
-<!--                    <div class="text-center mb-3">-->
-<!--                        <img src="${imgSrc}"-->
-<!--                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #dee2e6;"-->
-<!--                             onerror="this.src='/images/default-avatar.png'">-->
-<!--                    </div>-->
-<!--                    <div class="employee-detail-item">-->
-<!--                        <span class="employee-detail-label">Employee ID:</span>-->
-<!--                        <span class="employee-detail-value">${employeeData.id}</span>-->
-<!--                    </div>-->
-<!--                    <div class="employee-detail-item">-->
-<!--                        <span class="employee-detail-label">Full Name:</span>-->
-<!--                        <span class="employee-detail-value fw-bold">${employeeData.name}</span>-->
-<!--                    </div>-->
-<!--                    <div class="employee-detail-item">-->
-<!--                        <span class="employee-detail-label">Email:</span>-->
-<!--                        <span class="employee-detail-value">${employeeData.email}</span>-->
-<!--                    </div>-->
-<!--                    <div class="employee-detail-item">-->
-<!--                        <span class="employee-detail-label">Department:</span>-->
-<!--                        <span class="employee-detail-value">${employeeData.department}</span>-->
-<!--                    </div>-->
-<!--                    <div class="employee-detail-item">-->
-<!--                        <span class="employee-detail-label">Position:</span>-->
-<!--                        <span class="employee-detail-value">${employeeData.position}</span>-->
-<!--                    </div>-->
-<!--                    <div class="employee-detail-item">-->
-<!--                        <span class="employee-detail-label">Basic Salary:</span>-->
-<!--                        <span class="employee-detail-value">$${parseFloat(employeeData.salary).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>-->
-<!--                    </div>-->
-<!--                `;-->
-
-<!--                // Show the modal-->
-<!--                deleteModal.style.display = 'flex';-->
-<!--            });-->
-<!--        });-->
-
-<!--        // Cancel delete button-->
-<!--        cancelDeleteBtn.addEventListener('click', function() {-->
-<!--            deleteModal.style.display = 'none';-->
-<!--        });-->
-
-<!--        // Confirm delete button-->
-<!--        confirmDeleteBtn.addEventListener('click', function() {-->
-<!--            // Redirect to delete URL-->
-<!--            window.location.href = deleteUrl;-->
-<!--        });-->
-
-<!--        // Close modal when clicking outside-->
-<!--        deleteModal.addEventListener('click', function(e) {-->
-<!--            if (e.target === deleteModal) {-->
-<!--                deleteModal.style.display = 'none';-->
-<!--            }-->
-<!--        });-->
-
-<!--        // Close modal with Escape key-->
-<!--        document.addEventListener('keydown', function(e) {-->
-<!--            if (e.key === 'Escape' && deleteModal.style.display === 'flex') {-->
-<!--                deleteModal.style.display = 'none';-->
-<!--            }-->
-<!--        });-->
-
-<!--        // -&#45;&#45; 4. PAYROLL CALCULATION CONFIRMATION -&#45;&#45;-->
-<!--        document.querySelectorAll('form[action*="payroll/calculate"] button[type="submit"]').forEach(btn => {-->
-<!--            btn.addEventListener('click', function(e) {-->
-<!--                const form = this.closest('form');-->
-<!--                const employeeRow = form.closest('tr');-->
-<!--                // The name is now inside a div/span structure in the 2nd column-->
-<!--                const employeeName = employeeRow.querySelector('td:nth-child(2) span').textContent;-->
-
-<!--                if (!confirm(`Calculate payroll for ${employeeName}? This will generate payroll for the current month.`)) {-->
-<!--                    e.preventDefault();-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -782,31 +2507,27 @@
 
         // --- 2. PAGINATION & SEARCH VARIABLES ---
         const tableBody = document.getElementById('tableBody');
-        const rows = Array.from(tableBody.querySelectorAll('tr.employee-row')); // Only select actual data rows
+        const rows = Array.from(tableBody.querySelectorAll('tr.employee-row'));
         const searchInput = document.getElementById('employeeSearchInput');
+        const searchOverlay = document.getElementById('searchOverlay');
         const paginationControls = document.getElementById('paginationControls');
         const paginationList = document.getElementById('paginationList');
         const startEntrySpan = document.getElementById('startEntry');
         const endEntrySpan = document.getElementById('endEntry');
         const totalEntriesSpan = document.getElementById('totalEntries');
 
-        const rowsPerPage = 10;
+        const rowsPerPage = 8;
         let currentPage = 1;
+        let searchTimeout = null;
 
         // --- 3. PAGINATION FUNCTIONS ---
-
         function displayRows(page, rowsToDisplay) {
             const start = (page - 1) * rowsPerPage;
             const end = start + rowsPerPage;
-
-            // Hide all rows first
             rowsToDisplay.forEach(row => row.style.display = 'none');
-
-            // Show only rows for current page
             const paginatedItems = rowsToDisplay.slice(start, end);
             paginatedItems.forEach(row => row.style.display = '');
 
-            // Update Info Text
             const total = rowsToDisplay.length;
             if (total === 0) {
                 startEntrySpan.innerText = 0;
@@ -821,47 +2542,35 @@
         function setupPagination(rowsToDisplay) {
             paginationList.innerHTML = "";
             const pageCount = Math.ceil(rowsToDisplay.length / rowsPerPage);
+            if (pageCount <= 1) return;
 
-            if (pageCount <= 1) return; // Don't show controls if only 1 page
-
-            // Prev Button
             const prevLi = document.createElement('li');
             prevLi.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
             prevLi.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-            prevLi.addEventListener('click', function(e) {
+            prevLi.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (currentPage > 1) {
-                    currentPage--;
-                    updatePaginationState(rowsToDisplay);
-                }
+                if (currentPage > 1) { currentPage--; updatePaginationState(rowsToDisplay); }
             });
             paginationList.appendChild(prevLi);
 
-            // Numbered Buttons
             for (let i = 1; i <= pageCount; i++) {
                 const li = document.createElement('li');
                 li.className = `page-item ${i === currentPage ? 'active' : ''}`;
                 li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-
-                li.addEventListener('click', function(e) {
+                li.addEventListener('click', (e) => {
                     e.preventDefault();
                     currentPage = i;
                     updatePaginationState(rowsToDisplay);
                 });
-
                 paginationList.appendChild(li);
             }
 
-            // Next Button
             const nextLi = document.createElement('li');
             nextLi.className = `page-item ${currentPage === pageCount ? 'disabled' : ''}`;
             nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;
-            nextLi.addEventListener('click', function(e) {
+            nextLi.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (currentPage < pageCount) {
-                    currentPage++;
-                    updatePaginationState(rowsToDisplay);
-                }
+                if (currentPage < pageCount) { currentPage++; updatePaginationState(rowsToDisplay); }
             });
             paginationList.appendChild(nextLi);
         }
@@ -871,69 +2580,72 @@
             setupPagination(rowsSource);
         }
 
-        // --- INITIALIZATION ---
-        // Check if we have employees to paginate
-        if (rows.length > 0) {
-            updatePaginationState(rows);
-        } else {
-            // Empty table (0 employees)
-            paginationControls.style.display = 'none';
-        }
+        if (rows.length > 0) updatePaginationState(rows);
+        else paginationControls.style.display = 'none';
 
-        // --- 4. SEARCH FUNCTIONALITY ---
+        // --- 4. SEARCH FUNCTIONALITY WITH DELAY ---
         if(searchInput) {
-            searchInput.addEventListener('keyup', function() {
+            searchInput.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase().trim();
 
-                // Remove existing "No match" row
-                const noMatchRow = document.getElementById('no-match-row');
-                if (noMatchRow) noMatchRow.remove();
+                // Clear previous delay timer
+                clearTimeout(searchTimeout);
 
-                if (searchTerm === "") {
-                    // Search cleared: Restore Pagination
-                    currentPage = 1;
-                    paginationControls.style.display = 'flex';
-                    updatePaginationState(rows);
-                    return;
-                }
+                // Show Loading Spinner
+                searchOverlay.style.display = 'flex';
 
-                // Search Active: Hide Pagination Controls & Filter
-                paginationControls.style.display = 'none';
+                // Start new delay
+                searchTimeout = setTimeout(() => {
 
-                let hasVisibleRows = false;
+                    const noMatchRow = document.getElementById('no-match-row');
+                    if (noMatchRow) noMatchRow.remove();
 
-                rows.forEach(row => {
-                    // Get text content from columns: Name(1), Email(2), Dept(3), Position(4)
-                    const name = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
-                    const email = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
-                    const dept = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';
-                    const position = row.cells[4] ? row.cells[4].textContent.toLowerCase() : '';
-
-                    const combinedText = name + ' ' + email + ' ' + dept + ' ' + position;
-
-                    if (combinedText.includes(searchTerm)) {
-                        row.style.display = ''; // Show
-                        hasVisibleRows = true;
-                    } else {
-                        row.style.display = 'none'; // Hide
+                    if (searchTerm === "") {
+                        currentPage = 1;
+                        paginationControls.style.display = 'flex';
+                        updatePaginationState(rows);
+                        searchOverlay.style.display = 'none';
+                        return;
                     }
-                });
 
-                if (!hasVisibleRows) {
-                    const newRow = document.createElement('tr');
-                    newRow.id = 'no-match-row';
-                    newRow.innerHTML = `
-                        <td colspan="7" class="text-center py-4 text-muted">
-                            <i class="bi bi-search d-block mb-2" style="font-size: 1.5rem;"></i>
-                            No employees found matching "${this.value}"
-                        </td>
-                    `;
-                    tableBody.appendChild(newRow);
-                }
+                    paginationControls.style.display = 'none';
+                    let hasVisibleRows = false;
+
+                    rows.forEach(row => {
+                        const name = row.cells[1] ? row.cells[1].textContent.toLowerCase() : '';
+                        const email = row.cells[2] ? row.cells[2].textContent.toLowerCase() : '';
+                        const dept = row.cells[3] ? row.cells[3].textContent.toLowerCase() : '';
+                        const position = row.cells[4] ? row.cells[4].textContent.toLowerCase() : '';
+                        const combinedText = name + ' ' + email + ' ' + dept + ' ' + position;
+
+                        if (combinedText.includes(searchTerm)) {
+                            row.style.display = '';
+                            hasVisibleRows = true;
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+
+                    if (!hasVisibleRows) {
+                        const newRow = document.createElement('tr');
+                        newRow.id = 'no-match-row';
+                        newRow.innerHTML = `
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="bi bi-search d-block mb-2" style="font-size: 1.5rem;"></i>
+                                No employees found matching "${this.value}"
+                            </td>
+                        `;
+                        tableBody.appendChild(newRow);
+                    }
+
+                    // Hide Loading Spinner after search is done
+                    searchOverlay.style.display = 'none';
+
+                }, 600); // 600ms delay
             });
         }
 
-        // --- 5. DELETE MODAL LOGIC (Unchanged) ---
+        // --- 5. DELETE MODAL LOGIC ---
         const deleteModal = document.getElementById('deleteConfirmModal');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
         const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
@@ -947,17 +2659,14 @@
                     id: this.getAttribute('data-employee-id'),
                     image: this.getAttribute('data-employee-image'),
                     name: this.getAttribute('data-employee-name'),
-                    email: this.getAttribute('data-employee-email'),
-                    department: this.getAttribute('data-employee-dept'),
-                    position: this.getAttribute('data-employee-position'),
-                    salary: this.getAttribute('data-employee-salary')
+                    email: this.getAttribute('data-employee-email')
                 };
                 deleteUrl = this.getAttribute('href');
-                const imgSrc = (data.image && data.image !== '') ? data.image : '/images/default-avatar.png';
+                const imgSrc = (data.image && data.image !== '') ? data.image : '/images/num.png';
 
                 employeeDetailsDiv.innerHTML = `
                     <div class="text-center mb-3">
-                        <img src="${imgSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #dee2e6;" onerror="this.src='/images/default-avatar.png'">
+                        <img src="${imgSrc}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #dee2e6;" onerror="this.src='/images/num.png'">
                     </div>
                     <div class="employee-detail-item"><span class="employee-detail-label">ID:</span><span>${data.id}</span></div>
                     <div class="employee-detail-item"><span class="employee-detail-label">Name:</span><span class="fw-bold">${data.name}</span></div>
@@ -969,10 +2678,7 @@
 
         if(cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', () => deleteModal.style.display = 'none');
         if(confirmDeleteBtn) confirmDeleteBtn.addEventListener('click', () => window.location.href = deleteUrl);
-
-        window.onclick = function(event) {
-            if (event.target == deleteModal) deleteModal.style.display = "none";
-        }
+        window.onclick = (e) => { if (e.target == deleteModal) deleteModal.style.display = "none"; };
 
         // --- 6. PAYROLL ALERT ---
         document.querySelectorAll('form[action*="payroll/calculate"] button').forEach(btn => {
@@ -980,6 +2686,18 @@
                 if (!confirm(`Calculate payroll for this employee?`)) e.preventDefault();
             });
         });
+
+        // --- 7. MOBILE SIDEBAR HOVER BEHAVIOR ---
+        const sidebar = document.querySelector('.sidebar');
+        if (window.innerWidth <= 991.98) {
+            sidebar.addEventListener('mouseenter', function() {
+                this.style.width = '280px';
+            });
+
+            sidebar.addEventListener('mouseleave', function() {
+                this.style.width = '70px';
+            });
+        }
     });
 </script>
 

@@ -1,3 +1,336 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Edit Employee - Payroll System (HR)</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            --primary-color: #4361ee;-->
+<!--            --primary-light: #4895ef;-->
+<!--            --secondary-color: #3f37c9;-->
+<!--            --dark-bg: #0e58f5;-->
+<!--            --dark-bg-light: #0e58f5;-->
+<!--            --text-light: #f8f9fa;-->
+<!--            --text-muted: #adb5bd;-->
+<!--            --border-color: #343a40;-->
+<!--            --hover-color: #2d3041;-->
+<!--            --active-color: #3a3f51;-->
+<!--            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--            --transition: all 0.3s ease;-->
+<!--            --success-color: rgba(10, 161, 6, 0.51); /* Light blue/cyan for success */-->
+<!--            --danger-color: #f72585;-->
+<!--            --btn-info: #4895ef; /* Lighter primary shade for info/edit */-->
+<!--            --btn-success: rgba(6, 56, 133, 0.9); /* Standard green for Calculate */-->
+<!--        }-->
+
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: #f5f7fb;-->
+<!--            color: rgba(10, 161, 6, 0.98);-->
+<!--            min-height: 100vh;-->
+<!--            overflow-x: hidden;-->
+<!--            display: flex; /* Use flexbox for layout */-->
+<!--        }-->
+
+<!--        /* --- Sidebar Styles (from your provided code) --- */-->
+<!--        .sidebar {-->
+<!--            background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-light) 100%);-->
+<!--            width: 280px;-->
+<!--            height: 100vh;-->
+<!--            position: fixed;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            box-shadow: var(--shadow);-->
+<!--            z-index: 1000;-->
+<!--            overflow-y: auto;-->
+<!--            transition: var(--transition);-->
+<!--        }-->
+
+<!--        .sidebar-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(--border-color); }-->
+<!--        .brand { display: flex; align-items: center; color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 1.25rem; }-->
+<!--        .brand-icon { background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; }-->
+<!--        .sidebar-nav { flex: 1; padding: 1rem 0; }-->
+<!--        .nav-section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }-->
+<!--        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-light); text-decoration: none; transition: var(--transition); border-left: 3px solid transparent; }-->
+<!--        .nav-link:hover { background-color: var(--hover-color); border-left-color: var(--primary-light); }-->
+<!--        .nav-link.active { background-color: var(--active-color); border-left-color: var(--primary-color); }-->
+<!--        .nav-link i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }-->
+<!--        .nav-badge { margin-left: auto; background-color: var(--primary-color); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; }-->
+<!--        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }-->
+<!--        .user-profile { display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; transition: var(--transition); cursor: pointer; }-->
+<!--        .user-profile:hover { background-color: var(--hover-color); }-->
+<!--        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 2px solid var(--primary-light); }-->
+<!--        .user-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; color: var(--text-light); }-->
+<!--        .user-role { font-size: 0.75rem; color: var(--text-muted); }-->
+
+<!--        /* --- Main Content Styles --- */-->
+<!--        .main-content {-->
+<!--            margin-left: 280px; /* Adjust to sidebar width */-->
+<!--            padding: 30px;-->
+<!--            transition: var(--transition);-->
+<!--            flex-grow: 1;-->
+<!--        }-->
+
+<!--        .page-header {-->
+<!--            margin-bottom: 2rem;-->
+<!--            padding-bottom: 1rem;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .page-title {-->
+<!--            font-weight: 700;-->
+<!--            color: var(--dark-bg);-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .page-subtitle {-->
+<!--            color: var(--text-muted);-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        /* Card and Form Specific Styles */-->
+<!--        .card {-->
+<!--            border: none;-->
+<!--            border-radius: 12px;-->
+<!--            box-shadow: var(--shadow);-->
+<!--            margin-bottom: 1.5rem;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .card-header {-->
+<!--            background-color: white;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            padding: 1.25rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(--dark-bg);-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        .form-label {-->
+<!--            font-weight: 500;-->
+<!--            color: #1a4c99;-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .form-control {-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.75rem 1rem;-->
+<!--            border: 1px solid #ced4da;-->
+<!--            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;-->
+<!--        }-->
+
+<!--        .form-control:focus {-->
+<!--            border-color: var(--primary-color);-->
+<!--            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .btn-primary {-->
+<!--            background-color: var(--primary-color);-->
+<!--            border-color: var(--primary-color);-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            border-radius: 8px;-->
+<!--            font-weight: 600;-->
+<!--            transition: background-color 0.2s ease, border-color 0.2s ease;-->
+<!--        }-->
+
+<!--        .btn-primary:hover {-->
+<!--            background-color: var(--secondary-color);-->
+<!--            border-color: var(--secondary-color);-->
+<!--        }-->
+
+<!--        .btn-secondary {-->
+<!--            background-color: rgba(245, 11, 28, 0.81);-->
+
+<!--            padding: 0.75rem 1.5rem;-->
+
+<!--            font-weight: 600;-->
+<!--            transition: background-color 0.2s ease, border-color 0.2s ease;-->
+<!--        }-->
+
+<!--        .btn-secondary:hover {-->
+<!--            background-color: #5a6268;-->
+<!--            border-color: #545b62;-->
+<!--        }-->
+
+
+<!--        /* Responsive adjustments */-->
+<!--        @media (max-width: 991.98px) {-->
+<!--            .sidebar { width: 70px; }-->
+<!--            .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge { display: none; }-->
+<!--            .main-content { margin-left: 70px; padding: 15px; }-->
+<!--            .sidebar:hover { width: 280px; }-->
+<!--            .sidebar:hover .brand-text, .sidebar:hover .nav-text, .sidebar:hover .user-info, .sidebar:hover .nav-section-title, .sidebar:hover .nav-badge { display: block; }-->
+<!--        }-->
+<!--        @media (max-width: 767.98px) {-->
+<!--            .sidebar { width: 100%; height: auto; position: relative; margin-bottom: 10px; }-->
+<!--            .main-content { margin-left: 0; padding: 10px; }-->
+<!--            .page-header { flex-direction: column; align-items: flex-start; }-->
+<!--            .page-header a { margin-top: 1rem; }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Sidebar &ndash;&gt;-->
+<!--<div class="sidebar">-->
+<!--    <div class="sidebar-header">-->
+<!--        <a href="/" class="brand">-->
+<!--            <div class="brand-icon"><i class="bi bi-cash-coin"></i></div>-->
+<!--            <span class="brand-text">Payroll System</span>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--    <div class="sidebar-nav">-->
+<!--        <div class="nav-section">-->
+<!--            <div class="nav-section-title">Main</div>-->
+<!--            <ul class="nav-list">-->
+<!--                <li class="nav-item">-->
+<!--                    <a th:href="@{/hr/dashboard}" class="nav-link">-->
+<!--                        <i class="bi bi-house"></i><span class="nav-text">Dashboard</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div class="nav-section">-->
+<!--            <div class="nav-section-title">Management</div>-->
+<!--            <ul class="nav-list">-->
+<!--                <li class="nav-item">-->
+<!--                    <a th:href="@{/employees}" class="nav-link active">-->
+<!--                        <i class="bi bi-people"></i><span class="nav-text">Employees</span>-->
+<!--                        <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="sidebar-footer">-->
+<!--        <div class="dropdown">-->
+<!--            <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <img src="/images/num.png" alt="User Avatar" class="user-avatar">-->
+<!--                <div class="user-info">-->
+<!--                    <div class="user-name" sec:authentication="name">HR/Admin User</div>-->
+<!--                    <div class="user-role" sec:authentication="principal.authorities">Role</div>-->
+<!--                </div>-->
+<!--                <i class="bi bi-chevron-down text-light"></i>-->
+<!--            </div>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                <li><a class="dropdown-item" th:href="@{/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li>-->
+<!--                    <form th:action="@{/logout}" method="post">-->
+<!--                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Page Content &ndash;&gt;-->
+<!--<div class="main-content flex-grow-1">-->
+<!--    <div class="page-header">-->
+<!--        <div>-->
+<!--            <h1 class="page-title">Edit Employee Profile</h1>-->
+<!--            <p class="page-subtitle">Update details for <span th:text="${employee.fullName}"></span></p>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="card mb-4">-->
+<!--        <div class="card-header">-->
+<!--            <i class="bi bi-person-fill me-1"></i>-->
+<!--            Employee Details-->
+<!--        </div>-->
+<!--        <div class="card-body">-->
+<!--            <form th:action="@{/hr/employees/{id}/edit(id=${employee.id})}" th:object="${employee}" method="post">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="firstName" class="form-label">First Name</label>-->
+<!--                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="lastName" class="form-label">Last Name</label>-->
+<!--                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" required>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="email" class="form-label">Email</label>-->
+<!--                        <input type="email" class="form-control" id="email" th:field="*{email}" required>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="phoneNumber" class="form-label">Phone Number</label>-->
+<!--                        <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="department" class="form-label">Department</label>-->
+<!--                        <input type="text" class="form-control" id="department" th:field="*{department}">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="position" class="form-label">Position</label>-->
+<!--                        <input type="text" class="form-control" id="position" th:field="*{position}">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="basicSalary" class="form-label">Basic Salary</label>-->
+<!--                    <input type="number" step="0.01" class="form-control" id="basicSalary" th:field="*{basicSalary}" required>-->
+<!--                </div>-->
+
+<!--                <div class="d-flex justify-content-start mt-4">-->
+<!--                    <button type="submit" class="btn btn-primary me-2">-->
+<!--                        <i class="bi bi-save me-1"></i> Update Employee-->
+<!--                    </button>-->
+<!--                    <a th:href="@{/hr/employees}" class="btn btn-secondary">-->
+<!--                        <i class="bi bi-x-circle me-1"></i> Cancel-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script>-->
+<!--    // Set active class dynamically for the current page-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const currentPath = window.location.pathname;-->
+<!--        const navLinks = document.querySelectorAll('.nav-link');-->
+
+<!--        navLinks.forEach(link => {-->
+<!--            // Check if the link's href matches the current path exactly or is a parent path-->
+<!--            const linkHref = link.getAttribute('href');-->
+<!--            if (currentPath.startsWith(linkHref) && linkHref !== '/') { // Exclude '/' for exact match on sub-pages-->
+<!--                link.classList.add('active');-->
+<!--            } else if (currentPath === linkHref) { // Exact match for homepage or other exact routes-->
+<!--                link.classList.add('active');-->
+<!--            } else {-->
+<!--                link.classList.remove('active');-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
@@ -10,40 +343,36 @@
 
     <style>
         :root {
-            --primary-color: #4361ee;
+            --primary-color: #1a4c99;
             --primary-light: #4895ef;
-            --secondary-color: #3f37c9;
-            --dark-bg: #0e58f5;
-            --dark-bg-light: #0e58f5;
+            --secondary-color: #1a4c99;
+            --dark-bg: #1a4c99;
+            --dark-bg-light: #1a4c99;
             --text-light: #f8f9fa;
-            --text-muted: #adb5bd;
-            --border-color: #343a40;
-            --hover-color: #2d3041;
-            --active-color: #3a3f51;
+            --text-muted: #ffffff;
+            --border-color: rgba(6, 56, 133, 0.9);
+            --hover-color: #0e58f5;
+            --active-color: #1a4c99;
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
-            --success-color: rgba(10, 161, 6, 0.51); /* Light blue/cyan for success */
+            --success-color: rgba(10, 161, 6, 0.51);
             --danger-color: #f72585;
-            --btn-info: #4895ef; /* Lighter primary shade for info/edit */
-            --btn-success: rgba(6, 56, 133, 0.9); /* Standard green for Calculate */
+            --btn-info: #4895ef;
+            --btn-success: rgba(6, 56, 133, 0.9);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f7fb;
-            color: rgba(10, 161, 6, 0.98);
+            color: #ffffff; /* Changed from green to dark for readability */
             min-height: 100vh;
             overflow-x: hidden;
-            display: flex; /* Use flexbox for layout */
+            display: flex;
         }
 
-        /* --- Sidebar Styles (from your provided code) --- */
+        /* --- Sidebar Styles --- */
         .sidebar {
             background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-light) 100%);
             width: 280px;
@@ -59,136 +388,211 @@
             transition: var(--transition);
         }
 
-        .sidebar-header { padding: 1.5rem 1.5rem 1rem; border-bottom: 1px solid var(--border-color); }
-        .brand { display: flex; align-items: center; color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 1.25rem; }
-        .brand-icon { background: linear-gradient(135deg, var(--primary-color), var(--primary-light)); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-right: 10px; }
-        .sidebar-nav { flex: 1; padding: 1rem 0; }
-        .nav-section-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); padding: 0 1.5rem; margin-bottom: 0.5rem; }
-        .nav-link { display: flex; align-items: center; padding: 0.75rem 1.5rem; color: var(--text-light); text-decoration: none; transition: var(--transition); border-left: 3px solid transparent; }
-        .nav-link:hover { background-color: var(--hover-color); border-left-color: var(--primary-light); }
-        .nav-link.active { background-color: var(--active-color); border-left-color: var(--primary-color); }
-        .nav-link i { margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
-        .nav-badge { margin-left: auto; background-color: var(--primary-color); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 10px; }
-        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }
-        .user-profile { display: flex; align-items: center; padding: 0.75rem; border-radius: 8px; transition: var(--transition); cursor: pointer; }
-        .user-profile:hover { background-color: var(--hover-color); }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 12px; border: 2px solid var(--primary-light); }
-        .user-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 2px; color: var(--text-light); }
-        .user-role { font-size: 0.75rem; color: var(--text-muted); }
-
-        /* --- Main Content Styles --- */
-        .main-content {
-            margin-left: 280px; /* Adjust to sidebar width */
-            padding: 30px;
-            transition: var(--transition);
-            flex-grow: 1;
+        .sidebar-header {
+            padding: 1.5rem 1.5rem 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .page-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eaeaea;
+        .brand {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.25rem;
         }
 
-        .page-title {
-            font-weight: 700;
-            color: var(--dark-bg);
-            margin-bottom: 0.5rem;
+        .brand-icon {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
         }
 
-        .page-subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
         }
 
-        /* Card and Form Specific Styles */
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
+        .nav-section {
             margin-bottom: 1.5rem;
-            overflow: hidden;
         }
 
-        .card-header {
-            background-color: white;
-            border-bottom: 1px solid #eaeaea;
-            padding: 1.25rem 1.5rem;
-            font-weight: 600;
-            color: var(--dark-bg);
-            font-size: 1.1rem;
-        }
-
-        .form-label {
-            font-weight: 500;
-            color: #1a4c99;
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 0 1.5rem;
             margin-bottom: 0.5rem;
         }
 
-        .form-control {
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            border: 1px solid #ced4da;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        .nav-item {
+            list-style: none;
+            margin-bottom: 0.25rem;
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
-            outline: none;
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 3px solid transparent;
         }
 
-        .btn-primary {
+        .nav-link:hover {
+            background-color: var(--hover-color);
+            border-left-color: var(--primary-light);
+        }
+
+        .nav-link.active {
+            background-color: var(--active-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .nav-link i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
             background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            padding: 0.75rem 1.5rem;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
             border-radius: 8px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .user-profile:hover {
+            background-color: var(--hover-color);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid var(--primary-light);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
             font-weight: 600;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+            color: var(--text-light);
         }
 
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
 
-        .btn-secondary {
-            background-color: rgba(245, 11, 28, 0.81);
-
-            padding: 0.75rem 1.5rem;
-
-            font-weight: 600;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
+        .dropdown-menu {
+            background-color: var(--dark-bg-light);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
         }
 
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
+        .dropdown-item {
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
         }
 
+        .dropdown-item:hover {
+            background-color: var(--hover-color);
+            color: var(--text-light);
+        }
 
-        /* Responsive adjustments */
+        .dropdown-divider {
+            border-color: var(--border-color);
+        }
+
+        /* --- Main Content --- */
+        .main-content { margin-left: 280px; padding: 30px; transition: var(--transition); flex-grow: 1; }
+        .page-header { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #eaeaea; display: flex; justify-content: space-between; align-items: center; }
+        .page-title { font-weight: 700; color: var(--dark-bg); margin-bottom: 0.5rem; }
+        .page-subtitle { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Card and Form */
+        .card { border: none; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 1.5rem; overflow: hidden; background: white; }
+        .card-header { background-color: white; border-bottom: 1px solid #eaeaea; padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark-bg); font-size: 1.1rem; }
+        .form-label { font-weight: 500; color: #1a4c99; margin-bottom: 0.5rem; }
+        .form-control { border-radius: 8px; padding: 0.75rem 1rem; border: 1px solid #ced4da; }
+
+        /* --- New Image Styles --- */
+        .profile-upload-container {
+            position: relative;
+            width: 150px;
+            margin: 0 auto 1.5rem;
+        }
+        .profile-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fff;
+            box-shadow: var(--shadow);
+        }
+        .upload-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--primary-color);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid white;
+            transition: var(--transition);
+        }
+        .upload-btn:hover { background: var(--secondary-color); transform: scale(1.1); }
+
+        .btn-primary { background-color: var(--primary-color); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; }
+        .btn-secondary { background-color: rgba(245, 11, 28, 0.81); border: none; padding: 0.75rem 1.5rem; font-weight: 600; color: white;}
+
         @media (max-width: 991.98px) {
             .sidebar { width: 70px; }
             .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge { display: none; }
-            .main-content { margin-left: 70px; padding: 15px; }
+            .main-content { margin-left: 70px; }
             .sidebar:hover { width: 280px; }
             .sidebar:hover .brand-text, .sidebar:hover .nav-text, .sidebar:hover .user-info, .sidebar:hover .nav-section-title, .sidebar:hover .nav-badge { display: block; }
-        }
-        @media (max-width: 767.98px) {
-            .sidebar { width: 100%; height: auto; position: relative; margin-bottom: 10px; }
-            .main-content { margin-left: 0; padding: 10px; }
-            .page-header { flex-direction: column; align-items: flex-start; }
-            .page-header a { margin-top: 1rem; }
         }
     </style>
 </head>
 <body>
 
-<!-- Sidebar -->
 <div class="sidebar">
     <div class="sidebar-header">
         <a href="/" class="brand">
@@ -201,7 +605,7 @@
             <div class="nav-section-title">Main</div>
             <ul class="nav-list">
                 <li class="nav-item">
-                    <a th:href="@{/hr/dashboard}" class="nav-link">
+                    <a th:href="@{/dashboard}" class="nav-link">
                         <i class="bi bi-house"></i><span class="nav-text">Dashboard</span>
                     </a>
                 </li>
@@ -211,7 +615,7 @@
             <div class="nav-section-title">Management</div>
             <ul class="nav-list">
                 <li class="nav-item">
-                    <a th:href="@{/employees}" class="nav-link active">
+                    <a th:href="@{/admin/employees}" class="nav-link active">
                         <i class="bi bi-people"></i><span class="nav-text">Employees</span>
                         <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>
                     </a>
@@ -224,13 +628,13 @@
             <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                 <img src="/images/num.png" alt="User Avatar" class="user-avatar">
                 <div class="user-info">
-                    <div class="user-name" sec:authentication="name">HR/Admin User</div>
-                    <div class="user-role" sec:authentication="principal.authorities">Role</div>
+                    <div style="color: white" class="user-name" sec:authentication="name">Admin User</div>
+                    <div class="user-role" sec:authorize="hasRole('ADMIN')">Administrator</div>
                 </div>
-                <i class="bi bi-chevron-down text-light"></i>
+                <i class="bi bi-chevron-down"></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" th:href="@{/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>
+                <!--                    <li><a class="dropdown-item" th:href="@{/employee/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>-->
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <form th:action="@{/logout}" method="post">
@@ -242,7 +646,6 @@
     </div>
 </div>
 
-<!-- Page Content -->
 <div class="main-content flex-grow-1">
     <div class="page-header">
         <div>
@@ -257,7 +660,22 @@
             Employee Details
         </div>
         <div class="card-body">
-            <form th:action="@{/hr/employees/{id}/edit(id=${employee.id})}" th:object="${employee}" method="post">
+            <!-- IMPORTANT: added enctype="multipart/form-data" -->
+            <form th:action="@{/hr/employees/{id}/edit(id=${employee.id})}" th:object="${employee}" method="post" enctype="multipart/form-data">
+
+                <!-- Profile Image Edit Section -->
+                <div class="profile-upload-container">
+                    <img id="imagePreview"
+                         th:src="${employee.profileImageUrl != null ? employee.profileImageUrl : '/images/num.png'}"
+                         class="profile-preview" alt="Employee Photo">
+<!--                    <label for="imageFile" class="upload-btn">-->
+<!--                        <i class="bi bi-camera"></i>-->
+<!--                    </label>-->
+                    <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                    <!-- Hidden field to keep existing URL if no new file is uploaded -->
+                    <input type="hidden" th:field="*{profileImageUrl}">
+                </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="firstName" class="form-label">First Name</label>
@@ -281,8 +699,22 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="department" class="form-label">Department</label>
-                        <input type="text" class="form-control" id="department" th:field="*{department}">
+                        <select class="form-select" id="department" th:field="*{department}">
+                            <option value="">-- Select Department --</option>
+                            <option value="HR">HR</option>
+                            <option value="IT">IT</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Operations">Operations</option>
+                            <option value="Customer Support">Customer Support</option>
+                            <option value="Administration">Administration</option>
+                            <option value="Procurement">Procurement</option>
+                            <option value="Research & Development">Research &amp; Development</option>
+                        </select>
                     </div>
+
+
                     <div class="col-md-6 mb-3">
                         <label for="position" class="form-label">Position</label>
                         <input type="text" class="form-control" id="position" th:field="*{position}">
@@ -304,25 +736,31 @@
             </form>
         </div>
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Set active class dynamically for the current page
+    // Preview image before upload
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Sidebar active class logic
     document.addEventListener('DOMContentLoaded', function() {
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.nav-link');
-
         navLinks.forEach(link => {
-            // Check if the link's href matches the current path exactly or is a parent path
             const linkHref = link.getAttribute('href');
-            if (currentPath.startsWith(linkHref) && linkHref !== '/') { // Exclude '/' for exact match on sub-pages
+            if (currentPath.startsWith(linkHref) && linkHref !== '/') {
                 link.classList.add('active');
-            } else if (currentPath === linkHref) { // Exact match for homepage or other exact routes
+            } else if (currentPath === linkHref) {
                 link.classList.add('active');
-            } else {
-                link.classList.remove('active');
             }
         });
     });
@@ -330,3 +768,1099 @@
 
 </body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Edit Employee - Payroll System (HR)</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">-->
+
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #4361ee;-->
+<!--            &#45;&#45;primary-light: #4895ef;-->
+<!--            &#45;&#45;secondary-color: #0e58f5;-->
+<!--            &#45;&#45;dark-bg: rgba(6, 56, 133, 0.9);-->
+<!--            &#45;&#45;dark-bg-light: #1a4c99;-->
+<!--            &#45;&#45;text-light: #ffffff;-->
+<!--            &#45;&#45;text-muted: #adb5bd;-->
+<!--            &#45;&#45;border-color: #1a4c99;-->
+<!--            &#45;&#45;hover-color: #1a4c99;-->
+<!--            &#45;&#45;active-color: #1a4c99;-->
+<!--            &#45;&#45;shadow: 0 4px 6px rgba(26, 76, 153, 0.1);-->
+<!--            &#45;&#45;transition: all 0.3s ease;-->
+<!--            &#45;&#45;success-color: #4cc9f0;-->
+<!--            &#45;&#45;danger-color: rgba(245, 11, 28, 0.81);-->
+<!--            &#45;&#45;warning-color: rgba(10, 161, 6, 0.78);-->
+<!--        }-->
+
+<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
+
+<!--        body {-->
+<!--            font-family: 'Inter', sans-serif;-->
+<!--            background-color: #f5f7fb;-->
+<!--            color: #333;-->
+<!--            min-height: 100vh;-->
+<!--            overflow-x: hidden;-->
+<!--            display: flex;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Sidebar Styles -&#45;&#45; */-->
+<!--        .sidebar {-->
+<!--            background: linear-gradient(180deg, var(&#45;&#45;dark-bg) 0%, var(&#45;&#45;dark-bg-light) 100%);-->
+<!--            width: 280px;-->
+<!--            height: 100vh;-->
+<!--            position: fixed;-->
+<!--            left: 0;-->
+<!--            top: 0;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--            z-index: 1000;-->
+<!--            overflow-y: auto;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .sidebar-header {-->
+<!--            padding: 1.5rem 1.5rem 1rem;-->
+<!--            border-bottom: 1px solid var(&#45;&#45;border-color);-->
+<!--        }-->
+
+<!--        .brand {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--            text-decoration: none;-->
+<!--            font-weight: 600;-->
+<!--            font-size: 1.25rem;-->
+<!--        }-->
+
+<!--        .brand-icon {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color), var(&#45;&#45;primary-light));-->
+<!--            width: 36px;-->
+<!--            height: 36px;-->
+<!--            border-radius: 8px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+
+<!--        .sidebar-nav {-->
+<!--            flex: 1;-->
+<!--            padding: 1rem 0;-->
+<!--        }-->
+
+<!--        .nav-section-title {-->
+<!--            font-size: 0.75rem;-->
+<!--            text-transform: uppercase;-->
+<!--            letter-spacing: 1px;-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--            padding: 0 1.5rem;-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .nav-link {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--            text-decoration: none;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            border-left: 3px solid transparent;-->
+<!--        }-->
+
+<!--        .nav-link:hover {-->
+<!--            background-color: var(&#45;&#45;hover-color);-->
+<!--            border-left-color: var(&#45;&#45;primary-light);-->
+<!--        }-->
+
+<!--        .nav-link.active {-->
+<!--            background-color: var(&#45;&#45;active-color);-->
+<!--            border-left-color: var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        .nav-link i {-->
+<!--            margin-right: 12px;-->
+<!--            font-size: 1.1rem;-->
+<!--            width: 20px;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .nav-badge {-->
+<!--            margin-left: auto;-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: white;-->
+<!--            font-size: 0.7rem;-->
+<!--            padding: 2px 6px;-->
+<!--            border-radius: 10px;-->
+<!--        }-->
+
+<!--        .sidebar-footer {-->
+<!--            padding: 1rem 1.5rem;-->
+<!--            border-top: 1px solid var(&#45;&#45;border-color);-->
+<!--        }-->
+
+<!--        .user-profile {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            padding: 0.75rem;-->
+<!--            border-radius: 8px;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        .user-profile:hover {-->
+<!--            background-color: var(&#45;&#45;hover-color);-->
+<!--        }-->
+
+<!--        .user-avatar {-->
+<!--            width: 40px;-->
+<!--            height: 40px;-->
+<!--            border-radius: 50%;-->
+<!--            object-fit: cover;-->
+<!--            margin-right: 12px;-->
+<!--            border: 2px solid var(&#45;&#45;primary-light);-->
+<!--        }-->
+
+<!--        .user-name {-->
+<!--            font-weight: 600;-->
+<!--            font-size: 0.9rem;-->
+<!--            margin-bottom: 2px;-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--        }-->
+
+<!--        .user-role {-->
+<!--            font-size: 0.75rem;-->
+<!--            color: var(&#45;&#45;text-muted);-->
+<!--        }-->
+
+<!--        .dropdown-menu {-->
+<!--            background-color: var(&#45;&#45;dark-bg-light);-->
+<!--            border: 1px solid var(&#45;&#45;border-color);-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--        }-->
+
+<!--        .dropdown-item {-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--            padding: 0.5rem 1rem;-->
+<!--        }-->
+
+<!--        .dropdown-item:hover {-->
+<!--            background-color: var(&#45;&#45;hover-color);-->
+<!--            color: var(&#45;&#45;text-light);-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Main Content -&#45;&#45; */-->
+<!--        .main-content {-->
+<!--            margin-left: 280px;-->
+<!--            padding: 30px;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            flex-grow: 1;-->
+<!--        }-->
+
+<!--        .page-header {-->
+<!--            margin-bottom: 2rem;-->
+<!--            padding-bottom: 1rem;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            display: flex;-->
+<!--            justify-content: space-between;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .page-title {-->
+<!--            font-weight: 700;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .page-subtitle {-->
+<!--            color: #6c757d;-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        /* Card and Form */-->
+<!--        .card {-->
+<!--            border: none;-->
+<!--            border-radius: 12px;-->
+<!--            box-shadow: var(&#45;&#45;shadow);-->
+<!--            margin-bottom: 1.5rem;-->
+<!--            overflow: hidden;-->
+<!--            background: white;-->
+<!--        }-->
+
+<!--        .card-header {-->
+<!--            background-color: white;-->
+<!--            border-bottom: 1px solid #eaeaea;-->
+<!--            padding: 1.25rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            color: var(&#45;&#45;dark-bg);-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        .card-body {-->
+<!--            padding: 2rem;-->
+<!--        }-->
+
+<!--        .form-label {-->
+<!--            font-weight: 500;-->
+<!--            color: #1a4c99;-->
+<!--            margin-bottom: 0.5rem;-->
+<!--        }-->
+
+<!--        .form-control {-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.75rem 1rem;-->
+<!--            border: 1px solid #ced4da;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .form-control:focus {-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);-->
+<!--            outline: 0;-->
+<!--        }-->
+
+<!--        /* -&#45;&#45; Enhanced Profile Image Upload Section -&#45;&#45; */-->
+<!--        .profile-upload-section {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 2rem;-->
+<!--            padding: 1.5rem;-->
+<!--            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);-->
+<!--            border-radius: 12px;-->
+<!--            border: 2px dashed #dee2e6;-->
+<!--        }-->
+
+<!--        .profile-upload-container {-->
+<!--            position: relative;-->
+<!--            display: inline-block;-->
+<!--            margin-bottom: 1rem;-->
+<!--        }-->
+
+<!--        .profile-preview {-->
+<!--            width: 180px;-->
+<!--            height: 180px;-->
+<!--            border-radius: 50%;-->
+<!--            object-fit: cover;-->
+<!--            border: 5px solid white;-->
+<!--            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        .profile-preview:hover {-->
+<!--            transform: scale(1.02);-->
+<!--            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);-->
+<!--        }-->
+
+<!--        .upload-overlay {-->
+<!--            position: absolute;-->
+<!--            bottom: 15px;-->
+<!--            right: 15px;-->
+<!--            background: var(&#45;&#45;primary-color);-->
+<!--            color: white;-->
+<!--            width: 45px;-->
+<!--            height: 45px;-->
+<!--            border-radius: 50%;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            cursor: pointer;-->
+<!--            border: 3px solid white;-->
+<!--            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--            z-index: 2;-->
+<!--        }-->
+
+<!--        .upload-overlay:hover {-->
+<!--            background: var(&#45;&#45;secondary-color);-->
+<!--            transform: scale(1.1) rotate(5deg);-->
+<!--            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);-->
+<!--        }-->
+
+<!--        .upload-overlay i {-->
+<!--            font-size: 1.2rem;-->
+<!--        }-->
+
+<!--        .upload-actions {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            gap: 1rem;-->
+<!--            margin-top: 1rem;-->
+<!--            flex-wrap: wrap;-->
+<!--        }-->
+
+<!--        .upload-hint {-->
+<!--            color: #6c757d;-->
+<!--            font-size: 0.9rem;-->
+<!--            margin-top: 0.5rem;-->
+<!--        }-->
+
+<!--        .upload-requirements {-->
+<!--            background-color: #f8f9fa;-->
+<!--            border-radius: 8px;-->
+<!--            padding: 1rem;-->
+<!--            margin-top: 1rem;-->
+<!--            text-align: left;-->
+<!--            border-left: 4px solid var(&#45;&#45;primary-color);-->
+<!--        }-->
+
+<!--        .upload-requirements h6 {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-bottom: 0.5rem;-->
+<!--            font-weight: 600;-->
+<!--        }-->
+
+<!--        .upload-requirements ul {-->
+<!--            padding-left: 1.5rem;-->
+<!--            margin-bottom: 0;-->
+<!--        }-->
+
+<!--        .upload-requirements li {-->
+<!--            color: #6c757d;-->
+<!--            font-size: 0.85rem;-->
+<!--            margin-bottom: 0.25rem;-->
+<!--        }-->
+
+<!--        /* Button Styles */-->
+<!--        .btn-primary {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            border-color: var(&#45;&#45;primary-color);-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .btn-primary:hover {-->
+<!--            background-color: var(&#45;&#45;secondary-color);-->
+<!--            border-color: var(&#45;&#45;secondary-color);-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);-->
+<!--        }-->
+
+<!--        .btn-secondary {-->
+<!--            background-color: #6c757d;-->
+<!--            border-color: #6c757d;-->
+<!--            color: white;-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .btn-secondary:hover {-->
+<!--            background-color: #5a6268;-->
+<!--            border-color: #5a6268;-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);-->
+<!--        }-->
+
+<!--        .btn-danger {-->
+<!--            background-color: var(&#45;&#45;danger-color);-->
+<!--            border-color: var(&#45;&#45;danger-color);-->
+<!--            color: white;-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .btn-danger:hover {-->
+<!--            background-color: #f50b1c;-->
+<!--            border-color: #f50b1c;-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 4px 12px rgba(247, 37, 133, 0.3);-->
+<!--        }-->
+
+<!--        .btn-warning {-->
+<!--            background-color: var(&#45;&#45;warning-color);-->
+<!--            border-color: var(&#45;&#45;warning-color);-->
+<!--            color: white;-->
+<!--            border-radius: 8px;-->
+<!--            padding: 0.75rem 1.5rem;-->
+<!--            font-weight: 600;-->
+<!--            transition: var(&#45;&#45;transition);-->
+<!--        }-->
+
+<!--        .btn-warning:hover {-->
+<!--            background-color: #e68900;-->
+<!--            border-color: #e68900;-->
+<!--            transform: translateY(-2px);-->
+<!--            box-shadow: 0 4px 12px rgba(248, 150, 30, 0.3);-->
+<!--        }-->
+
+<!--        /* Progress Bar */-->
+<!--        .upload-progress {-->
+<!--            width: 100%;-->
+<!--            background-color: #e9ecef;-->
+<!--            border-radius: 4px;-->
+<!--            margin-top: 1rem;-->
+<!--            overflow: hidden;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        .progress-bar {-->
+<!--            height: 8px;-->
+<!--            background: linear-gradient(90deg, var(&#45;&#45;primary-light), var(&#45;&#45;primary-color));-->
+<!--            width: 0%;-->
+<!--            transition: width 0.3s ease;-->
+<!--            border-radius: 4px;-->
+<!--        }-->
+
+<!--        .progress-text {-->
+<!--            font-size: 0.85rem;-->
+<!--            color: #6c757d;-->
+<!--            text-align: center;-->
+<!--            margin-top: 0.5rem;-->
+<!--            display: none;-->
+<!--        }-->
+
+<!--        /* Responsive Design */-->
+<!--        @media (max-width: 991.98px) {-->
+<!--            .sidebar {-->
+<!--                width: 70px;-->
+<!--                overflow: visible;-->
+<!--            }-->
+
+<!--            .brand-text, .nav-text, .user-info, .nav-section-title, .nav-badge {-->
+<!--                display: none;-->
+<!--            }-->
+
+<!--            .brand-icon {-->
+<!--                margin-right: 0;-->
+<!--            }-->
+
+<!--            .nav-link {-->
+<!--                padding: 0.75rem;-->
+<!--                justify-content: center;-->
+<!--            }-->
+
+<!--            .nav-link i {-->
+<!--                margin-right: 0;-->
+<!--                font-size: 1.25rem;-->
+<!--            }-->
+
+<!--            .user-profile {-->
+<!--                padding: 0.5rem;-->
+<!--                justify-content: center;-->
+<!--            }-->
+
+<!--            .user-avatar {-->
+<!--                margin-right: 0;-->
+<!--            }-->
+
+<!--            .main-content {-->
+<!--                margin-left: 70px;-->
+<!--                padding: 20px;-->
+<!--            }-->
+
+<!--            .sidebar:hover {-->
+<!--                width: 280px;-->
+<!--            }-->
+
+<!--            .sidebar:hover .brand-text,-->
+<!--            .sidebar:hover .nav-text,-->
+<!--            .sidebar:hover .user-info,-->
+<!--            .sidebar:hover .nav-section-title,-->
+<!--            .sidebar:hover .nav-badge {-->
+<!--                display: block;-->
+<!--            }-->
+
+<!--            .sidebar:hover .nav-link {-->
+<!--                justify-content: flex-start;-->
+<!--                padding: 0.75rem 1.5rem;-->
+<!--            }-->
+
+<!--            .sidebar:hover .nav-link i {-->
+<!--                margin-right: 12px;-->
+<!--            }-->
+
+<!--            .sidebar:hover .user-profile {-->
+<!--                justify-content: flex-start;-->
+<!--                padding: 0.75rem;-->
+<!--            }-->
+
+<!--            .sidebar:hover .user-avatar {-->
+<!--                margin-right: 12px;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (max-width: 767.98px) {-->
+<!--            .main-content {-->
+<!--                padding: 15px;-->
+<!--            }-->
+
+<!--            .profile-preview {-->
+<!--                width: 150px;-->
+<!--                height: 150px;-->
+<!--            }-->
+
+<!--            .card-body {-->
+<!--                padding: 1.5rem;-->
+<!--            }-->
+
+<!--            .upload-actions {-->
+<!--                flex-direction: column;-->
+<!--            }-->
+
+<!--            .upload-actions .btn {-->
+<!--                width: 100%;-->
+<!--            }-->
+
+<!--            .page-header {-->
+<!--                flex-direction: column;-->
+<!--                align-items: flex-start;-->
+<!--                gap: 1rem;-->
+<!--            }-->
+<!--        }-->
+
+<!--        @media (max-width: 575.98px) {-->
+<!--            .sidebar {-->
+<!--                width: 0;-->
+<!--                overflow: hidden;-->
+<!--            }-->
+
+<!--            .sidebar.active {-->
+<!--                width: 100%;-->
+<!--                z-index: 1000;-->
+<!--            }-->
+
+<!--            .main-content {-->
+<!--                margin-left: 0;-->
+<!--                width: 100%;-->
+<!--            }-->
+
+<!--            .profile-preview {-->
+<!--                width: 120px;-->
+<!--                height: 120px;-->
+<!--            }-->
+
+<!--            .mobile-menu-toggle {-->
+<!--                display: block;-->
+<!--                position: fixed;-->
+<!--                top: 20px;-->
+<!--                left: 20px;-->
+<!--                z-index: 999;-->
+<!--                background: var(&#45;&#45;primary-color);-->
+<!--                color: white;-->
+<!--                border: none;-->
+<!--                border-radius: 8px;-->
+<!--                padding: 0.75rem;-->
+<!--                font-size: 1.25rem;-->
+<!--            }-->
+<!--        }-->
+
+<!--        /* Hide mobile menu toggle on desktop */-->
+<!--        .mobile-menu-toggle {-->
+<!--            display: none;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Mobile Menu Toggle &ndash;&gt;-->
+<!--<button class="mobile-menu-toggle" id="mobileMenuToggle">-->
+<!--    <i class="bi bi-list"></i>-->
+<!--</button>-->
+
+<!--<div class="sidebar" id="sidebar">-->
+<!--    <div class="sidebar-header">-->
+<!--        <a href="/" class="brand">-->
+<!--            <div class="brand-icon"><i class="bi bi-cash-coin"></i></div>-->
+<!--            <span class="brand-text">Payroll System</span>-->
+<!--        </a>-->
+<!--    </div>-->
+<!--    <div class="sidebar-nav">-->
+<!--        <div class="nav-section">-->
+<!--            <div class="nav-section-title">Main</div>-->
+<!--            <ul class="nav-list">-->
+<!--                <li class="nav-item">-->
+<!--                    <a th:href="@{/dashboard}" class="nav-link">-->
+<!--                        <i class="bi bi-house"></i><span class="nav-text">Dashboard</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div class="nav-section">-->
+<!--            <div class="nav-section-title">Management</div>-->
+<!--            <ul class="nav-list">-->
+<!--                <li class="nav-item">-->
+<!--                    <a th:href="@{employees}" class="nav-link active">-->
+<!--                        <i class="bi bi-people"></i><span class="nav-text">Employees</span>-->
+<!--                        <span class="nav-badge" sec:authorize="hasRole('ADMIN')">Admin</span>-->
+<!--                    </a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="sidebar-footer">-->
+<!--        <div class="dropdown">-->
+<!--            <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                <img src="/images/num.png" alt="User Avatar" class="user-avatar">-->
+<!--                <div class="user-info">-->
+<!--                    <div class="user-name" sec:authentication="name">HR/Admin User</div>-->
+<!--                    <div class="user-role" sec:authorize="hasRole('ADMIN')">Administrator</div>-->
+<!--                </div>-->
+<!--                <i class="bi bi-chevron-down text-light"></i>-->
+<!--            </div>-->
+<!--            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">-->
+<!--                <li><a class="dropdown-item" th:href="@{/employee/profile}"><i class="bi bi-person me-2"></i>Profile</a></li>-->
+<!--                <li><hr class="dropdown-divider"></li>-->
+<!--                <li>-->
+<!--                    <form th:action="@{/logout}" method="post">-->
+<!--                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>Sign out</button>-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="main-content flex-grow-1">-->
+<!--    <div class="page-header">-->
+<!--        <div>-->
+<!--            <h1 class="page-title">Edit Employee Profile</h1>-->
+<!--            <p class="page-subtitle">Update details for <span th:text="${employee.firstName + ' ' + employee.lastName}">Employee Name</span></p>-->
+<!--        </div>-->
+<!--        <div class="employee-id-badge">-->
+<!--            <span class="badge bg-primary">ID: <span th:text="${employee.id}">EMP001</span></span>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Success/Error Messages &ndash;&gt;-->
+<!--    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">-->
+<!--        <i class="bi bi-check-circle-fill me-2"></i>-->
+<!--        <span th:text="${successMessage}">Success message</span>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+
+<!--    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">-->
+<!--        <i class="bi bi-exclamation-triangle-fill me-2"></i>-->
+<!--        <span th:text="${errorMessage}">Error message</span>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>-->
+<!--    </div>-->
+
+<!--    <div class="card mb-4">-->
+<!--        <div class="card-header">-->
+<!--            <i class="bi bi-person-fill me-1"></i>-->
+<!--            Employee Details-->
+<!--        </div>-->
+<!--        <div class="card-body">-->
+<!--            &lt;!&ndash; IMPORTANT: enctype="multipart/form-data" for file upload &ndash;&gt;-->
+<!--            <form th:action="@{/hr/employees/{id}/edit(id=${employee.id})}" th:object="${employee}" method="post" enctype="multipart/form-data" id="employeeForm">-->
+
+<!--                &lt;!&ndash; Enhanced Profile Image Upload Section &ndash;&gt;-->
+<!--                <div class="profile-upload-section">-->
+<!--                    <div class="profile-upload-container">-->
+<!--                        <img id="imagePreview"-->
+<!--                             th:src="${employee.profileImageUrl != null && !employee.profileImageUrl.isEmpty() ? employee.profileImageUrl : '/images/num.png'}"-->
+<!--                             class="profile-preview"-->
+<!--                             alt="Employee Photo"-->
+<!--                             onclick="document.getElementById('profileImage').click()"-->
+<!--                             onerror="this.onerror=null;this.src='/images/num.png'">-->
+
+<!--                        <div class="upload-overlay" onclick="document.getElementById('profileImage').click()" title="Click to upload new photo">-->
+<!--                            <i class="bi bi-camera"></i>-->
+<!--                        </div>-->
+
+<!--                        &lt;!&ndash; File input for image upload &ndash;&gt;-->
+<!--                        <input type="file"-->
+<!--                               id="profileImage"-->
+<!--                               name="profileImage"-->
+<!--                               accept="image/*"-->
+<!--                               style="display: none;"-->
+<!--                               onchange="handleImageSelection(this)">-->
+<!--                    </div>-->
+
+<!--                    <div class="upload-actions">-->
+<!--                        <button type="button" class="btn btn-primary" onclick="document.getElementById('profileImage').click()">-->
+<!--                            <i class="bi bi-upload me-1"></i> Upload New Photo-->
+<!--                        </button>-->
+<!--                        <button type="button" class="btn btn-warning" onclick="resetToDefaultImage()">-->
+<!--                            <i class="bi bi-arrow-clockwise me-1"></i> Use Default-->
+<!--                        </button>-->
+<!--                        <button type="button" class="btn btn-danger" onclick="removeProfileImage()">-->
+<!--                            <i class="bi bi-trash me-1"></i> Remove Photo-->
+<!--                        </button>-->
+<!--                    </div>-->
+
+<!--                    <div class="upload-progress" id="uploadProgress">-->
+<!--                        <div class="progress-bar" id="progressBar"></div>-->
+<!--                    </div>-->
+<!--                    <div class="progress-text" id="progressText"></div>-->
+
+<!--                    <div class="upload-hint">-->
+<!--                        <i class="bi bi-info-circle me-1"></i>-->
+<!--                        Click the image or camera icon to upload a new profile picture-->
+<!--                    </div>-->
+
+<!--                    <div class="upload-requirements">-->
+<!--                        <h6><i class="bi bi-exclamation-circle me-1"></i> Image Requirements:</h6>-->
+<!--                        <ul>-->
+<!--                            <li>Max file size: 5MB</li>-->
+<!--                            <li>Supported formats: JPG, PNG, GIF</li>-->
+<!--                            <li>Recommended size: 400x400 pixels or larger</li>-->
+<!--                            <li>Square images work best</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; Hidden field to store image URL &ndash;&gt;-->
+<!--                    <input type="hidden" th:field="*{profileImageUrl}" id="profileImageUrl">-->
+<!--                    &lt;!&ndash; Hidden field to track if image was removed &ndash;&gt;-->
+<!--                    <input type="hidden" name="removeImage" id="removeImage" value="false">-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="firstName" class="form-label">First Name *</label>-->
+<!--                        <input type="text"-->
+<!--                               class="form-control"-->
+<!--                               id="firstName"-->
+<!--                               th:field="*{firstName}"-->
+<!--                               required-->
+<!--                               placeholder="Enter first name">-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="lastName" class="form-label">Last Name *</label>-->
+<!--                        <input type="text"-->
+<!--                               class="form-control"-->
+<!--                               id="lastName"-->
+<!--                               th:field="*{lastName}"-->
+<!--                               required-->
+<!--                               placeholder="Enter last name">-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="email" class="form-label">Email Address *</label>-->
+<!--                        <input type="email"-->
+<!--                               class="form-control"-->
+<!--                               id="email"-->
+<!--                               th:field="*{email}"-->
+<!--                               required-->
+<!--                               placeholder="employee@company.com">-->
+<!--                        <small class="text-muted">This will be used for login</small>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="phoneNumber" class="form-label">Phone Number</label>-->
+<!--                        <input type="tel"-->
+<!--                               class="form-control"-->
+<!--                               id="phoneNumber"-->
+<!--                               th:field="*{phoneNumber}"-->
+<!--                               placeholder="+1 (555) 123-4567">-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="department" class="form-label">Department</label>-->
+<!--                        <select class="form-control" id="department" th:field="*{department}">-->
+<!--                            <option value="">Select Department</option>-->
+<!--                            <option value="Engineering">Engineering</option>-->
+<!--                            <option value="Sales">Sales</option>-->
+<!--                            <option value="Marketing">Marketing</option>-->
+<!--                            <option value="Human Resources">Human Resources</option>-->
+<!--                            <option value="Finance">Finance</option>-->
+<!--                            <option value="Operations">Operations</option>-->
+<!--                            <option value="Customer Service">Customer Service</option>-->
+<!--                            <option value="IT Support">IT Support</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="position" class="form-label">Position</label>-->
+<!--                        <input type="text"-->
+<!--                               class="form-control"-->
+<!--                               id="position"-->
+<!--                               th:field="*{position}"-->
+<!--                               placeholder="e.g., Software Developer, Sales Manager">-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                    <div class="col-md-6 mb-3">-->
+<!--                        <label for="basicSalary" class="form-label">Basic Salary *</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <span class="input-group-text">$</span>-->
+<!--                            <input type="number"-->
+<!--                                   step="0.01"-->
+<!--                                   min="0"-->
+<!--                                   class="form-control"-->
+<!--                                   id="basicSalary"-->
+<!--                                   th:field="*{basicSalary}"-->
+<!--                                   required-->
+<!--                                   placeholder="0.00">-->
+<!--                        </div>-->
+<!--                        <small class="text-muted">Monthly basic salary amount</small>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="d-flex justify-content-between mt-4 pt-3 border-top">-->
+<!--                    <div>-->
+<!--                        <button type="submit" class="btn btn-primary me-2" id="submitBtn">-->
+<!--                            <i class="bi bi-save me-1"></i> Save Changes-->
+<!--                        </button>-->
+<!--                        <a th:href="@{employees}" class="btn btn-secondary">-->
+<!--                            <i class="bi bi-x-circle me-1"></i> Cancel-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div>-->
+<!--                        <a th:href="@{/hr/employees/{id}/delete(id=${employee.id})}"-->
+<!--                           class="btn btn-danger"-->
+<!--                           onclick="return confirmDeleteEmployee()">-->
+<!--                            <i class="bi bi-trash me-1"></i> Delete Employee-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        const sidebar = document.getElementById('sidebar');-->
+<!--        const mobileMenuToggle = document.getElementById('mobileMenuToggle');-->
+
+<!--        // Navigation active state-->
+<!--        const currentPath = window.location.pathname;-->
+<!--        const navLinks = document.querySelectorAll('.nav-link');-->
+<!--        navLinks.forEach(link => {-->
+<!--            if (link.getAttribute('href') === currentPath) {-->
+<!--                link.classList.add('active');-->
+<!--            } else {-->
+<!--                link.classList.remove('active');-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Mobile menu toggle-->
+<!--        if (mobileMenuToggle) {-->
+<!--            mobileMenuToggle.addEventListener('click', function() {-->
+<!--                sidebar.classList.toggle('active');-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Close sidebar when clicking outside on mobile-->
+<!--        document.addEventListener('click', function(event) {-->
+<!--            if (window.innerWidth <= 575.98 &&-->
+<!--                sidebar.classList.contains('active') &&-->
+<!--                !sidebar.contains(event.target) &&-->
+<!--                event.target !== mobileMenuToggle) {-->
+<!--                sidebar.classList.remove('active');-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Desktop sidebar hover effect-->
+<!--        if (window.innerWidth <= 991.98 && window.innerWidth > 575.98) {-->
+<!--            sidebar.addEventListener('mouseenter', function() {-->
+<!--                this.style.width = '280px';-->
+<!--            });-->
+
+<!--            sidebar.addEventListener('mouseleave', function() {-->
+<!--                this.style.width = '70px';-->
+<!--            });-->
+<!--        }-->
+
+<!--        // Window resize handler-->
+<!--        window.addEventListener('resize', function() {-->
+<!--            if (window.innerWidth <= 575.98) {-->
+<!--                mobileMenuToggle.style.display = 'block';-->
+<!--            } else {-->
+<!--                mobileMenuToggle.style.display = 'none';-->
+<!--                sidebar.classList.remove('active');-->
+<!--            }-->
+<!--        });-->
+
+<!--        // Initialize based on current screen size-->
+<!--        if (window.innerWidth <= 575.98) {-->
+<!--            mobileMenuToggle.style.display = 'block';-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Image Upload Functions-->
+<!--    function handleImageSelection(input) {-->
+<!--        if (input.files && input.files[0]) {-->
+<!--            const file = input.files[0];-->
+
+<!--            // Validate file size (5MB limit)-->
+<!--            if (file.size > 5 * 1024 * 1024) {-->
+<!--                alert('File size exceeds 5MB limit. Please choose a smaller image.');-->
+<!--                input.value = '';-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Validate file type-->
+<!--            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];-->
+<!--            if (!validTypes.includes(file.type)) {-->
+<!--                alert('Please select a valid image file (JPG, PNG, GIF, or WEBP).');-->
+<!--                input.value = '';-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Show upload progress-->
+<!--            const progressBar = document.getElementById('progressBar');-->
+<!--            const progressText = document.getElementById('progressText');-->
+<!--            const uploadProgress = document.getElementById('uploadProgress');-->
+
+<!--            uploadProgress.style.display = 'block';-->
+<!--            progressText.style.display = 'block';-->
+<!--            progressText.textContent = 'Processing image...';-->
+<!--            progressBar.style.width = '30%';-->
+
+<!--            const reader = new FileReader();-->
+<!--            reader.onload = function(e) {-->
+<!--                // Simulate upload progress-->
+<!--                setTimeout(() => {-->
+<!--                    progressBar.style.width = '70%';-->
+<!--                    progressText.textContent = 'Loading preview...';-->
+
+<!--                    setTimeout(() => {-->
+<!--                        progressBar.style.width = '100%';-->
+<!--                        progressText.textContent = 'Image ready!';-->
+
+<!--                        // Update preview image-->
+<!--                        document.getElementById('imagePreview').src = e.target.result;-->
+
+<!--                        // Hide progress after delay-->
+<!--                        setTimeout(() => {-->
+<!--                            uploadProgress.style.display = 'none';-->
+<!--                            progressText.style.display = 'none';-->
+<!--                            progressBar.style.width = '0%';-->
+<!--                        }, 500);-->
+
+<!--                    }, 300);-->
+<!--                }, 300);-->
+<!--            };-->
+
+<!--            reader.onerror = function() {-->
+<!--                alert('Error reading file. Please try again.');-->
+<!--                input.value = '';-->
+<!--                uploadProgress.style.display = 'none';-->
+<!--                progressText.style.display = 'none';-->
+<!--            };-->
+
+<!--            reader.readAsDataURL(file);-->
+<!--        }-->
+<!--    }-->
+
+<!--    function removeProfileImage() {-->
+<!--        if (confirm('Remove profile image? This will delete the current photo.')) {-->
+<!--            // Set to default image-->
+<!--            document.getElementById('imagePreview').src = '/images/num.png';-->
+
+<!--            // Clear the file input-->
+<!--            document.getElementById('profileImage').value = '';-->
+
+<!--            // Set hidden field to indicate image removal-->
+<!--            document.getElementById('removeImage').value = 'true';-->
+
+<!--            // Clear the URL field-->
+<!--            document.getElementById('profileImageUrl').value = '';-->
+
+<!--            showNotification('Profile image will be removed when you save changes.', 'warning');-->
+<!--        }-->
+<!--    }-->
+
+<!--    function resetToDefaultImage() {-->
+<!--        if (confirm('Reset to default profile image?')) {-->
+<!--            document.getElementById('imagePreview').src = '/images/num.png';-->
+<!--            document.getElementById('profileImage').value = '';-->
+<!--            document.getElementById('profileImageUrl').value = '';-->
+<!--            document.getElementById('removeImage').value = 'true';-->
+<!--            showNotification('Image reset to default.', 'info');-->
+<!--        }-->
+<!--    }-->
+
+<!--    function confirmDeleteEmployee() {-->
+<!--        const employeeName = document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value;-->
+<!--        return confirm(`Are you sure you want to delete ${employeeName}? This action cannot be undone and will delete all associated payroll records.`);-->
+<!--    }-->
+
+<!--    // Form submission validation-->
+<!--    document.getElementById('employeeForm').addEventListener('submit', function(event) {-->
+<!--        const firstName = document.getElementById('firstName').value.trim();-->
+<!--        const lastName = document.getElementById('lastName').value.trim();-->
+<!--        const email = document.getElementById('email').value.trim();-->
+<!--        const basicSalary = document.getElementById('basicSalary').value.trim();-->
+
+<!--        if (!firstName || !lastName || !email || !basicSalary) {-->
+<!--            event.preventDefault();-->
+<!--            alert('Please fill in all required fields (marked with *).');-->
+<!--            return false;-->
+<!--        }-->
+
+<!--        // Validate email format-->
+<!--        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;-->
+<!--        if (!emailRegex.test(email)) {-->
+<!--            event.preventDefault();-->
+<!--            alert('Please enter a valid email address.');-->
+<!--            document.getElementById('email').focus();-->
+<!--            return false;-->
+<!--        }-->
+
+<!--        // Validate salary is positive number-->
+<!--        const salary = parseFloat(basicSalary);-->
+<!--        if (isNaN(salary) || salary < 0) {-->
+<!--            event.preventDefault();-->
+<!--            alert('Salary must be a positive number.');-->
+<!--            document.getElementById('basicSalary').focus();-->
+<!--            return false;-->
+<!--        }-->
+
+<!--        // Show loading state-->
+<!--        const submitBtn = document.getElementById('submitBtn');-->
+<!--        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving...';-->
+<!--        submitBtn.disabled = true;-->
+
+<!--        return true;-->
+<!--    });-->
+
+<!--    function showNotification(message, type = 'info') {-->
+<!--        // Remove any existing notifications-->
+<!--        const existingNotifications = document.querySelectorAll('.custom-notification');-->
+<!--        existingNotifications.forEach(notification => notification.remove());-->
+
+<!--        // Create notification element-->
+<!--        const notification = document.createElement('div');-->
+<!--        notification.className = `custom-notification alert alert-${type} alert-dismissible fade show`;-->
+<!--        notification.style.cssText = `-->
+<!--            position: fixed;-->
+<!--            top: 20px;-->
+<!--            right: 20px;-->
+<!--            z-index: 9999;-->
+<!--            min-width: 300px;-->
+<!--            box-shadow: 0 4px 12px rgba(0,0,0,0.15);-->
+<!--            border-radius: 8px;-->
+<!--        `;-->
+
+<!--        const icon = type === 'success' ? 'bi-check-circle-fill' :-->
+<!--            type === 'warning' ? 'bi-exclamation-triangle-fill' :-->
+<!--                type === 'danger' ? 'bi-exclamation-circle-fill' :-->
+<!--                    'bi-info-circle-fill';-->
+
+<!--        notification.innerHTML = `-->
+<!--            <i class="bi ${icon} me-2"></i>-->
+<!--            ${message}-->
+<!--            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>-->
+<!--        `;-->
+
+<!--        document.body.appendChild(notification);-->
+
+<!--        // Auto remove after 5 seconds-->
+<!--        setTimeout(() => {-->
+<!--            if (notification.parentNode) {-->
+<!--                notification.parentNode.removeChild(notification);-->
+<!--            }-->
+<!--        }, 5000);-->
+<!--    }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->

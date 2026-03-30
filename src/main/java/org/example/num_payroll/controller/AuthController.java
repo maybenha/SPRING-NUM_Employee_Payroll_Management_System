@@ -19,17 +19,19 @@ public class AuthController {
         this.userService = userService;
     }
 
+    //login page
     @GetMapping("/login")
     public String login() {
         return "auth/login";
     }
 
+    //register page
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("user", new User());
         return "auth/register";
     }
-
+    //register page
     @PostMapping("/register")
     public String registerUser(@RequestParam String username,
                                @RequestParam String password,
@@ -45,7 +47,7 @@ public class AuthController {
             return "auth/register";
         }
     }
-
+    //admin redirect to dashboard and employee redirect to attendance after login
     @GetMapping("/dashboard")
     public String dashboard() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

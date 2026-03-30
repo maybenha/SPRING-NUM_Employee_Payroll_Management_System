@@ -14,13 +14,13 @@
             --primary-color: #4361ee;
             --primary-light: #4895ef;
             --secondary-color: #1a4c99;
-            --dark-bg: #1a1d29;
+            --dark-bg: #1a4c99;
             --dark-bg-light: #1a4c99;
             --text-light: #f8f9fa;
             --text-muted: #adb5bd;
             --border-color: #dee2e6;
             --hover-color: rgba(255, 255, 255, 0.1);
-            --active-color: #3a3f51;
+            --active-color: #1a4c99;
             --shadow: 0 4px 6px rgba(26, 76, 153, 0.1);
             --transition: all 0.3s ease;
             --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
@@ -36,11 +36,11 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #f5f7fb 0%, #eef2ff 100%);
-            color: #333;
+            color: #ffffff;
             min-height: 100vh;
         }
 
-        /* --- SIDEBAR STYLES --- */
+        /* Sidebar Styles */
         .sidebar {
             background: linear-gradient(180deg, var(--dark-bg) 0%, var(--dark-bg-light) 100%);
             width: 280px;
@@ -50,7 +50,7 @@
             top: 0;
             display: flex;
             flex-direction: column;
-            box-shadow: 4px 0 20px rgb(26, 76, 153);
+            box-shadow: var(--shadow);
             z-index: 1000;
             overflow-y: auto;
             transition: var(--transition);
@@ -58,7 +58,7 @@
 
         .sidebar-header {
             padding: 1.5rem 1.5rem 1rem;
-            border-bottom: 1px solid rgb(14, 88, 245);
+            border-bottom: 1px solid var(--border-color);
         }
 
         .brand {
@@ -66,124 +66,142 @@
             align-items: center;
             color: var(--text-light);
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 1.25rem;
-            letter-spacing: 0.5px;
         }
 
         .brand-icon {
-            background: var(--gradient-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 12px;
-            box-shadow: 0 4px 12px rgb(14, 88, 245);
+            margin-right: 10px;
         }
 
-        .sidebar-nav { flex: 1; padding: 1rem 0; }
-        .nav-section { margin-bottom: 1.5rem; }
-        .nav-section-title {
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.5); padding: 0 1.5rem; margin-bottom: 0.5rem;
-            font-weight: 600;
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
         }
-        .nav-item { list-style: none; margin-bottom: 0.25rem; }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            list-style: none;
+            margin-bottom: 0.25rem;
+        }
 
         .nav-link {
-            display: flex; align-items: center; padding: 0.85rem 1.5rem;
-            color: rgba(255, 255, 255, 0.8); text-decoration: none; transition: var(--transition);
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-light);
+            text-decoration: none;
+            transition: var(--transition);
             border-left: 3px solid transparent;
-            margin: 0 0.5rem;
-            border-radius: 8px;
         }
+
         .nav-link:hover {
-            background-color: rgb(14, 88, 245);
+            background-color: var(--hover-color);
             border-left-color: var(--primary-light);
-            color: white;
-            transform: translateX(5px);
         }
+
         .nav-link.active {
-            background: rgb(14, 88, 245);
+            background-color: var(--active-color);
             border-left-color: var(--primary-color);
-            color: white;
-            box-shadow: inset 4px 0 8px rgb(14, 88, 245);
         }
+
         .nav-link i {
             margin-right: 12px;
-            font-size: 1.2rem;
-            width: 24px;
-            color: white;
+            font-size: 1.1rem;
+            width: 20px;
             text-align: center;
         }
+
         .nav-badge {
             margin-left: auto;
             background-color: var(--primary-color);
             color: white;
             font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 10px;
         }
 
         .sidebar-footer {
             padding: 1rem 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--border-color);
         }
+
         .user-profile {
             display: flex;
             align-items: center;
             padding: 0.75rem;
-            border-radius: 12px;
+            border-radius: 8px;
             transition: var(--transition);
             cursor: pointer;
-            color: white;
-            background: rgba(255, 255, 255, 0.05);
         }
+
         .user-profile:hover {
-            background-color: rgb(26, 76, 153);
-            transform: translateY(-2px);
+            background-color: var(--hover-color);
         }
+
         .user-avatar {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
             margin-right: 12px;
-            border: 3px solid var(--primary-light);
-            box-shadow: 0 4px 8px rgba(6, 56, 133, 0.9);
+            border: 2px solid var(--primary-light);
         }
-        .user-info { flex: 1; }
+
+        .user-info {
+            flex: 1;
+        }
+
         .user-name {
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin-bottom: 2px;
         }
+
         .user-role {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 500;
+            font-size: 0.75rem;
+            color: var(--text-muted);
         }
+
         .dropdown-menu {
-            background-color: #1a4c99;
-            border: 1px solid #1a4c99;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background-color: var(--dark-bg-light);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
         }
+
         .dropdown-item {
-            color: #e2e8f0;
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            margin: 2px 8px;
-            width: auto;
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
         }
+
         .dropdown-item:hover {
-            background-color: var(--primary-color);
-            color: white;
+            background-color: var(--hover-color);
+            color: var(--text-light);
         }
-        .dropdown-divider { border-color: #4a5568; }
+
+        .dropdown-divider {
+            border-color: var(--border-color);
+        }
+
 
         /* --- MAIN CONTENT STYLES --- */
         .main-content {
@@ -990,9 +1008,12 @@
         <div class="sidebar-footer">
             <div class="dropdown">
                 <div class="user-profile" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/images/num.png" alt="User Avatar" class="user-avatar">
+                    <img th:src="${employee?.profileImageUrl ?: '/images/num.png'}"
+                         alt="User Avatar"
+                         class="user-avatar"
+                         onerror="this.src='/images/num.png'">
                     <div class="user-info">
-                        <div class="user-name" sec:authentication="name">John Doe</div>
+                        <div class="user-name" sec:authentication="name">Employee User</div>
                         <div class="user-role" sec:authorize="hasRole('EMPLOYEE')">Employee</div>
                     </div>
                     <i class="bi bi-chevron-down"></i>
@@ -1542,3 +1563,5 @@
 </script>
 </body>
 </html>
+
+

@@ -30,7 +30,7 @@ public class AdminController {
         this.payrollService = payrollService;
         this.userService = userService;
     }
-
+    //admin dashboard
     @GetMapping("/dashboard")
     public String adminDashboard(Model model,
                                  @RequestParam(value = "month", required = false) Integer month,
@@ -52,14 +52,14 @@ public class AdminController {
 
         return "admin/dashboard";
     }
-
+    //admin manage employee
     @GetMapping("/employees")
     public String listEmployees(Model model) {
         List<EmployeeProfile> employees = employeeProfileService.findAllEmployees();
         model.addAttribute("employees", employees);
         return "admin/employees";
     }
-
+    //admin edit employee
     @GetMapping("/employees/{id}/edit")
     public String editEmployeeForm(@PathVariable Long id, Model model) {
         EmployeeProfile employeeProfile = employeeProfileService.findById(id)
@@ -67,7 +67,7 @@ public class AdminController {
         model.addAttribute("employee", employeeProfile);
         return "admin/edit_employee";
     }
-
+    //admin edit employee
     @PostMapping("/employees/{id}/edit")
     public String updateEmployee(@PathVariable Long id, @ModelAttribute EmployeeProfile employee) {
         EmployeeProfile existingEmployee = employeeProfileService.findById(id)

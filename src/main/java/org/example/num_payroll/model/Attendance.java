@@ -86,10 +86,14 @@ public class Attendance {
 
             long hours = duration.toHours();
             long minutes = duration.minusHours(hours).toMinutes();
+            long seconds = duration
+                    .minusHours(hours)
+                    .minusMinutes(minutes)
+                    .getSeconds();
 
-            return hours + " h " + minutes + " minutes";
+            return hours + " h " + minutes + " m " + seconds + " seconds";
         }
-        return "0 h 0 minute";
+        return "0 h 0 m 0 s";
     }
 
 }

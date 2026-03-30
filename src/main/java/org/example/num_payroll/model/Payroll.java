@@ -12,6 +12,8 @@ public class Payroll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private BigDecimal grossSalary;
+    private BigDecimal taxRate;
 
     @Column(nullable = false)
     private int month; // 1-12
@@ -107,4 +109,16 @@ public class Payroll {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_profile_id", nullable = false)
     private EmployeeProfile employeeProfile;
+
+
+    public BigDecimal getGrossSalary() {
+        return grossSalary; }
+    public void setGrossSalary(BigDecimal grossSalary) {
+        this.grossSalary = grossSalary; }
+
+    public BigDecimal getTaxRate() {
+        return taxRate; }
+    public void setTaxRate(BigDecimal taxRate) {
+        this.taxRate = taxRate; }
+
 }

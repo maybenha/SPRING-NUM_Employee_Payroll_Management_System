@@ -43,10 +43,36 @@ public class PayrollService {
                 .filter(a -> a.getCheckOutTime() != null)
                 .count();
 
+//        BigDecimal basicSalary = employeeProfile.getBasicSalary();
+//        BigDecimal dailyRate = basicSalary.divide(new BigDecimal(WORKING_DAYS_IN_MONTH), 2, RoundingMode.HALF_UP);
+//        BigDecimal grossSalary = dailyRate.multiply(new BigDecimal(totalDaysWorked)).setScale(2, RoundingMode.HALF_UP);
+//        BigDecimal taxAmount = grossSalary.multiply(TAX_RATE).setScale(2, RoundingMode.HALF_UP);
+//        BigDecimal netPay = grossSalary.subtract(taxAmount).setScale(2, RoundingMode.HALF_UP);
+//
+//        Payroll payroll = new Payroll();
+//        payroll.setEmployeeProfile(employeeProfile);
+//        payroll.setMonth(month);
+//        payroll.setYear(year);
+//        payroll.setTotalDaysWorked((int) totalDaysWorked);
+//        payroll.setBasicSalary(basicSalary);
+//        payroll.setTax(taxAmount);
+//        payroll.setNetPay(netPay);
+//
+//        return payrollRepository.save(payroll);
+
+
         BigDecimal basicSalary = employeeProfile.getBasicSalary();
+
+
         BigDecimal dailyRate = basicSalary.divide(new BigDecimal(WORKING_DAYS_IN_MONTH), 2, RoundingMode.HALF_UP);
+
+
         BigDecimal grossSalary = dailyRate.multiply(new BigDecimal(totalDaysWorked)).setScale(2, RoundingMode.HALF_UP);
+
+
         BigDecimal taxAmount = grossSalary.multiply(TAX_RATE).setScale(2, RoundingMode.HALF_UP);
+
+
         BigDecimal netPay = grossSalary.subtract(taxAmount).setScale(2, RoundingMode.HALF_UP);
 
         Payroll payroll = new Payroll();
@@ -55,7 +81,9 @@ public class PayrollService {
         payroll.setYear(year);
         payroll.setTotalDaysWorked((int) totalDaysWorked);
         payroll.setBasicSalary(basicSalary);
+        payroll.setGrossSalary(grossSalary);
         payroll.setTax(taxAmount);
+        payroll.setTaxRate(TAX_RATE);
         payroll.setNetPay(netPay);
 
         return payrollRepository.save(payroll);
